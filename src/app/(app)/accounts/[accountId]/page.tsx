@@ -1,0 +1,336 @@
+'use client';
+
+import { use } from 'react';
+import Link from 'next/link';
+import {
+  AppShellCard,
+  Badge,
+  Button,
+  Avatar,
+  Tabs,
+} from '@humain-foundation/ui';
+import {
+  Building2,
+  ExternalLink,
+  Users,
+  TrendingUp,
+  FileText,
+  Map,
+  ChevronRight,
+  UserMinus,
+  DollarSign,
+  Newspaper,
+  Zap,
+} from 'lucide-react';
+import {
+  MOCK_ACCOUNTS,
+  MOCK_DEALS,
+  MOCK_STAKEHOLDERS,
+  MOCK_SIGNALS,
+  MOCK_WIKI_ASSETS,
+  type Signal,
+  type StakeholderRole,
+} from '@/lib/mock-data';
+
+type BadgeColor = 'destructive' | 'warning' | 'success' | 'secondary' | 'primary';
+
+const SIGNAL_ICON: Record<Signal['type'], React.ReactNode> = {
+  leadership: <UserMinus className="size-4" />,
+  funding: <DollarSign className="size-4" />,
+  news: <Newspaper className="size-4" />,
+  product: <Zap className="size-4" />,
+};
+
+const ROLE_COLOR: Record<StakeholderRole, BadgeColor> = {
+  'Decision Maker': 'primary',
+  Champion: 'success',
+  Influencer: 'secondary',
+  Blocker: 'destructive',
+  Coach: 'secondary',
+};
+
+const STRENGTH_LABELS: Record<number, string> = {
+  0: 'No contact',
+  1: 'Initial',
+  2: 'Developing',
+  3: 'Established',
+  4: 'Strong',
+  5: 'Trusted',
+};
+
+function StrengthPips({ value }: { value: number }) {
+  return (
+    <div className="flex gap-0.5">
+      {[1, 2, 3, 4, 5].map((pip) => (
+        <span
+          key={pip}
+          className={`inline-block h-2 w-2 rounded-full ${pip <= value ? 'bg-brand-500' : 'bg-muted'}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default function AccountPage({ params }: { params: Promise<{ accountId: string }> }) {
+  const { accountId } = use(params);
+  const account = MOCK_ACCOUNTS.find((a) => a.id === accountId) ?? MOCK_ACCOUNTS[0];
+  const deals = MOCK_DEALS.filter((d) => d.accountId === account.id);
+  const stakeholders = MOCK_STAKEHOLDERS.filter((s) => s.accountId === account.id);
+  const signals = MOCK_SIGNALS.filter((s) => s.accountId === account.id);
+
+  const suggestedAssets = MOCK_WIKI_ASSETS.filter((w) =>
+    w.industry.some((i) => account.industry.includes(i)) || w.tags.includes(account.region.toLowerCase())
+  ).slice(0, 3);
+
+  const hasEconomicBuyer = stakeholders.some(
+    (s) => s.role === 'Decision Maker' && s.strength >= 2
+  );
+  const hasChampion = stakeholders.some((s) => s.role === 'Champion' && s.strength >= 3);
+
+  return (
+    <AppShellCard>
+      <AppShellCard.Header>
+        <div className="flex items-center gap-3">
+          <Avatar fallback={account.name} size="md" />
+          <div>
+            <AppShellCard.Title>{account.name}</AppShellCard.Title>
+            <AppShellCard.Subtitle>{account.industry} · {account.region}</AppShellCard.Subtitle>
+          </div>
+        </div>
+      </AppShellCard.Header>
+      <AppShellCard.Actions>
+        <Button
+          appearance="ghost"
+          size="sm"
+          endIcon={<ExternalLink className="size-4" />}
+        >
+          Open in Salesforce
+        </Button>
+        <Button
+          appearance="outline"
+          size="sm"
+          render={<Link href={`/accounts/${account.id}/map`} />}
+          startIcon={<Map className="size-4" />}
+        >
+          Stakeholder Map
+        </Button>
+      </AppShellCard.Actions>
+
+      <div className="flex flex-col gap-8">
+        {/* Coverage gap warnings */}
+        {(!hasEconomicBuyer || !hasChampion) && (
+          <div className="flex flex-col gap-2">
+            {!hasEconomicBuyer && (
+              <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3">
+                <Badge color="destructive">Coverage Gap</Badge>
+                <p className="text-sm text-foreground">
+                  No engaged Economic Buyer — required before Stage 4 transition.
+                </p>
+              </div>
+            )}
+            {!hasChampion && (
+              <div className="flex items-center gap-2 rounded-lg border border-warning/30 bg-warning/5 px-4 py-3">
+                <Badge color="warning">Coverage Gap</Badge>
+                <p className="text-sm text-foreground">
+                  No strong Champion identified — internal advocacy is at risk.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Account summary strip */}
+        <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {[
+            { label: 'Tier', value: account.tier },
+            { label: 'Revenue', value: account.revenue },
+            { label: 'Headcount', value: account.headcount },
+            { label: 'Last Activity', value: account.lastActivity },
+          ].map(({ label, value }) => (
+            <div key={label} className="rounded-lg border border-border bg-card px-4 py-3">
+              <p className="text-xs text-muted-foreground mb-1">{label}</p>
+              <p className="text-sm font-semibold text-foreground">{value}</p>
+            </div>
+          ))}
+        </section>
+
+        <Tabs defaultValue="overview">
+          <Tabs.List>
+            <Tabs.Trigger value="overview">
+              <Building2 className="size-4" />
+              Overview
+            </Tabs.Trigger>
+            <Tabs.Trigger value="stakeholders">
+              <Users className="size-4" />
+              Stakeholders
+            </Tabs.Trigger>
+            <Tabs.Trigger value="signals">
+              <TrendingUp className="size-4" />
+              Signals {signals.length > 0 && `(${signals.length})`}
+            </Tabs.Trigger>
+            <Tabs.Trigger value="content">
+              <FileText className="size-4" />
+              Relevant Content
+            </Tabs.Trigger>
+          </Tabs.List>
+
+          {/* Overview tab */}
+          <Tabs.Content value="overview" className="mt-4">
+            <div className="flex flex-col gap-4">
+              <h3 className="text-sm font-semibold text-foreground">Open Opportunities</h3>
+              {deals.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No open opportunities. Data sourced from Salesforce.</p>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {deals.map((deal) => (
+                    <div
+                      key={deal.id}
+                      className="flex items-center justify-between rounded-lg border border-border bg-card px-4 py-3 gap-4"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{deal.stage}</p>
+                        <p className="text-xs text-muted-foreground">
+                          Close: {deal.closeDate} · Owner: {deal.owner}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-foreground">
+                          ${(deal.acv / 1000).toFixed(0)}K ACV
+                        </span>
+                        <Badge
+                          color={
+                            deal.risk === 'high'
+                              ? 'destructive'
+                              : deal.risk === 'medium'
+                              ? 'warning'
+                              : 'success'
+                          }
+                        >
+                          {deal.risk}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground">
+                Opportunity data is read-only. To update stage or amount,{' '}
+                <button className="text-brand-500 hover:underline">open in Salesforce</button>.
+              </p>
+            </div>
+          </Tabs.Content>
+
+          {/* Stakeholders tab */}
+          <Tabs.Content value="stakeholders" className="mt-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-foreground">
+                Stakeholders ({stakeholders.length})
+              </h3>
+              <Button
+                appearance="outline"
+                size="sm"
+                render={<Link href={`/accounts/${account.id}/map`} />}
+                endIcon={<ChevronRight className="size-4" />}
+              >
+                Full Map
+              </Button>
+            </div>
+            {stakeholders.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No stakeholders mapped yet.</p>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {stakeholders.map((s) => (
+                  <div
+                    key={s.id}
+                    className="flex items-center gap-4 rounded-lg border border-border bg-card px-4 py-3"
+                  >
+                    <Avatar fallback={s.name} size="sm" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-foreground">{s.name}</p>
+                        <Badge color={ROLE_COLOR[s.role]}>{s.role}</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{s.title}</p>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <StrengthPips value={s.strength} />
+                      <p className="text-xs text-muted-foreground mt-1">{STRENGTH_LABELS[s.strength]}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Tabs.Content>
+
+          {/* Signals tab */}
+          <Tabs.Content value="signals" className="mt-4">
+            {signals.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No signals detected for this account.</p>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {signals.map((signal) => (
+                  <div
+                    key={signal.id}
+                    className="flex items-start gap-3 rounded-lg border border-border bg-card px-4 py-3"
+                  >
+                    <span className="mt-0.5 text-muted-foreground shrink-0">
+                      {SIGNAL_ICON[signal.type]}
+                    </span>
+                    <div>
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <Badge color="secondary">{signal.type}</Badge>
+                        <span className="text-xs text-muted-foreground">{signal.date}</span>
+                      </div>
+                      <p className="text-sm font-medium text-foreground">{signal.title}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{signal.summary}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Tabs.Content>
+
+          {/* Content tab */}
+          <Tabs.Content value="content" className="mt-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-foreground">Suggested Content</h3>
+              <Button
+                appearance="ghost"
+                size="sm"
+                render={<Link href="/wiki" />}
+                endIcon={<ChevronRight className="size-4" />}
+              >
+                Browse Wiki
+              </Button>
+            </div>
+            {suggestedAssets.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No content matched for this account.</p>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {suggestedAssets.map((asset) => (
+                  <div
+                    key={asset.id}
+                    className="flex items-center justify-between gap-4 rounded-lg border border-border bg-card px-4 py-3"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <Badge color="secondary">{asset.type}</Badge>
+                        {asset.expiresAt && new Date(asset.expiresAt) < new Date(Date.now() + 30 * 86400_000) && (
+                          <Badge color="warning">Expires soon</Badge>
+                        )}
+                      </div>
+                      <p className="text-sm font-medium text-foreground truncate">{asset.title}</p>
+                    </div>
+                    <Button appearance="outline" size="sm">
+                      Use
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Tabs.Content>
+        </Tabs>
+      </div>
+    </AppShellCard>
+  );
+}

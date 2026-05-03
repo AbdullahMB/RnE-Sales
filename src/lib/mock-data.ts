@@ -43,6 +43,9 @@ export interface Stakeholder {
   strength: RelationshipStrength;
   lastContact: string;
   email: string;
+  phone: string;
+  linkedin: string;
+  buyingCenter: string;
   notes: string;
 }
 
@@ -123,11 +126,11 @@ export const MOCK_ACCOUNTS: Account[] = [
 ];
 
 export const MOCK_STAKEHOLDERS: Stakeholder[] = [
-  { id: 'sk1', accountId: 'a1', name: 'Khalid Al-Rashid', title: 'CTO', role: 'Decision Maker', strength: 1, lastContact: '2026-05-01', email: 'k.alrashid@aramcodigital.com', notes: 'Newly appointed. Came from AWS. Unknown preferences.' },
-  { id: 'sk2', accountId: 'a1', name: 'Sara Al-Otaibi', title: 'VP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-28', email: 's.alotaibi@aramcodigital.com', notes: 'Attended 5 demos. Strong internal advocate.' },
-  { id: 'sk3', accountId: 'a1', name: 'Mohammed Al-Ghamdi', title: 'CFO', role: 'Decision Maker', strength: 0 as RelationshipStrength, lastContact: 'Never', email: 'm.alghamdi@aramcodigital.com', notes: 'No relationship established. Required for Stage 4.' },
-  { id: 'sk4', accountId: 'a2', name: 'Nora Al-Harbi', title: 'SVP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-20', email: 'n.alharbi@sabiccloud.com', notes: 'Promoted to SVP. Increased influence.' },
-  { id: 'sk5', accountId: 'a2', name: 'Fahad Al-Dossari', title: 'CFO', role: 'Decision Maker', strength: 2, lastContact: '2026-04-01', email: 'f.aldossari@sabiccloud.com', notes: 'Met once at QBR. Needs further engagement.' },
+  { id: 'sk1', accountId: 'a1', name: 'Khalid Al-Rashid', title: 'CTO', role: 'Decision Maker', strength: 1, lastContact: '2026-05-01', email: 'k.alrashid@aramcodigital.com', phone: '+966 50 111 2233', linkedin: 'https://linkedin.com/in/khalid-alrashid', buyingCenter: 'Technology', notes: 'Newly appointed. Came from AWS. Unknown preferences.' },
+  { id: 'sk2', accountId: 'a1', name: 'Sara Al-Otaibi', title: 'VP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-28', email: 's.alotaibi@aramcodigital.com', phone: '+966 50 222 3344', linkedin: 'https://linkedin.com/in/sara-alotaibi', buyingCenter: 'Technology', notes: 'Attended 5 demos. Strong internal advocate.' },
+  { id: 'sk3', accountId: 'a1', name: 'Mohammed Al-Ghamdi', title: 'CFO', role: 'Decision Maker', strength: 0 as RelationshipStrength, lastContact: 'Never', email: 'm.alghamdi@aramcodigital.com', phone: '+966 50 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'No relationship established. Required for Stage 4.' },
+  { id: 'sk4', accountId: 'a2', name: 'Nora Al-Harbi', title: 'SVP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-20', email: 'n.alharbi@sabiccloud.com', phone: '+966 55 444 5566', linkedin: 'https://linkedin.com/in/nora-alharbi', buyingCenter: 'Technology', notes: 'Promoted to SVP. Increased influence.' },
+  { id: 'sk5', accountId: 'a2', name: 'Fahad Al-Dossari', title: 'CFO', role: 'Decision Maker', strength: 2, lastContact: '2026-04-01', email: 'f.aldossari@sabiccloud.com', phone: '+966 55 555 6677', linkedin: 'https://linkedin.com/in/fahad-aldossari', buyingCenter: 'Finance', notes: 'Met once at QBR. Needs further engagement.' },
 ];
 
 export const MOCK_WIKI_ASSETS: WikiAsset[] = [

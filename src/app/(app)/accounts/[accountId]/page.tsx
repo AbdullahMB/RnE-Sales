@@ -21,6 +21,8 @@ import {
   DollarSign,
   Newspaper,
   Zap,
+  CheckCircle2,
+  AlertCircle,
 } from 'lucide-react';
 import {
   MOCK_ACCOUNTS,
@@ -28,9 +30,11 @@ import {
   MOCK_STAKEHOLDERS,
   MOCK_SIGNALS,
   MOCK_WIKI_ASSETS,
+  MOCK_MEETING_SUMMARY,
   type Signal,
   type StakeholderRole,
 } from '@/lib/mock-data';
+import { computeAccountHealth, HEALTH_STYLE } from '@/lib/health';
 
 type BadgeColor = 'destructive' | 'warning' | 'success' | 'secondary' | 'primary';
 
@@ -57,6 +61,54 @@ const STRENGTH_LABELS: Record<number, string> = {
   4: 'Strong',
   5: 'Trusted',
 };
+
+const MEDDIC_FIELDS: { key: keyof typeof MOCK_MEETING_SUMMARY.meddic; label: string }[] = [
+  { key: 'metrics',         label: 'Metrics' },
+  { key: 'economicBuyer',   label: 'Economic Buyer' },
+  { key: 'decisionCriteria', label: 'Decision Criteria' },
+  { key: 'decisionProcess', label: 'Decision Process' },
+  { key: 'identifiedPain',  label: 'Identified Pain' },
+  { key: 'champion',        label: 'Champion' },
+];
+
+function MeddicGapBar({ meddic }: { meddic: typeof MOCK_MEETING_SUMMARY.meddic }) {
+  const filled = MEDDIC_FIELDS.filter((f) => !!meddic[f.key]).length;
+  const pct = Math.round((filled / MEDDIC_FIELDS.length) * 100);
+  return (
+    <div className="rounded-xl border border-border bg-card px-5 py-4">
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="text-sm font-semibold text-foreground">MEDDIC Qualification</h4>
+        <span className={`text-sm font-bold ${pct === 100 ? 'text-success' : pct >= 60 ? 'text-warning' : 'text-destructive'}`}>
+          {pct}% complete
+        </span>
+      </div>
+      <div className="h-2 rounded-full bg-muted overflow-hidden mb-4">
+        <div
+          className={`h-full rounded-full transition-all ${pct === 100 ? 'bg-success' : pct >= 60 ? 'bg-warning' : 'bg-destructive'}`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        {MEDDIC_FIELDS.map((f) => {
+          const ok = !!meddic[f.key];
+          return (
+            <div key={f.key} className={`flex items-start gap-2 rounded-lg px-3 py-2 ${ok ? 'bg-success/5 border border-success/20' : 'bg-destructive/5 border border-destructive/20'}`}>
+              {ok
+                ? <CheckCircle2 className="size-3.5 text-success shrink-0 mt-0.5" />
+                : <AlertCircle className="size-3.5 text-destructive shrink-0 mt-0.5" />
+              }
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-foreground">{f.label}</p>
+                {ok && <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{meddic[f.key]}</p>}
+                {!ok && <p className="text-xs text-destructive mt-0.5">Not captured</p>}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function StrengthPips({ value }: { value: number }) {
   return (
@@ -87,13 +139,22 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
   );
   const hasChampion = stakeholders.some((s) => s.role === 'Champion' && s.strength >= 3);
 
+  const health = computeAccountHealth(account, deals, stakeholders, signals);
+  const hs = HEALTH_STYLE[health.status];
+
+  // Latest meeting summary for this account (MEDDIC data)
+  const meetingSummary = MOCK_MEETING_SUMMARY.accountId === account.id ? MOCK_MEETING_SUMMARY : null;
+
   return (
     <AppShellCard>
       <AppShellCard.Header>
         <div className="flex items-center gap-3">
           <Avatar fallback={account.name} size="md" />
           <div>
-            <AppShellCard.Title>{account.name}</AppShellCard.Title>
+            <div className="flex items-center gap-2">
+              <AppShellCard.Title>{account.name}</AppShellCard.Title>
+              <Badge color={hs.color}>{hs.label}</Badge>
+            </div>
             <AppShellCard.Subtitle>{account.industry} · {account.region}</AppShellCard.Subtitle>
           </div>
         </div>
@@ -217,6 +278,11 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
                 Opportunity data is read-only. To update stage or amount,{' '}
                 <button className="text-brand-500 hover:underline">open in Salesforce</button>.
               </p>
+
+              {/* MEDDICC gap bar */}
+              {meetingSummary && (
+                <MeddicGapBar meddic={meetingSummary.meddic} />
+              )}
             </div>
           </Tabs.Content>
 

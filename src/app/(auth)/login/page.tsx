@@ -1,14 +1,17 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { LoginPage } from '@humain-foundation/ui';
-import { redirect } from 'next/navigation';
 
 export default function LoginRoute() {
+  const router = useRouter();
+
   return (
     <LoginPage
       variant="simple"
-      onEmailSubmit={async (email, password) => {
-        'use server';
+      onEmailSubmit={async (_email, _password) => {
         // TODO: wire to next-auth signIn
-        redirect('/dashboard');
+        router.push('/dashboard');
       }}
       onForgotPasswordClick={() => {}}
       onSignUpLinkClick={() => {}}

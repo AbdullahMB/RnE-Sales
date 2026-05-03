@@ -96,11 +96,11 @@ export interface MeetingSummary {
 }
 
 export const MOCK_DEALS: Deal[] = [
-  { id: 'd1', accountName: 'Aramco Digital', accountId: 'a1', stage: 'Stage 3', acv: 1200000, closeDate: '2026-06-30', daysSinceActivity: 3, risk: 'medium', owner: 'Alex Johnson' },
-  { id: 'd2', accountName: 'SABIC Cloud', accountId: 'a2', stage: 'Stage 4', acv: 480000, closeDate: '2026-05-31', daysSinceActivity: 18, risk: 'high', owner: 'Alex Johnson' },
-  { id: 'd3', accountName: 'STC Solutions', accountId: 'a3', stage: 'Stage 2', acv: 750000, closeDate: '2026-07-31', daysSinceActivity: 7, risk: 'low', owner: 'Alex Johnson' },
-  { id: 'd4', accountName: 'Mobily Enterprise', accountId: 'a4', stage: 'Stage 3', acv: 320000, closeDate: '2026-06-15', daysSinceActivity: 22, risk: 'high', owner: 'Alex Johnson' },
-  { id: 'd5', accountName: 'NEOM TechCo', accountId: 'a5', stage: 'Stage 1', acv: 2100000, closeDate: '2026-09-30', daysSinceActivity: 1, risk: 'low', owner: 'Alex Johnson' },
+  { id: 'd1', accountName: 'Aramco Digital', accountId: 'a1', stage: 'Stage 3', acv: 1200000, closeDate: '2026-06-30', daysSinceActivity: 3, risk: 'medium', owner: 'Turki Bin Nader' },
+  { id: 'd2', accountName: 'SABIC Cloud', accountId: 'a2', stage: 'Stage 4', acv: 480000, closeDate: '2026-05-31', daysSinceActivity: 18, risk: 'high', owner: 'Turki Bin Nader' },
+  { id: 'd3', accountName: 'STC Solutions', accountId: 'a3', stage: 'Stage 2', acv: 750000, closeDate: '2026-07-31', daysSinceActivity: 7, risk: 'low', owner: 'Turki Bin Nader' },
+  { id: 'd4', accountName: 'Mobily Enterprise', accountId: 'a4', stage: 'Stage 3', acv: 320000, closeDate: '2026-06-15', daysSinceActivity: 22, risk: 'high', owner: 'Turki Bin Nader' },
+  { id: 'd5', accountName: 'NEOM TechCo', accountId: 'a5', stage: 'Stage 1', acv: 2100000, closeDate: '2026-09-30', daysSinceActivity: 1, risk: 'low', owner: 'Turki Bin Nader' },
 ];
 
 export const MOCK_SIGNALS: Signal[] = [
@@ -149,12 +149,12 @@ export const MOCK_MEETING_SUMMARY: MeetingSummary = {
   meetingTitle: 'Stage 3 Discovery Deep-Dive — Platform Architecture',
   date: '2026-05-02',
   duration: '62 minutes',
-  participants: ['Alex Johnson (AE)', 'Sara Al-Otaibi (VP Eng)', 'Tariq Bin-Laden (Architect)', 'Priya Nair (SE)'],
+  participants: ['Turki Bin Nader (AE)', 'Sara Al-Otaibi (VP Eng)', 'Tariq Bin-Laden (Architect)', 'Priya Nair (SE)'],
   summary: 'Productive architecture review call. Sara confirmed that data residency in KSA is non-negotiable — all processing must remain on-region. Tariq raised concerns about OT/IT integration complexity in their existing environment. We positioned our edge compute pattern as the differentiator; they asked for a reference architecture document. No CFO engagement yet — Sara mentioned the CFO has budget approval authority for deals over SAR 3M. She offered to facilitate an introduction if we can produce a business case document first. Next step is a business case draft + reference architecture by May 14.',
   actionItems: [
-    { id: 'ai1', text: 'Send Energy Sector Reference Architecture to Tariq', owner: 'Alex Johnson', due: '2026-05-07', checked: false },
-    { id: 'ai2', text: 'Draft business case document for CFO presentation', owner: 'Alex Johnson', due: '2026-05-14', checked: false },
-    { id: 'ai3', text: 'Schedule CFO introduction via Sara', owner: 'Alex Johnson', due: '2026-05-14', checked: false },
+    { id: 'ai1', text: 'Send Energy Sector Reference Architecture to Tariq', owner: 'Turki Bin Nader', due: '2026-05-07', checked: false },
+    { id: 'ai2', text: 'Draft business case document for CFO presentation', owner: 'Turki Bin Nader', due: '2026-05-14', checked: false },
+    { id: 'ai3', text: 'Schedule CFO introduction via Sara', owner: 'Turki Bin Nader', due: '2026-05-14', checked: false },
     { id: 'ai4', text: 'Confirm KSA data residency compliance architecture with SE team', owner: 'Priya Nair', due: '2026-05-09', checked: false },
   ],
   meddic: {

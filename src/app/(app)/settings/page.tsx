@@ -71,16 +71,16 @@ export default function SettingsPage() {
         <Tabs.Content value="profile" className="mt-6">
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-4">
-              <Avatar fallback="Alex Johnson" size="xl" />
+              <Avatar fallback="Turki Bin Nader" size="xl" />
               <div>
-                <p className="text-base font-semibold text-foreground">Alex Johnson</p>
+                <p className="text-base font-semibold text-foreground">Turki Bin Nader</p>
                 <p className="text-sm text-muted-foreground">Enterprise Account Executive</p>
                 <Badge color="primary" className="mt-1">AE</Badge>
               </div>
             </div>
             <div className="flex flex-col gap-4 max-w-md">
-              <Input label="Full Name" defaultValue="Alex Johnson" />
-              <Input label="Email" type="email" defaultValue="alex.johnson@company.com" />
+              <Input label="Full Name" defaultValue="Turki Bin Nader" />
+              <Input label="Email" type="email" defaultValue="turki.binnader@company.com" />
               <Input label="Title" defaultValue="Enterprise Account Executive" />
               <Input label="Region" defaultValue="KSA / GCC" />
               <Button variant="primary" className="self-start">Save Changes</Button>

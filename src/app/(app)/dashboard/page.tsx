@@ -110,7 +110,7 @@ export default function DashboardPage() {
     <AppShellCard>
       <AppShellCard.Header>
         <div>
-          <AppShellCard.Title>Good morning, Alex</AppShellCard.Title>
+          <AppShellCard.Title>Good morning, Turki</AppShellCard.Title>
           <AppShellCard.Subtitle>
             {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
             {' · '}

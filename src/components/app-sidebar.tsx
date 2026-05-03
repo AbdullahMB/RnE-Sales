@@ -59,12 +59,12 @@ export function SalesAppSidebar() {
 
       <NavAccountMenu>
         <NavAccountMenuTrigger
-          avatar={<Avatar fallback="Alex Johnson" size="sm" />}
-          name="Alex Johnson"
-          email="alex.johnson@company.com"
+          avatar={<Avatar fallback="Turki Bin Nader" size="sm" />}
+          name="Turki Bin Nader"
+          email="turki.binnader@company.com"
         />
         <NavAccountMenuContent side="right" align="end">
-          <NavAccountMenuHeader title="Alex Johnson" subtitle="Enterprise AE" />
+          <NavAccountMenuHeader title="Turki Bin Nader" subtitle="Enterprise AE" />
           <NavAccountMenuSection>
             <NavAccountMenuItem icon={<User className="size-4" />}>
               View profile

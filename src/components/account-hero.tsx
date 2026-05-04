@@ -14,18 +14,18 @@ import { toast } from '@humain-foundation/ui';
 import type { Account } from '@/lib/mock-data';
 import { HEALTH_STYLE, type HealthScore } from '@/lib/health';
 
-// Industry → gradient fallback when no banner is set
+// Industry → gradient fallback when no banner is set (solid colors so they render on any bg)
 const INDUSTRY_GRADIENT: Record<string, string> = {
-  'Energy':       'from-orange-900/80 to-orange-600/40',
-  'Oil':          'from-orange-900/80 to-orange-600/40',
-  'Petrochemical':'from-teal-900/80 to-teal-600/40',
-  'Telecom':      'from-blue-900/80 to-blue-600/40',
-  'Smart City':   'from-violet-900/80 to-violet-600/40',
-  'Infrastructure':'from-violet-900/80 to-violet-600/40',
+  'Energy':        'from-orange-950 via-orange-900 to-amber-800',
+  'Oil':           'from-orange-950 via-orange-900 to-amber-800',
+  'Petrochemical': 'from-teal-950 via-teal-900 to-teal-700',
+  'Telecom':       'from-blue-950 via-blue-900 to-blue-700',
+  'Smart City':    'from-violet-950 via-violet-900 to-indigo-700',
+  'Infrastructure':'from-violet-950 via-violet-900 to-indigo-700',
 };
 function gradientFor(industry: string) {
   const key = Object.keys(INDUSTRY_GRADIENT).find((k) => industry.includes(k));
-  return key ? INDUSTRY_GRADIENT[key] : 'from-brand-900/80 to-brand-600/40';
+  return key ? INDUSTRY_GRADIENT[key] : 'from-brand-950 via-brand-900 to-brand-700';
 }
 
 interface AccountHeroProps {
@@ -60,14 +60,14 @@ export function AccountHero({ account, health }: AccountHeroProps) {
   return (
     <div className="flex flex-col">
       {/* ── BANNER ──────────────────────────────────────────── */}
-      <div className="relative w-full h-36 sm:h-44 rounded-2xl overflow-hidden group">
+      <div className="relative w-full h-40 sm:h-52 overflow-hidden group rounded-t-2xl">
         {bannerUrl ? (
           <img src={bannerUrl} alt="Account banner"
             className="w-full h-full object-cover"
             onError={() => setBannerUrl('')} />
         ) : (
-          <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-end pr-8`}>
-            <span className="text-6xl font-black text-white/10 select-none tracking-tight">
+          <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-end pr-10`}>
+            <span className="text-[7rem] font-black text-white/[0.07] select-none tracking-tighter leading-none">
               {account.name.split(' ').map((w) => w[0]).join('').slice(0, 3)}
             </span>
           </div>

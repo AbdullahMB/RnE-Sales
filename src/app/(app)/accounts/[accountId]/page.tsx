@@ -147,10 +147,14 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
   const meetingSummary = MOCK_MEETING_SUMMARY.accountId === account.id ? MOCK_MEETING_SUMMARY : null;
 
   return (
-    <AppShellCard>
-      <AccountHero account={account} health={health} />
+    <div className="flex flex-col gap-4">
+      {/* Hero card — no padding so the banner bleeds edge-to-edge */}
+      <div className="bg-card border border-border rounded-2xl shadow-lg overflow-visible">
+        <AccountHero account={account} health={health} />
+      </div>
 
-      <div className="flex flex-col gap-8 pt-2">
+      <AppShellCard>
+      <div className="flex flex-col gap-8">
         {/* Coverage gap warnings */}
         {(!hasEconomicBuyer || !hasChampion) && (
           <div className="flex flex-col gap-2">
@@ -364,6 +368,7 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
           </Tabs.Content>
         </Tabs>
       </div>
-    </AppShellCard>
+      </AppShellCard>
+    </div>
   );
 }

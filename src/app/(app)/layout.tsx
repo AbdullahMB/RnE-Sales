@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AppShell, SidebarProvider } from '@humain-foundation/ui';
+import { AppShell, SidebarProvider, Toaster } from '@humain-foundation/ui';
 import { SalesAppSidebar } from '@/components/app-sidebar';
 import { CommandSearch } from '@/components/command-search';
 
@@ -19,6 +19,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {children}
       </AppShell.Panel>
       <CommandSearch />
+      <Toaster position="bottom-right" richColors />
     </AppShell.Root>
   );
 }

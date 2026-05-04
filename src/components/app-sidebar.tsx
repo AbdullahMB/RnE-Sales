@@ -21,11 +21,16 @@ import {
   LogOut,
   User,
   FileText,
+  Kanban,
 } from 'lucide-react';
+import { MOCK_DEALS } from '@/lib/mock-data';
+
+const highRiskCount = MOCK_DEALS.filter((d) => d.risk === 'high').length;
 
 const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard /> },
+  { href: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard />, badge: highRiskCount > 0 ? highRiskCount : undefined },
   { href: '/accounts', label: 'Accounts', icon: <Building2 /> },
+  { href: '/pipeline', label: 'Pipeline', icon: <Kanban /> },
   { href: '/wiki', label: 'Sales Wiki', icon: <BookOpen /> },
   { href: '/summarize', label: 'Meeting Summaries', icon: <FileText /> },
   { href: '/settings', label: 'Settings', icon: <Settings /> },
@@ -52,6 +57,7 @@ export function SalesAppSidebar() {
             icon={item.icon}
             label={item.label}
             href={item.href}
+            badge={item.badge}
             isActive={pathname === item.href || pathname.startsWith(item.href + '/')}
           />
         ))}

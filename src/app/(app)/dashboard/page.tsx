@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
+import { toast } from '@humain-foundation/ui';
 import Link from 'next/link';
 import {
   AppShellCard,
@@ -9,6 +10,8 @@ import {
   Button,
   Avatar,
   Tooltip,
+  BarChart,
+  DonutChart,
 } from '@humain-foundation/ui';
 import {
   AlertTriangle,
@@ -85,6 +88,23 @@ export default function DashboardPage() {
   const dismissedTasks = new Set(dismissedArr);
   const setDismissedTasks = (fn: (prev: Set<string>) => Set<string>) =>
     setDismissedArr((arr) => [...fn(new Set(arr))]);
+
+  // Pipeline by stage for BarChart
+  const stageOrder = ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Stage 5'] as const;
+  const pipelineByStage = stageOrder.map((s) => ({
+    id: s,
+    label: s,
+    values: {
+      acv: MOCK_DEALS.filter((d) => d.stage === s).reduce((sum, d) => sum + d.acv, 0) / 1000,
+    },
+  })).filter((d) => d.values.acv > 0);
+
+  // Risk split for DonutChart
+  const riskCounts = {
+    high:   MOCK_DEALS.filter((d) => d.risk === 'high').length,
+    medium: MOCK_DEALS.filter((d) => d.risk === 'medium').length,
+    low:    MOCK_DEALS.filter((d) => d.risk === 'low').length,
+  };
 
   const stalledDeals  = MOCK_DEALS.filter((d) => d.daysSinceActivity > 14);
   const highRiskDeals = MOCK_DEALS.filter((d) => d.risk === 'high');
@@ -167,6 +187,44 @@ export default function DashboardPage() {
           </div>
         </section>
 
+        {/* ── PIPELINE CHARTS ────────────────────────────────────────── */}
+        <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="lg:col-span-2 rounded-xl border border-border bg-card px-5 py-4">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">ACV by Stage ($K)</p>
+            <BarChart
+              data={pipelineByStage}
+              series={[{ id: 'acv', label: 'ACV ($K)', color: 'var(--color-brand-500)' }]}
+              showYAxis
+              showXAxis
+              showTooltip
+              yAxisFormat={(v) => `$${v}K`}
+              size="sm"
+              aria-label="Pipeline ACV by stage"
+            />
+          </div>
+          <div className="rounded-xl border border-border bg-card px-5 py-4 flex flex-col items-center justify-center gap-3">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide self-start">Risk Split</p>
+            <DonutChart
+              data={[
+                { value: riskCounts.high,   maxValue: MOCK_DEALS.length, color: 'var(--color-destructive)' },
+                { value: riskCounts.medium, maxValue: MOCK_DEALS.length, color: 'var(--color-warning)' },
+                { value: riskCounts.low,    maxValue: MOCK_DEALS.length, color: 'var(--color-success)' },
+              ]}
+              series={[
+                { id: 'high',   label: 'High Risk',  color: 'var(--color-destructive)' },
+                { id: 'medium', label: 'Medium',     color: 'var(--color-warning)' },
+                { id: 'low',    label: 'On Track',   color: 'var(--color-success)' },
+              ]}
+              centerValue={MOCK_DEALS.length}
+              centerLabel="Deals"
+              legendPosition="bottom"
+              showTooltip
+              size="sm"
+              aria-label="Deal risk distribution"
+            />
+          </div>
+        </section>
+
         {/* ── ACCOUNT SIGNALS ────────────────────────────────────────── */}
         <section>
           <div className="flex items-center justify-between mb-3">
@@ -217,10 +275,16 @@ export default function DashboardPage() {
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
                     <Button appearance="ghost" size="icon" aria-label="Dismiss"
-                      onClick={() => setDismissedTasks((s) => new Set([...s, task.id]))}>
+                      onClick={() => {
+                        setDismissedTasks((s) => new Set([...s, task.id]));
+                        toast.success('Task dismissed', { description: task.action });
+                      }}>
                       <X className="size-4" />
                     </Button>
-                    <Button appearance="outline" size="sm" startIcon={<Check className="size-4" />}>Do it</Button>
+                    <Button appearance="outline" size="sm" startIcon={<Check className="size-4" />}
+                      onClick={() => toast.success('Marked done', { description: task.action })}>
+                      Do it
+                    </Button>
                   </div>
                 </div>
               ))}

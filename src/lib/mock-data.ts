@@ -70,6 +70,7 @@ export interface Account {
   founded?: string;
   ticker?: string;
   website?: string;
+  logoUrl?: string;
   tier: 'Strategic' | 'Enterprise' | 'Mid-Market';
   openDeals: number;
   totalAcv: number;
@@ -202,8 +203,22 @@ export const MOCK_STAKEHOLDERS: Stakeholder[] = [
   { id: 'sk1', accountId: 'a1', name: 'Khalid Al-Rashid', title: 'CTO', role: 'Decision Maker', strength: 1, lastContact: '2026-05-01', email: 'k.alrashid@aramcodigital.com', phone: '+966 50 111 2233', linkedin: 'https://linkedin.com/in/khalid-alrashid', buyingCenter: 'Technology', notes: 'Newly appointed. Came from AWS. Unknown preferences.' },
   { id: 'sk2', accountId: 'a1', name: 'Sara Al-Otaibi', title: 'VP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-28', email: 's.alotaibi@aramcodigital.com', phone: '+966 50 222 3344', linkedin: 'https://linkedin.com/in/sara-alotaibi', buyingCenter: 'Technology', notes: 'Attended 5 demos. Strong internal advocate.' },
   { id: 'sk3', accountId: 'a1', name: 'Mohammed Al-Ghamdi', title: 'CFO', role: 'Decision Maker', strength: 0 as RelationshipStrength, lastContact: 'Never', email: 'm.alghamdi@aramcodigital.com', phone: '+966 50 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'No relationship established. Required for Stage 4.' },
-  { id: 'sk4', accountId: 'a2', name: 'Nora Al-Harbi', title: 'SVP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-20', email: 'n.alharbi@sabiccloud.com', phone: '+966 55 444 5566', linkedin: 'https://linkedin.com/in/nora-alharbi', buyingCenter: 'Technology', notes: 'Promoted to SVP. Increased influence.' },
-  { id: 'sk5', accountId: 'a2', name: 'Fahad Al-Dossari', title: 'CFO', role: 'Decision Maker', strength: 2, lastContact: '2026-04-01', email: 'f.aldossari@sabiccloud.com', phone: '+966 55 555 6677', linkedin: 'https://linkedin.com/in/fahad-aldossari', buyingCenter: 'Finance', notes: 'Met once at QBR. Needs further engagement.' },
+  // SABIC (a2)
+  { id: 'sk4', accountId: 'a2', name: 'Nora Al-Harbi', title: 'SVP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-20', email: 'n.alharbi@sabic.com', phone: '+966 55 444 5566', linkedin: 'https://linkedin.com/in/nora-alharbi', buyingCenter: 'Technology', notes: 'Promoted to SVP. Increased influence and budget authority.' },
+  { id: 'sk5', accountId: 'a2', name: 'Salah Al-Hareky', title: 'EVP Corporate Finance', role: 'Decision Maker', strength: 2, lastContact: '2026-04-01', email: 's.alhareky@sabic.com', phone: '+966 55 555 6677', linkedin: 'https://linkedin.com/in/salah-alhareky', buyingCenter: 'Finance', notes: 'Top finance exec. Met once at QBR. Needs further engagement.' },
+  { id: 'sk6', accountId: 'a2', name: 'Omar Al-Zahrani', title: 'Head of IT Infrastructure', role: 'Influencer', strength: 3, lastContact: '2026-04-10', email: 'o.alzahrani@sabic.com', phone: '+966 55 666 7788', linkedin: '', buyingCenter: 'Technology', notes: 'Controls the technical evaluation process. Key influencer.' },
+  // STC Group (a3)
+  { id: 'sk7', accountId: 'a3', name: 'Hessa Al-Qahtani', title: 'VP Cloud & AI Services', role: 'Champion', strength: 3, lastContact: '2026-04-22', email: 'h.alqahtani@stc.com.sa', phone: '+966 50 777 8899', linkedin: 'https://linkedin.com/in/hessa-alqahtani', buyingCenter: 'Technology', notes: 'Driving the AI co-development initiative. Strong technical champion.' },
+  { id: 'sk8', accountId: 'a3', name: 'Ameen Alshiddi', title: 'Group CFO', role: 'Decision Maker', strength: 1, lastContact: '2026-03-15', email: 'a.alshiddi@stc.com.sa', phone: '+966 50 888 9900', linkedin: 'https://linkedin.com/in/ameen-alshiddi', buyingCenter: 'Finance', notes: 'CFO since 2016. Not yet engaged on this deal.' },
+  { id: 'sk9', accountId: 'a3', name: 'Faris Al-Mutairi', title: 'Director of Enterprise Partnerships', role: 'Coach', strength: 4, lastContact: '2026-04-25', email: 'f.almutairi@stc.com.sa', phone: '+966 50 999 0011', linkedin: '', buyingCenter: 'Partnerships', notes: 'Knows the internal procurement process well. Helpful coach.' },
+  // Mobily (a4)
+  { id: 'sk10', accountId: 'a4', name: 'Layla Al-Amer', title: 'CTO', role: 'Decision Maker', strength: 2, lastContact: '2026-04-05', email: 'l.alamer@mobily.com.sa', phone: '+966 53 111 2233', linkedin: 'https://linkedin.com/in/layla-alamer', buyingCenter: 'Technology', notes: 'New CTO, evaluating all vendor relationships. Critical to engage.' },
+  { id: 'sk11', accountId: 'a4', name: 'Tariq Al-Ghamdi', title: 'Head of Digital Transformation', role: 'Champion', strength: 3, lastContact: '2026-04-18', email: 't.alghamdi@mobily.com.sa', phone: '+966 53 222 3344', linkedin: '', buyingCenter: 'Technology', notes: 'Running the digital transformation program. Wants to move fast.' },
+  { id: 'sk12', accountId: 'a4', name: 'Khaled Abanami', title: 'CFO', role: 'Decision Maker', strength: 1, lastContact: 'Never', email: 'k.abanami@mobily.com.sa', phone: '+966 53 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'Not engaged yet. Required for deal above SAR 2M.' },
+  // NEOM (a5)
+  { id: 'sk13', accountId: 'a5', name: 'Denis Hickey', title: 'Chief Development Officer', role: 'Decision Maker', strength: 2, lastContact: '2026-04-28', email: 'd.hickey@neom.com', phone: '+966 14 111 2233', linkedin: 'https://linkedin.com/in/denis-hickey-neom', buyingCenter: 'Development', notes: 'Controls platform and infrastructure decisions for NEOM build-out.' },
+  { id: 'sk14', accountId: 'a5', name: 'Reem Al-Dosari', title: 'VP Technology & Innovation', role: 'Champion', strength: 4, lastContact: '2026-05-01', email: 'r.aldosari@neom.com', phone: '+966 14 222 3344', linkedin: 'https://linkedin.com/in/reem-aldosari', buyingCenter: 'Technology', notes: 'Strongest internal advocate. Has presented our platform to CDO twice.' },
+  { id: 'sk15', accountId: 'a5', name: 'Nader Ashoor', title: 'CFO', role: 'Decision Maker', strength: 1, lastContact: '2026-03-20', email: 'n.ashoor@neom.com', phone: '+966 14 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'Controls all vendor spend over $1M. Brief intro at FII conference.' },
 ];
 
 export const MOCK_WIKI_ASSETS: WikiAsset[] = [

@@ -26,6 +26,7 @@ import {
   Briefcase,
 } from 'lucide-react';
 import { ExecutiveProfiles } from '@/components/executive-profiles';
+import { AccountAvatar } from '@/components/account-avatar';
 import {
   MOCK_ACCOUNTS,
   MOCK_DEALS,
@@ -151,7 +152,7 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
     <AppShellCard>
       <AppShellCard.Header>
         <div className="flex items-center gap-3">
-          <Avatar fallback={account.name} size="md" />
+          <AccountAvatar accountId={account.id} name={account.name} size="lg" editable />
           <div>
             <div className="flex items-center gap-2">
               <AppShellCard.Title>{account.name}</AppShellCard.Title>

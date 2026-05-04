@@ -22,6 +22,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { MOCK_MEETING_SUMMARY, type MeetingSummary } from '@/lib/mock-data';
+import { toast } from '@humain-foundation/ui';
 
 const MEDDIC_LABELS: Record<keyof MeetingSummary['meddic'], string> = {
   metrics: 'Metrics',
@@ -80,6 +81,9 @@ export default function SummarizePage() {
     setSummary((s) => ({ ...s, status: 'approved' }));
     setConfirmOpen(false);
     setSubmitted(true);
+    toast.success('Written to Salesforce', {
+      description: `${summary.actionItems.length} action items logged on ${summary.accountName}`,
+    });
   }
 
   if (stage === 'input') {

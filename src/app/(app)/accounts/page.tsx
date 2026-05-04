@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from '@humain-foundation/ui';
 import { Search, ChevronRight, Building2 } from 'lucide-react';
+import { AccountAvatar } from '@/components/account-avatar';
 import {
   MOCK_ACCOUNTS,
   MOCK_DEALS,
@@ -124,7 +125,7 @@ export default function AccountsPage() {
                   <tr key={account.id} className="hover:bg-accent transition-colors cursor-pointer group">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2.5">
-                        <Avatar fallback={account.name} size="sm" />
+                        <AccountAvatar accountId={account.id} name={account.name} size="sm" />
                         <div className="min-w-0">
                           <p className="font-semibold text-foreground truncate">{account.name}</p>
                           <p className="text-xs text-muted-foreground truncate">{account.industry} · {account.hq ?? account.region}</p>

@@ -5,6 +5,7 @@ import { Avatar, Badge, Button, Input, Dialog } from '@humain-foundation/ui';
 import { Pencil, Plus, Trash2, Link2, Mail, Check } from 'lucide-react';
 import type { AccountExecutive } from '@/lib/mock-data';
 import { useLocalStorage } from '@/hooks/use-local-storage';
+import { toast } from '@humain-foundation/ui';
 
 const EMPTY_EXEC: Omit<AccountExecutive, 'id'> = {
   name: '',
@@ -135,17 +136,22 @@ export function ExecutiveProfiles({ accountId, initialExecs }: { accountId: stri
   const [adding, setAdding] = useState(false);
 
   const handleSave = (exec: AccountExecutive) => {
+    const isEdit = execs.some((e) => e.id === exec.id);
     setExecs((prev) =>
-      prev.some((e) => e.id === exec.id)
-        ? prev.map((e) => (e.id === exec.id ? exec : e))
-        : [...prev, exec]
+      isEdit ? prev.map((e) => (e.id === exec.id ? exec : e)) : [...prev, exec]
     );
     setEditing(null);
     setAdding(false);
+    toast.success(isEdit ? 'Executive updated' : 'Executive added', {
+      description: exec.name,
+    });
   };
 
-  const handleDelete = (id: string) =>
+  const handleDelete = (id: string) => {
+    const exec = execs.find((e) => e.id === id);
     setExecs((prev) => prev.filter((e) => e.id !== id));
+    toast.success('Executive removed', { description: exec?.name });
+  };
 
   return (
     <div>

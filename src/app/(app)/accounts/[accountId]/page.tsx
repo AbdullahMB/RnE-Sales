@@ -23,7 +23,9 @@ import {
   Zap,
   CheckCircle2,
   AlertCircle,
+  Briefcase,
 } from 'lucide-react';
+import { ExecutiveProfiles } from '@/components/executive-profiles';
 import {
   MOCK_ACCOUNTS,
   MOCK_DEALS,
@@ -201,12 +203,14 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
         )}
 
         {/* Account summary strip */}
-        <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {[
             { label: 'Tier', value: account.tier },
-            { label: 'Revenue', value: account.revenue },
+            { label: 'Annual Revenue', value: account.revenue },
+            { label: 'Last Qtr Revenue', value: account.lastQuarterRevenue ?? '—' },
             { label: 'Headcount', value: account.headcount },
-            { label: 'Last Activity', value: account.lastActivity },
+            { label: 'HQ', value: account.hq ?? account.region },
+            { label: 'Founded', value: account.founded ?? '—' },
           ].map(({ label, value }) => (
             <div key={label} className="rounded-lg border border-border bg-card px-4 py-3">
               <p className="text-xs text-muted-foreground mb-1">{label}</p>
@@ -228,6 +232,10 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
             <Tabs.Trigger value="signals">
               <TrendingUp className="size-4" />
               Signals {signals.length > 0 && `(${signals.length})`}
+            </Tabs.Trigger>
+            <Tabs.Trigger value="executives">
+              <Briefcase className="size-4" />
+              Executives
             </Tabs.Trigger>
             <Tabs.Trigger value="content">
               <FileText className="size-4" />
@@ -326,6 +334,11 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
                 ))}
               </div>
             )}
+          </Tabs.Content>
+
+          {/* Executives tab */}
+          <Tabs.Content value="executives" className="mt-4">
+            <ExecutiveProfiles initialExecs={account.executives ?? []} />
           </Tabs.Content>
 
           {/* Signals tab */}

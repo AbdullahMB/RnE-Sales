@@ -49,17 +49,32 @@ export interface Stakeholder {
   notes: string;
 }
 
+export interface AccountExecutive {
+  id: string;
+  name: string;
+  title: string;
+  photoUrl?: string;
+  linkedin?: string;
+  email?: string;
+}
+
 export interface Account {
   id: string;
   name: string;
   industry: string;
   revenue: string;
+  lastQuarterRevenue?: string;
   headcount: string;
   region: string;
+  hq?: string;
+  founded?: string;
+  ticker?: string;
+  website?: string;
   tier: 'Strategic' | 'Enterprise' | 'Mid-Market';
   openDeals: number;
   totalAcv: number;
   lastActivity: string;
+  executives?: AccountExecutive[];
 }
 
 export interface WikiAsset {

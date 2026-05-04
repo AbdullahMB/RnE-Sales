@@ -112,32 +112,90 @@ export interface MeetingSummary {
 
 export const MOCK_DEALS: Deal[] = [
   { id: 'd1', accountName: 'Aramco Digital', accountId: 'a1', stage: 'Stage 3', acv: 1200000, closeDate: '2026-06-30', daysSinceActivity: 3, risk: 'medium', owner: 'Turki Bin Nader' },
-  { id: 'd2', accountName: 'SABIC Cloud', accountId: 'a2', stage: 'Stage 4', acv: 480000, closeDate: '2026-05-31', daysSinceActivity: 18, risk: 'high', owner: 'Turki Bin Nader' },
-  { id: 'd3', accountName: 'STC Solutions', accountId: 'a3', stage: 'Stage 2', acv: 750000, closeDate: '2026-07-31', daysSinceActivity: 7, risk: 'low', owner: 'Turki Bin Nader' },
-  { id: 'd4', accountName: 'Mobily Enterprise', accountId: 'a4', stage: 'Stage 3', acv: 320000, closeDate: '2026-06-15', daysSinceActivity: 22, risk: 'high', owner: 'Turki Bin Nader' },
-  { id: 'd5', accountName: 'NEOM TechCo', accountId: 'a5', stage: 'Stage 1', acv: 2100000, closeDate: '2026-09-30', daysSinceActivity: 1, risk: 'low', owner: 'Turki Bin Nader' },
+  { id: 'd2', accountName: 'SABIC', accountId: 'a2', stage: 'Stage 4', acv: 480000, closeDate: '2026-05-31', daysSinceActivity: 18, risk: 'high', owner: 'Turki Bin Nader' },
+  { id: 'd3', accountName: 'STC Group', accountId: 'a3', stage: 'Stage 2', acv: 750000, closeDate: '2026-07-31', daysSinceActivity: 7, risk: 'low', owner: 'Turki Bin Nader' },
+  { id: 'd4', accountName: 'Mobily', accountId: 'a4', stage: 'Stage 3', acv: 320000, closeDate: '2026-06-15', daysSinceActivity: 22, risk: 'high', owner: 'Turki Bin Nader' },
+  { id: 'd5', accountName: 'NEOM', accountId: 'a5', stage: 'Stage 1', acv: 2100000, closeDate: '2026-09-30', daysSinceActivity: 1, risk: 'low', owner: 'Turki Bin Nader' },
 ];
 
 export const MOCK_SIGNALS: Signal[] = [
   { id: 's1', accountId: 'a1', accountName: 'Aramco Digital', type: 'leadership', title: 'New CTO appointed', summary: 'Aramco Digital named Khalid Al-Rashid as CTO, replacing Ahmed Hassan who moved to parent company.', date: '2026-05-01' },
-  { id: 's2', accountId: 'a5', accountName: 'NEOM TechCo', type: 'funding', title: '$500M cloud infrastructure budget approved', summary: 'NEOM announced a major infrastructure investment cycle for 2026–2028 in their latest board filing.', date: '2026-04-29' },
-  { id: 's3', accountId: 'a3', accountName: 'STC Solutions', type: 'news', title: 'STC partners with hyperscaler for AI services', summary: 'STC announced a co-development agreement for enterprise AI services — directly relevant to our platform pitch.', date: '2026-04-27' },
-  { id: 's4', accountId: 'a2', accountName: 'SABIC Cloud', type: 'leadership', title: 'VP Engineering promoted to SVP', summary: 'Internal promotion at SABIC. Our champion is now SVP — increase in influence and budget authority.', date: '2026-04-25' },
+  { id: 's2', accountId: 'a5', accountName: 'NEOM', type: 'funding', title: '$500M cloud infrastructure budget approved', summary: 'NEOM announced a major infrastructure investment cycle for 2026–2028 in their latest board filing.', date: '2026-04-29' },
+  { id: 's3', accountId: 'a3', accountName: 'STC Group', type: 'news', title: 'STC partners with hyperscaler for AI services', summary: 'STC announced a co-development agreement for enterprise AI services — directly relevant to our platform pitch.', date: '2026-04-27' },
+  { id: 's4', accountId: 'a2', accountName: 'SABIC', type: 'leadership', title: 'VP Engineering promoted to SVP', summary: 'Internal promotion at SABIC. Our champion is now SVP — increase in influence and budget authority.', date: '2026-04-25' },
 ];
 
 export const MOCK_TASKS: SuggestedTask[] = [
-  { id: 't1', dealId: 'd2', accountName: 'SABIC Cloud', action: 'Follow up with CFO on Stage 4 approval', reason: 'Deal is at Stage 4 with no CFO contact in 18 days. Required for close.', priority: 'high' },
-  { id: 't2', dealId: 'd4', accountName: 'Mobily Enterprise', action: 'Send FSI case study to technical team', reason: 'Technical evaluation stalled. Similar deals unblocked with reference architecture.', priority: 'high' },
+  { id: 't1', dealId: 'd2', accountName: 'SABIC', action: 'Follow up with CFO on Stage 4 approval', reason: 'Deal is at Stage 4 with no CFO contact in 18 days. Required for close.', priority: 'high' },
+  { id: 't2', dealId: 'd4', accountName: 'Mobily', action: 'Send FSI case study to technical team', reason: 'Technical evaluation stalled. Similar deals unblocked with reference architecture.', priority: 'high' },
   { id: 't3', dealId: 'd1', accountName: 'Aramco Digital', action: 'Schedule intro with new CTO Khalid Al-Rashid', reason: 'Leadership change detected. New CTO is likely reassessing vendor relationships.', priority: 'medium' },
-  { id: 't4', dealId: 'd3', accountName: 'STC Solutions', action: 'Send AI partnership reference architecture', reason: 'STC announced an AI co-development deal — align our platform pitch to their new strategic direction.', priority: 'medium' },
+  { id: 't4', dealId: 'd3', accountName: 'STC Group', action: 'Send AI partnership reference architecture', reason: 'STC announced an AI co-development deal — align our platform pitch to their new strategic direction.', priority: 'medium' },
 ];
 
 export const MOCK_ACCOUNTS: Account[] = [
-  { id: 'a1', name: 'Aramco Digital', industry: 'Energy / Oil & Gas', revenue: '$40B+', headcount: '5,000+', region: 'KSA', tier: 'Strategic', openDeals: 1, totalAcv: 1200000, lastActivity: '2026-05-01' },
-  { id: 'a2', name: 'SABIC Cloud', industry: 'Petrochemicals', revenue: '$30B+', headcount: '3,500+', region: 'KSA', tier: 'Strategic', openDeals: 1, totalAcv: 480000, lastActivity: '2026-04-15' },
-  { id: 'a3', name: 'STC Solutions', industry: 'Telecom', revenue: '$15B+', headcount: '8,000+', region: 'KSA', tier: 'Enterprise', openDeals: 1, totalAcv: 750000, lastActivity: '2026-04-26' },
-  { id: 'a4', name: 'Mobily Enterprise', industry: 'Telecom', revenue: '$5B+', headcount: '2,000+', region: 'KSA', tier: 'Enterprise', openDeals: 1, totalAcv: 320000, lastActivity: '2026-04-11' },
-  { id: 'a5', name: 'NEOM TechCo', industry: 'Smart City / Infrastructure', revenue: 'N/A', headcount: '1,000+', region: 'KSA', tier: 'Strategic', openDeals: 1, totalAcv: 2100000, lastActivity: '2026-05-02' },
+  {
+    id: 'a1', name: 'Aramco Digital', industry: 'Energy / Digital Infrastructure',
+    revenue: 'Subsidiary (Saudi Aramco: $440B+)', lastQuarterRevenue: 'Not disclosed',
+    headcount: '~150', region: 'KSA', hq: 'Dammam, KSA', founded: '2023',
+    ticker: '2222.SR (parent)', website: 'aramcodigital.com',
+    tier: 'Strategic', openDeals: 1, totalAcv: 1200000, lastActivity: '2026-05-01',
+    executives: [
+      { id: 'e-a1-1', name: 'Tareq Amin', title: 'Founding CEO (now at HUMAIN)', linkedin: 'https://linkedin.com/in/tareqamin' },
+      { id: 'e-a1-2', name: 'Ahmad O. Al-Khowaiter', title: 'Chief Technology Officer (Aramco Group)' },
+      { id: 'e-a1-3', name: 'Ziad T. Al-Murshed', title: 'EVP & CFO (Aramco Group)' },
+    ],
+  },
+  {
+    id: 'a2', name: 'SABIC', industry: 'Petrochemicals',
+    revenue: '$37.3B (FY2024)', lastQuarterRevenue: '~$9.2B (Q4 2024)',
+    headcount: '~33,000', region: 'KSA', hq: 'Riyadh, KSA', founded: '1976',
+    ticker: '2010.SR', website: 'sabic.com',
+    tier: 'Strategic', openDeals: 1, totalAcv: 480000, lastActivity: '2026-04-15',
+    executives: [
+      { id: 'e-a2-1', name: 'Dr. Faisal Mohammed Al-Faqeer', title: 'Chief Executive Officer', email: 'ceo@sabic.com' },
+      { id: 'e-a2-2', name: 'Salah Mohammed Al-Hareky', title: 'EVP, Corporate Finance' },
+    ],
+  },
+  {
+    id: 'a3', name: 'STC Group', industry: 'Telecom',
+    revenue: '$20.2B (FY2024, record)', lastQuarterRevenue: '~$5.1B (Q4 2024)',
+    headcount: '~19,863', region: 'KSA', hq: 'Riyadh, KSA', founded: '1998',
+    ticker: '7010.SR', website: 'stc.com.sa',
+    tier: 'Enterprise', openDeals: 1, totalAcv: 750000, lastActivity: '2026-04-26',
+    executives: [
+      { id: 'e-a3-1', name: 'Olayan bin Mohammed Alwetaid', title: 'Group CEO', linkedin: 'https://linkedin.com/in/olayan-alwetaid' },
+      { id: 'e-a3-2', name: 'Ameen Fahad Alshiddi', title: 'Group CFO' },
+      { id: 'e-a3-3', name: 'Riyadh Saeed Muawad', title: 'Chief Business Officer' },
+      { id: 'e-a3-4', name: 'Abdullah Abdulrahman Alkanhl', title: 'Chief Strategy Officer' },
+    ],
+  },
+  {
+    id: 'a4', name: 'Mobily', industry: 'Telecom',
+    revenue: '$4.85B (FY2024, record)', lastQuarterRevenue: '~$1.25B (Q4 2024)',
+    headcount: '~4,000', region: 'KSA', hq: 'Riyadh, KSA', founded: '2004',
+    ticker: '7020.SR', website: 'mobily.com.sa',
+    tier: 'Enterprise', openDeals: 1, totalAcv: 320000, lastActivity: '2026-04-11',
+    executives: [
+      { id: 'e-a4-1', name: 'Eng. Nezar Banabeela', title: 'Chief Executive Officer' },
+      { id: 'e-a4-2', name: 'Khaled Abanami', title: 'Chief Financial Officer' },
+      { id: 'e-a4-3', name: 'Mohammed Al Shammari', title: 'Chief Human Resources Officer' },
+    ],
+  },
+  {
+    id: 'a5', name: 'NEOM', industry: 'Smart City / Infrastructure',
+    revenue: '$50B+ invested (PIF-funded)', lastQuarterRevenue: 'N/A (development project)',
+    headcount: '~9,500', region: 'KSA', hq: 'Tabuk Province, KSA', founded: '2017',
+    ticker: 'Private (PIF)', website: 'neom.com',
+    tier: 'Strategic', openDeals: 1, totalAcv: 2100000, lastActivity: '2026-05-02',
+    executives: [
+      { id: 'e-a5-1', name: 'Eng. Aiman M. Al-Mudaifer', title: 'Managing Director & CEO', linkedin: 'https://linkedin.com/in/aiman-al-mudaifer' },
+      { id: 'e-a5-2', name: 'Rayan Mohammed Fayez', title: 'Deputy CEO' },
+      { id: 'e-a5-3', name: 'Nader Ashoor', title: 'Chief Financial Officer' },
+      { id: 'e-a5-4', name: 'Denis Hickey', title: 'Chief Development Officer' },
+      { id: 'e-a5-5', name: 'Dr. Manar Al Moneef', title: 'Chief Investment Officer' },
+      { id: 'e-a5-6', name: 'Stefan Ricketts', title: 'Chief Legal Officer' },
+    ],
+  },
 ];
 
 export const MOCK_STAKEHOLDERS: Stakeholder[] = [

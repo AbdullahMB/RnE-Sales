@@ -11,11 +11,9 @@ import {
 } from '@humain-foundation/ui';
 import {
   Building2,
-  ExternalLink,
   Users,
   TrendingUp,
   FileText,
-  Map,
   ChevronRight,
   UserMinus,
   DollarSign,
@@ -24,11 +22,9 @@ import {
   CheckCircle2,
   AlertCircle,
   Briefcase,
-  Sparkles,
 } from 'lucide-react';
 import { ExecutiveProfiles } from '@/components/executive-profiles';
-import { AccountAvatar } from '@/components/account-avatar';
-import { AssignManager } from '@/components/assign-manager';
+import { AccountHero } from '@/components/account-hero';
 import {
   MOCK_ACCOUNTS,
   MOCK_DEALS,
@@ -152,45 +148,9 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
 
   return (
     <AppShellCard>
-      <AppShellCard.Header>
-        <div className="flex items-center gap-3">
-          <AccountAvatar accountId={account.id} name={account.name} size="lg" editable />
-          <div>
-            <div className="flex items-center gap-2">
-              <AppShellCard.Title>{account.name}</AppShellCard.Title>
-              <Badge color={hs.color}>{hs.label}</Badge>
-            </div>
-            <AppShellCard.Subtitle>{account.industry} · {account.region}</AppShellCard.Subtitle>
-          </div>
-        </div>
-      </AppShellCard.Header>
-      <AppShellCard.Actions>
-        <Button
-          appearance="ghost"
-          size="sm"
-          endIcon={<ExternalLink className="size-4" />}
-        >
-          Open in Salesforce
-        </Button>
-        <Button
-          appearance="outline"
-          size="sm"
-          render={<Link href={`/accounts/${account.id}/map`} />}
-          startIcon={<Map className="size-4" />}
-        >
-          Stakeholder Map
-        </Button>
-        <Button
-          variant="primary"
-          size="sm"
-          render={<Link href={`/accounts/${account.id}/brief`} />}
-          startIcon={<Sparkles className="size-4" />}
-        >
-          Pre-Meeting Brief
-        </Button>
-      </AppShellCard.Actions>
+      <AccountHero account={account} health={health} />
 
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 pt-2">
         {/* Coverage gap warnings */}
         {(!hasEconomicBuyer || !hasChampion) && (
           <div className="flex flex-col gap-2">
@@ -212,24 +172,6 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
             )}
           </div>
         )}
-
-        {/* Account summary strip */}
-        <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
-          {[
-            { label: 'Tier', value: account.tier },
-            { label: 'Annual Revenue', value: account.revenue },
-            { label: 'Last Qtr Revenue', value: account.lastQuarterRevenue ?? '—' },
-            { label: 'Headcount', value: account.headcount },
-            { label: 'HQ', value: account.hq ?? account.region },
-            { label: 'Founded', value: account.founded ?? '—' },
-          ].map(({ label, value }) => (
-            <div key={label} className="rounded-lg border border-border bg-card px-4 py-3">
-              <p className="text-xs text-muted-foreground mb-1">{label}</p>
-              <p className="text-sm font-semibold text-foreground">{value}</p>
-            </div>
-          ))}
-          <AssignManager accountId={account.id} defaultManagerId={account.accountManagerId} />
-        </section>
 
         <Tabs defaultValue="overview">
           <Tabs.List>

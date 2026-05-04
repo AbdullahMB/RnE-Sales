@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { ExecutiveProfiles } from '@/components/executive-profiles';
 import { AccountAvatar } from '@/components/account-avatar';
+import { AssignManager } from '@/components/assign-manager';
 import {
   MOCK_ACCOUNTS,
   MOCK_DEALS,
@@ -179,6 +180,14 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
         >
           Stakeholder Map
         </Button>
+        <Button
+          variant="primary"
+          size="sm"
+          render={<Link href={`/accounts/${account.id}/brief`} />}
+          startIcon={<Sparkles className="size-4" />}
+        >
+          Pre-Meeting Brief
+        </Button>
       </AppShellCard.Actions>
 
       <div className="flex flex-col gap-8">
@@ -205,7 +214,7 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
         )}
 
         {/* Account summary strip */}
-        <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
           {[
             { label: 'Tier', value: account.tier },
             { label: 'Annual Revenue', value: account.revenue },
@@ -219,6 +228,7 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
               <p className="text-sm font-semibold text-foreground">{value}</p>
             </div>
           ))}
+          <AssignManager accountId={account.id} defaultManagerId={account.accountManagerId} />
         </section>
 
         <Tabs defaultValue="overview">

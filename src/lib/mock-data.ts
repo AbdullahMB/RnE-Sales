@@ -58,6 +58,15 @@ export interface AccountExecutive {
   email?: string;
 }
 
+export interface TeamMember {
+  id: string;
+  name: string;
+  title: string;
+  email: string;
+  region: string;
+  avatarUrl?: string;
+}
+
 export interface Account {
   id: string;
   name: string;
@@ -72,6 +81,7 @@ export interface Account {
   website?: string;
   logoUrl?: string;
   tier: 'Strategic' | 'Enterprise' | 'Mid-Market';
+  accountManagerId?: string;
   openDeals: number;
   totalAcv: number;
   lastActivity: string;
@@ -139,7 +149,7 @@ export const MOCK_ACCOUNTS: Account[] = [
     revenue: 'Subsidiary (Saudi Aramco: $440B+)', lastQuarterRevenue: 'Not disclosed',
     headcount: '~150', region: 'KSA', hq: 'Dammam, KSA', founded: '2023',
     ticker: '2222.SR (parent)', website: 'aramcodigital.com',
-    tier: 'Strategic', openDeals: 1, totalAcv: 1200000, lastActivity: '2026-05-01',
+    tier: 'Strategic', accountManagerId: 'tm1', openDeals: 1, totalAcv: 1200000, lastActivity: '2026-05-01',
     executives: [
       { id: 'e-a1-1', name: 'Tareq Amin', title: 'Founding CEO (now at HUMAIN)', linkedin: 'https://linkedin.com/in/tareqamin' },
       { id: 'e-a1-2', name: 'Ahmad O. Al-Khowaiter', title: 'Chief Technology Officer (Aramco Group)' },
@@ -151,7 +161,7 @@ export const MOCK_ACCOUNTS: Account[] = [
     revenue: '$37.3B (FY2024)', lastQuarterRevenue: '~$9.2B (Q4 2024)',
     headcount: '~33,000', region: 'KSA', hq: 'Riyadh, KSA', founded: '1976',
     ticker: '2010.SR', website: 'sabic.com',
-    tier: 'Strategic', openDeals: 1, totalAcv: 480000, lastActivity: '2026-04-15',
+    tier: 'Strategic', accountManagerId: 'tm1', openDeals: 1, totalAcv: 480000, lastActivity: '2026-04-15',
     executives: [
       { id: 'e-a2-1', name: 'Dr. Faisal Mohammed Al-Faqeer', title: 'Chief Executive Officer', email: 'ceo@sabic.com' },
       { id: 'e-a2-2', name: 'Salah Mohammed Al-Hareky', title: 'EVP, Corporate Finance' },
@@ -162,7 +172,7 @@ export const MOCK_ACCOUNTS: Account[] = [
     revenue: '$20.2B (FY2024, record)', lastQuarterRevenue: '~$5.1B (Q4 2024)',
     headcount: '~19,863', region: 'KSA', hq: 'Riyadh, KSA', founded: '1998',
     ticker: '7010.SR', website: 'stc.com.sa',
-    tier: 'Enterprise', openDeals: 1, totalAcv: 750000, lastActivity: '2026-04-26',
+    tier: 'Enterprise', accountManagerId: 'tm2', openDeals: 1, totalAcv: 750000, lastActivity: '2026-04-26',
     executives: [
       { id: 'e-a3-1', name: 'Olayan bin Mohammed Alwetaid', title: 'Group CEO', linkedin: 'https://linkedin.com/in/olayan-alwetaid' },
       { id: 'e-a3-2', name: 'Ameen Fahad Alshiddi', title: 'Group CFO' },
@@ -175,7 +185,7 @@ export const MOCK_ACCOUNTS: Account[] = [
     revenue: '$4.85B (FY2024, record)', lastQuarterRevenue: '~$1.25B (Q4 2024)',
     headcount: '~4,000', region: 'KSA', hq: 'Riyadh, KSA', founded: '2004',
     ticker: '7020.SR', website: 'mobily.com.sa',
-    tier: 'Enterprise', openDeals: 1, totalAcv: 320000, lastActivity: '2026-04-11',
+    tier: 'Enterprise', accountManagerId: 'tm3', openDeals: 1, totalAcv: 320000, lastActivity: '2026-04-11',
     executives: [
       { id: 'e-a4-1', name: 'Eng. Nezar Banabeela', title: 'Chief Executive Officer' },
       { id: 'e-a4-2', name: 'Khaled Abanami', title: 'Chief Financial Officer' },
@@ -187,7 +197,7 @@ export const MOCK_ACCOUNTS: Account[] = [
     revenue: '$50B+ invested (PIF-funded)', lastQuarterRevenue: 'N/A (development project)',
     headcount: '~9,500', region: 'KSA', hq: 'Tabuk Province, KSA', founded: '2017',
     ticker: 'Private (PIF)', website: 'neom.com',
-    tier: 'Strategic', openDeals: 1, totalAcv: 2100000, lastActivity: '2026-05-02',
+    tier: 'Strategic', accountManagerId: 'tm1', openDeals: 1, totalAcv: 2100000, lastActivity: '2026-05-02',
     executives: [
       { id: 'e-a5-1', name: 'Eng. Aiman M. Al-Mudaifer', title: 'Managing Director & CEO', linkedin: 'https://linkedin.com/in/aiman-al-mudaifer' },
       { id: 'e-a5-2', name: 'Rayan Mohammed Fayez', title: 'Deputy CEO' },
@@ -267,6 +277,15 @@ export interface ActivityEvent {
   body: string;
   author?: string;
 }
+
+export const MOCK_TEAM: TeamMember[] = [
+  { id: 'tm1', name: 'Turki Bin Nader',   title: 'Enterprise Account Executive', email: 'turki.binnader@company.com',    region: 'KSA' },
+  { id: 'tm2', name: 'Layla Al-Farsi',    title: 'Senior Account Executive',     email: 'layla.alfarsi@company.com',     region: 'KSA' },
+  { id: 'tm3', name: 'Khalid Mansouri',   title: 'Account Executive',            email: 'khalid.mansouri@company.com',   region: 'KSA / UAE' },
+  { id: 'tm4', name: 'Priya Nair',        title: 'Solutions Engineer',           email: 'priya.nair@company.com',        region: 'KSA' },
+  { id: 'tm5', name: 'Omar Barakati',     title: 'Enterprise Account Executive', email: 'omar.barakati@company.com',     region: 'GCC' },
+  { id: 'tm6', name: 'Nadia Chokri',      title: 'Customer Success Manager',     email: 'nadia.chokri@company.com',      region: 'KSA / GCC' },
+];
 
 export const MOCK_ACTIVITIES: ActivityEvent[] = [
   // Aramco Digital (a1)

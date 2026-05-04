@@ -12,6 +12,7 @@ import {
 } from '@humain-foundation/ui';
 import { Search, ChevronRight, Building2 } from 'lucide-react';
 import { AccountAvatar } from '@/components/account-avatar';
+import { AssignManager } from '@/components/assign-manager';
 import {
   MOCK_ACCOUNTS,
   MOCK_DEALS,
@@ -117,6 +118,7 @@ export default function AccountsPage() {
                   <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground hidden sm:table-cell">Tier</th>
                   <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground">Health</th>
                   <th className="text-right px-4 py-2.5 text-xs font-semibold text-muted-foreground hidden sm:table-cell">Pipeline ACV</th>
+                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground hidden lg:table-cell">Owner</th>
                   <th className="px-4 py-2.5" />
                 </tr>
               </thead>
@@ -158,6 +160,9 @@ export default function AccountsPage() {
                     </td>
                     <td className="px-4 py-3 text-right font-semibold text-foreground hidden sm:table-cell">
                       ${(account.totalAcv / 1000).toFixed(0)}K
+                    </td>
+                    <td className="px-4 py-3 hidden lg:table-cell">
+                      <AssignManager accountId={account.id} defaultManagerId={account.accountManagerId} variant="compact" />
                     </td>
                     <td className="px-4 py-3">
                       <Button appearance="ghost" size="sm"

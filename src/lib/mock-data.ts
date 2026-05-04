@@ -255,3 +255,40 @@ export const MOCK_MEETING_SUMMARY: MeetingSummary = {
   },
   status: 'pending',
 };
+
+export type ActivityType = 'meeting' | 'signal' | 'stage_change' | 'action_item' | 'email';
+
+export interface ActivityEvent {
+  id: string;
+  accountId: string;
+  type: ActivityType;
+  date: string;
+  title: string;
+  body: string;
+  author?: string;
+}
+
+export const MOCK_ACTIVITIES: ActivityEvent[] = [
+  // Aramco Digital (a1)
+  { id: 'ac1', accountId: 'a1', type: 'signal',       date: '2026-05-01', title: 'New CTO appointed',                     body: 'Khalid Al-Rashid named CTO. Prior vendor relationships likely under review.' },
+  { id: 'ac2', accountId: 'a1', type: 'meeting',      date: '2026-05-02', title: 'Stage 3 Architecture Deep-Dive',        body: '62-min call. Data residency confirmed non-negotiable. Edge compute positioned as differentiator. CFO intro offered pending business case.', author: 'Turki Bin Nader' },
+  { id: 'ac3', accountId: 'a1', type: 'action_item',  date: '2026-05-02', title: 'Reference architecture due May 7',      body: 'Send Energy Sector Reference Architecture to Tariq Bin-Laden.', author: 'Turki Bin Nader' },
+  { id: 'ac4', accountId: 'a1', type: 'action_item',  date: '2026-05-02', title: 'Business case due May 14',              body: 'Draft business case for CFO approval (SAR 3M+ threshold).', author: 'Turki Bin Nader' },
+  { id: 'ac5', accountId: 'a1', type: 'stage_change', date: '2026-04-15', title: 'Advanced to Stage 3',                   body: 'Moved from Stage 2 (Qualify) after successful technical demo with Sara Al-Otaibi\'s team.', author: 'Turki Bin Nader' },
+  { id: 'ac6', accountId: 'a1', type: 'email',        date: '2026-04-20', title: 'Sent platform overview deck',           body: 'Shared 24-slide platform overview and KSA data residency one-pager with Sara.', author: 'Turki Bin Nader' },
+  // SABIC (a2)
+  { id: 'ac7', accountId: 'a2', type: 'signal',       date: '2026-04-25', title: 'Nora Al-Harbi promoted to SVP',         body: 'Our champion now has greater budget authority. Positive development.' },
+  { id: 'ac8', accountId: 'a2', type: 'meeting',      date: '2026-04-15', title: 'Stage 4 Proposal Review',               body: 'Reviewed commercial proposal with Nora. CFO Salah Al-Hareky not yet engaged — required before close.', author: 'Turki Bin Nader' },
+  { id: 'ac9', accountId: 'a2', type: 'stage_change', date: '2026-04-01', title: 'Advanced to Stage 4',                   body: 'Proposal submitted and accepted for review.', author: 'Turki Bin Nader' },
+  // STC Group (a3)
+  { id: 'ac10', accountId: 'a3', type: 'signal',      date: '2026-04-27', title: 'STC partners with hyperscaler for AI', body: 'Co-development agreement announced — directly aligns with our platform pitch.' },
+  { id: 'ac11', accountId: 'a3', type: 'email',       date: '2026-04-26', title: 'Sent AI partnership use-case brief',   body: 'Followed up on hyperscaler announcement with a tailored use-case brief.', author: 'Turki Bin Nader' },
+  { id: 'ac12', accountId: 'a3', type: 'meeting',     date: '2026-04-10', title: 'Initial discovery call',               body: 'Qualified pain: AI services roadmap blocked by data sovereignty concerns. Champion: Hessa Al-Qahtani.', author: 'Turki Bin Nader' },
+  // Mobily (a4)
+  { id: 'ac13', accountId: 'a4', type: 'stage_change', date: '2026-04-05', title: 'Advanced to Stage 3',                 body: 'Technical evaluation kicked off with Tariq Al-Ghamdi\'s team.', author: 'Turki Bin Nader' },
+  { id: 'ac14', accountId: 'a4', type: 'meeting',      date: '2026-04-01', title: 'Technical evaluation kickoff',        body: 'Mobily team reviewed platform architecture. OT/IT integration raised as a concern — same as Aramco.', author: 'Turki Bin Nader' },
+  // NEOM (a5)
+  { id: 'ac15', accountId: 'a5', type: 'signal',       date: '2026-04-29', title: '$500M cloud infrastructure approved',  body: 'NEOM board approved major infrastructure investment for 2026-2028.' },
+  { id: 'ac16', accountId: 'a5', type: 'meeting',      date: '2026-04-20', title: 'Executive briefing with Denis Hickey', body: 'CDO confirmed NEOM needs a sovereign AI platform. Reem Al-Dosari will champion internally.', author: 'Turki Bin Nader' },
+  { id: 'ac17', accountId: 'a5', type: 'email',        date: '2026-05-01', title: 'Sent NEOM playbook and giga-project brief', body: 'Shared smart city playbook and reference architecture tailored to NEOM\'s stated requirements.', author: 'Turki Bin Nader' },
+];

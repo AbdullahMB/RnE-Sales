@@ -24,6 +24,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Briefcase,
+  Sparkles,
 } from 'lucide-react';
 import { ExecutiveProfiles } from '@/components/executive-profiles';
 import { AccountAvatar } from '@/components/account-avatar';

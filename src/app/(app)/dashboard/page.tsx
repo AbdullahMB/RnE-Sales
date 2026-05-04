@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 import Link from 'next/link';
 import {
   AppShellCard,
@@ -80,7 +81,10 @@ function StatCard({ label, value, sub, color }: { label: string; value: string |
 }
 
 export default function DashboardPage() {
-  const [dismissedTasks, setDismissedTasks] = useState<Set<string>>(new Set());
+  const [dismissedArr, setDismissedArr] = useLocalStorage<string[]>('dismissed-tasks', []);
+  const dismissedTasks = new Set(dismissedArr);
+  const setDismissedTasks = (fn: (prev: Set<string>) => Set<string>) =>
+    setDismissedArr((arr) => [...fn(new Set(arr))]);
 
   const stalledDeals  = MOCK_DEALS.filter((d) => d.daysSinceActivity > 14);
   const highRiskDeals = MOCK_DEALS.filter((d) => d.risk === 'high');

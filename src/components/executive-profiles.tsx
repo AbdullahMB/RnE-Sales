@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { Avatar, Badge, Button, Input, Dialog } from '@humain-foundation/ui';
-import { Pencil, Plus, Trash2, Link2, Mail, X, Check } from 'lucide-react';
+import { Pencil, Plus, Trash2, Link2, Mail, Check } from 'lucide-react';
 import type { AccountExecutive } from '@/lib/mock-data';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 const EMPTY_EXEC: Omit<AccountExecutive, 'id'> = {
   name: '',
@@ -128,8 +129,8 @@ function ExecDialog({
   );
 }
 
-export function ExecutiveProfiles({ initialExecs }: { initialExecs: AccountExecutive[] }) {
-  const [execs, setExecs] = useState<AccountExecutive[]>(initialExecs);
+export function ExecutiveProfiles({ accountId, initialExecs }: { accountId: string; initialExecs: AccountExecutive[] }) {
+  const [execs, setExecs] = useLocalStorage<AccountExecutive[]>(`execs:${accountId}`, initialExecs);
   const [editing, setEditing] = useState<AccountExecutive | null>(null);
   const [adding, setAdding] = useState(false);
 

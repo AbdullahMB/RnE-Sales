@@ -18,6 +18,8 @@ import {
   ChevronDown,
   ChevronUp,
   AlertTriangle,
+  Sparkles,
+  FileText,
 } from 'lucide-react';
 import { MOCK_MEETING_SUMMARY, type MeetingSummary } from '@/lib/mock-data';
 
@@ -30,12 +32,38 @@ const MEDDIC_LABELS: Record<keyof MeetingSummary['meddic'], string> = {
   champion: 'Champion',
 };
 
+type Stage = 'input' | 'analyzing' | 'review';
+
+const SAMPLE_TRANSCRIPT = `Meeting: Stage 3 Discovery Deep-Dive — Platform Architecture
+Date: 2026-05-02 | Duration: 62 min
+Participants: Turki Bin Nader (AE), Sara Al-Otaibi (VP Eng), Tariq Bin-Laden (Architect), Priya Nair (SE)
+
+[00:00] Turki: Thanks for joining, Sara. Today we want to go deep on the architecture requirements…
+[02:15] Sara: Absolutely. Our number one non-negotiable is data residency — everything must stay in KSA, in-region processing only.
+[08:40] Tariq: We have a significant OT/IT integration complexity. Our current setup requires third-party middleware which is slowing everything down.
+[14:22] Turki: That's exactly where our edge compute pattern addresses the gap…
+[31:05] Sara: The CFO needs to approve anything over SAR 3 million. He's not involved yet but I can facilitate an introduction once we have a business case document.
+[45:10] Sara: What we're measuring is a 30% reduction in platform integration costs and getting AI projects to market 6 months faster.
+[58:30] Turki: So next steps — reference architecture to Tariq by May 7, business case draft by May 14, then we set up the CFO intro.`;
+
 export default function SummarizePage() {
+  const [stage, setStage] = useState<Stage>('input');
+  const [transcript, setTranscript] = useState('');
   const [summary, setSummary] = useState(MOCK_MEETING_SUMMARY);
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
   const [showMeddic, setShowMeddic] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  function handleAnalyze() {
+    setStage('analyzing');
+    setTimeout(() => {
+      setSummary(MOCK_MEETING_SUMMARY);
+      setCheckedItems(new Set());
+      setShowMeddic(false);
+      setStage('review');
+    }, 2200);
+  }
 
   const allChecked = summary.actionItems.every((ai) => checkedItems.has(ai.id));
   const detectedMeddicCount = Object.values(summary.meddic).filter(Boolean).length;
@@ -54,6 +82,71 @@ export default function SummarizePage() {
     setSubmitted(true);
   }
 
+  if (stage === 'input') {
+    return (
+      <AppShellCard>
+        <AppShellCard.Header>
+          <AppShellCard.Title>Meeting Summarizer</AppShellCard.Title>
+          <AppShellCard.Subtitle>Paste a transcript or recording notes — AI extracts MEDDIC, action items, and summary</AppShellCard.Subtitle>
+        </AppShellCard.Header>
+        <div className="flex flex-col gap-5 max-w-2xl">
+          <div className="rounded-xl border border-border bg-card p-5 flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FileText className="size-4 text-brand-500" />
+                <span className="text-sm font-semibold text-foreground">Meeting Transcript</span>
+              </div>
+              <Button appearance="ghost" size="sm" onClick={() => setTranscript(SAMPLE_TRANSCRIPT)}>
+                Load sample
+              </Button>
+            </div>
+            <textarea
+              className="w-full min-h-[280px] resize-y rounded-lg border border-border bg-background p-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+              placeholder="Paste your meeting transcript, call notes, or Gong/Chorus export here…"
+              value={transcript}
+              onChange={(e) => setTranscript(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              {transcript.length > 0 ? `${transcript.split(/\s+/).filter(Boolean).length} words` : 'Supports Gong, Chorus, Zoom, and plain text exports'}
+            </p>
+          </div>
+          <Button
+            variant="primary"
+            size="lg"
+            startIcon={<Sparkles className="size-4" />}
+            disabled={transcript.trim().length < 20}
+            onClick={handleAnalyze}
+          >
+            Analyze with AI
+          </Button>
+          <p className="text-xs text-muted-foreground">
+            AI summaries are drafts — you review and approve before anything is written to Salesforce.
+          </p>
+        </div>
+      </AppShellCard>
+    );
+  }
+
+  if (stage === 'analyzing') {
+    return (
+      <AppShellCard>
+        <AppShellCard.Header>
+          <AppShellCard.Title>Meeting Summarizer</AppShellCard.Title>
+        </AppShellCard.Header>
+        <div className="flex flex-col items-center gap-6 py-24">
+          <div className="relative flex items-center justify-center">
+            <div className="size-16 rounded-full border-4 border-brand-500/20 border-t-brand-500 animate-spin" />
+            <Sparkles className="absolute size-6 text-brand-500" />
+          </div>
+          <div className="text-center">
+            <p className="text-base font-semibold text-foreground">Analyzing transcript…</p>
+            <p className="text-sm text-muted-foreground mt-1">Extracting MEDDIC signals and action items</p>
+          </div>
+        </div>
+      </AppShellCard>
+    );
+  }
+
   if (submitted) {
     return (
       <AppShellCard>
@@ -67,8 +160,8 @@ export default function SummarizePage() {
             The meeting summary and {checkedItems.size} action items have been written to Salesforce
             as an activity on <strong>{summary.accountName}</strong>.
           </p>
-          <Button appearance="outline" onClick={() => setSubmitted(false)}>
-            Review another
+          <Button appearance="outline" onClick={() => { setSubmitted(false); setStage('input'); setTranscript(''); }}>
+            Analyze another meeting
           </Button>
         </div>
       </AppShellCard>
@@ -78,9 +171,16 @@ export default function SummarizePage() {
   return (
     <AppShellCard>
       <AppShellCard.Header>
-        <AppShellCard.Title>Meeting Summaries</AppShellCard.Title>
-        <AppShellCard.Subtitle>AI-drafted · Review before writing to Salesforce</AppShellCard.Subtitle>
+        <div>
+          <AppShellCard.Title>Meeting Summarizer</AppShellCard.Title>
+          <AppShellCard.Subtitle>AI-drafted · Review before writing to Salesforce</AppShellCard.Subtitle>
+        </div>
       </AppShellCard.Header>
+      <AppShellCard.Actions>
+        <Button appearance="ghost" size="sm" onClick={() => setStage('input')}>
+          ← New transcript
+        </Button>
+      </AppShellCard.Actions>
 
       <div className="flex flex-col gap-6">
         {/* Meeting header */}

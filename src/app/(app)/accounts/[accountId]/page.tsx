@@ -338,7 +338,7 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
 
           {/* Executives tab */}
           <Tabs.Content value="executives" className="mt-4">
-            <ExecutiveProfiles initialExecs={account.executives ?? []} />
+            <ExecutiveProfiles accountId={account.id} initialExecs={account.executives ?? []} />
           </Tabs.Content>
 
           {/* Signals tab */}

@@ -47,6 +47,7 @@ export interface Stakeholder {
   linkedin: string;
   buyingCenter: string;
   notes: string;
+  department?: string; // department id: d1=IT, d2=Ops, d3=Finance, d4=Digital, d5=Legal, d6=C-Suite, d7=HR
 }
 
 export interface AccountExecutive {
@@ -210,25 +211,25 @@ export const MOCK_ACCOUNTS: Account[] = [
 ];
 
 export const MOCK_STAKEHOLDERS: Stakeholder[] = [
-  { id: 'sk1', accountId: 'a1', name: 'Khalid Al-Rashid', title: 'CTO', role: 'Decision Maker', strength: 1, lastContact: '2026-05-01', email: 'k.alrashid@aramcodigital.com', phone: '+966 50 111 2233', linkedin: 'https://linkedin.com/in/khalid-alrashid', buyingCenter: 'Technology', notes: 'Newly appointed. Came from AWS. Unknown preferences.' },
-  { id: 'sk2', accountId: 'a1', name: 'Sara Al-Otaibi', title: 'VP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-28', email: 's.alotaibi@aramcodigital.com', phone: '+966 50 222 3344', linkedin: 'https://linkedin.com/in/sara-alotaibi', buyingCenter: 'Technology', notes: 'Attended 5 demos. Strong internal advocate.' },
-  { id: 'sk3', accountId: 'a1', name: 'Mohammed Al-Ghamdi', title: 'CFO', role: 'Decision Maker', strength: 0 as RelationshipStrength, lastContact: 'Never', email: 'm.alghamdi@aramcodigital.com', phone: '+966 50 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'No relationship established. Required for Stage 4.' },
+  { id: 'sk1', accountId: 'a1', name: 'Khalid Al-Rashid', title: 'CTO', role: 'Decision Maker', strength: 1, lastContact: '2026-05-01', email: 'k.alrashid@aramcodigital.com', phone: '+966 50 111 2233', linkedin: 'https://linkedin.com/in/khalid-alrashid', buyingCenter: 'Technology', notes: 'Newly appointed. Came from AWS. Unknown preferences.', department: 'd6' },
+  { id: 'sk2', accountId: 'a1', name: 'Sara Al-Otaibi', title: 'VP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-28', email: 's.alotaibi@aramcodigital.com', phone: '+966 50 222 3344', linkedin: 'https://linkedin.com/in/sara-alotaibi', buyingCenter: 'Technology', notes: 'Attended 5 demos. Strong internal advocate.', department: 'd1' },
+  { id: 'sk3', accountId: 'a1', name: 'Mohammed Al-Ghamdi', title: 'CFO', role: 'Decision Maker', strength: 0 as RelationshipStrength, lastContact: 'Never', email: 'm.alghamdi@aramcodigital.com', phone: '+966 50 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'No relationship established. Required for Stage 4.', department: 'd3' },
   // SABIC (a2)
-  { id: 'sk4', accountId: 'a2', name: 'Nora Al-Harbi', title: 'SVP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-20', email: 'n.alharbi@sabic.com', phone: '+966 55 444 5566', linkedin: 'https://linkedin.com/in/nora-alharbi', buyingCenter: 'Technology', notes: 'Promoted to SVP. Increased influence and budget authority.' },
-  { id: 'sk5', accountId: 'a2', name: 'Salah Al-Hareky', title: 'EVP Corporate Finance', role: 'Decision Maker', strength: 2, lastContact: '2026-04-01', email: 's.alhareky@sabic.com', phone: '+966 55 555 6677', linkedin: 'https://linkedin.com/in/salah-alhareky', buyingCenter: 'Finance', notes: 'Top finance exec. Met once at QBR. Needs further engagement.' },
-  { id: 'sk6', accountId: 'a2', name: 'Omar Al-Zahrani', title: 'Head of IT Infrastructure', role: 'Influencer', strength: 3, lastContact: '2026-04-10', email: 'o.alzahrani@sabic.com', phone: '+966 55 666 7788', linkedin: '', buyingCenter: 'Technology', notes: 'Controls the technical evaluation process. Key influencer.' },
+  { id: 'sk4', accountId: 'a2', name: 'Nora Al-Harbi', title: 'SVP Engineering', role: 'Champion', strength: 4, lastContact: '2026-04-20', email: 'n.alharbi@sabic.com', phone: '+966 55 444 5566', linkedin: 'https://linkedin.com/in/nora-alharbi', buyingCenter: 'Technology', notes: 'Promoted to SVP. Increased influence and budget authority.', department: 'd1' },
+  { id: 'sk5', accountId: 'a2', name: 'Salah Al-Hareky', title: 'EVP Corporate Finance', role: 'Decision Maker', strength: 2, lastContact: '2026-04-01', email: 's.alhareky@sabic.com', phone: '+966 55 555 6677', linkedin: 'https://linkedin.com/in/salah-alhareky', buyingCenter: 'Finance', notes: 'Top finance exec. Met once at QBR. Needs further engagement.', department: 'd3' },
+  { id: 'sk6', accountId: 'a2', name: 'Omar Al-Zahrani', title: 'Head of IT Infrastructure', role: 'Influencer', strength: 3, lastContact: '2026-04-10', email: 'o.alzahrani@sabic.com', phone: '+966 55 666 7788', linkedin: '', buyingCenter: 'Technology', notes: 'Controls the technical evaluation process. Key influencer.', department: 'd1' },
   // STC Group (a3)
-  { id: 'sk7', accountId: 'a3', name: 'Hessa Al-Qahtani', title: 'VP Cloud & AI Services', role: 'Champion', strength: 3, lastContact: '2026-04-22', email: 'h.alqahtani@stc.com.sa', phone: '+966 50 777 8899', linkedin: 'https://linkedin.com/in/hessa-alqahtani', buyingCenter: 'Technology', notes: 'Driving the AI co-development initiative. Strong technical champion.' },
-  { id: 'sk8', accountId: 'a3', name: 'Ameen Alshiddi', title: 'Group CFO', role: 'Decision Maker', strength: 1, lastContact: '2026-03-15', email: 'a.alshiddi@stc.com.sa', phone: '+966 50 888 9900', linkedin: 'https://linkedin.com/in/ameen-alshiddi', buyingCenter: 'Finance', notes: 'CFO since 2016. Not yet engaged on this deal.' },
-  { id: 'sk9', accountId: 'a3', name: 'Faris Al-Mutairi', title: 'Director of Enterprise Partnerships', role: 'Coach', strength: 4, lastContact: '2026-04-25', email: 'f.almutairi@stc.com.sa', phone: '+966 50 999 0011', linkedin: '', buyingCenter: 'Partnerships', notes: 'Knows the internal procurement process well. Helpful coach.' },
+  { id: 'sk7', accountId: 'a3', name: 'Hessa Al-Qahtani', title: 'VP Cloud & AI Services', role: 'Champion', strength: 3, lastContact: '2026-04-22', email: 'h.alqahtani@stc.com.sa', phone: '+966 50 777 8899', linkedin: 'https://linkedin.com/in/hessa-alqahtani', buyingCenter: 'Technology', notes: 'Driving the AI co-development initiative. Strong technical champion.', department: 'd4' },
+  { id: 'sk8', accountId: 'a3', name: 'Ameen Alshiddi', title: 'Group CFO', role: 'Decision Maker', strength: 1, lastContact: '2026-03-15', email: 'a.alshiddi@stc.com.sa', phone: '+966 50 888 9900', linkedin: 'https://linkedin.com/in/ameen-alshiddi', buyingCenter: 'Finance', notes: 'CFO since 2016. Not yet engaged on this deal.', department: 'd3' },
+  { id: 'sk9', accountId: 'a3', name: 'Faris Al-Mutairi', title: 'Director of Enterprise Partnerships', role: 'Coach', strength: 4, lastContact: '2026-04-25', email: 'f.almutairi@stc.com.sa', phone: '+966 50 999 0011', linkedin: '', buyingCenter: 'Partnerships', notes: 'Knows the internal procurement process well. Helpful coach.', department: 'd4' },
   // Mobily (a4)
-  { id: 'sk10', accountId: 'a4', name: 'Layla Al-Amer', title: 'CTO', role: 'Decision Maker', strength: 2, lastContact: '2026-04-05', email: 'l.alamer@mobily.com.sa', phone: '+966 53 111 2233', linkedin: 'https://linkedin.com/in/layla-alamer', buyingCenter: 'Technology', notes: 'New CTO, evaluating all vendor relationships. Critical to engage.' },
-  { id: 'sk11', accountId: 'a4', name: 'Tariq Al-Ghamdi', title: 'Head of Digital Transformation', role: 'Champion', strength: 3, lastContact: '2026-04-18', email: 't.alghamdi@mobily.com.sa', phone: '+966 53 222 3344', linkedin: '', buyingCenter: 'Technology', notes: 'Running the digital transformation program. Wants to move fast.' },
-  { id: 'sk12', accountId: 'a4', name: 'Khaled Abanami', title: 'CFO', role: 'Decision Maker', strength: 1, lastContact: 'Never', email: 'k.abanami@mobily.com.sa', phone: '+966 53 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'Not engaged yet. Required for deal above SAR 2M.' },
+  { id: 'sk10', accountId: 'a4', name: 'Layla Al-Amer', title: 'CTO', role: 'Decision Maker', strength: 2, lastContact: '2026-04-05', email: 'l.alamer@mobily.com.sa', phone: '+966 53 111 2233', linkedin: 'https://linkedin.com/in/layla-alamer', buyingCenter: 'Technology', notes: 'New CTO, evaluating all vendor relationships. Critical to engage.', department: 'd6' },
+  { id: 'sk11', accountId: 'a4', name: 'Tariq Al-Ghamdi', title: 'Head of Digital Transformation', role: 'Champion', strength: 3, lastContact: '2026-04-18', email: 't.alghamdi@mobily.com.sa', phone: '+966 53 222 3344', linkedin: '', buyingCenter: 'Technology', notes: 'Running the digital transformation program. Wants to move fast.', department: 'd4' },
+  { id: 'sk12', accountId: 'a4', name: 'Khaled Abanami', title: 'CFO', role: 'Decision Maker', strength: 1, lastContact: 'Never', email: 'k.abanami@mobily.com.sa', phone: '+966 53 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'Not engaged yet. Required for deal above SAR 2M.', department: 'd3' },
   // NEOM (a5)
-  { id: 'sk13', accountId: 'a5', name: 'Denis Hickey', title: 'Chief Development Officer', role: 'Decision Maker', strength: 2, lastContact: '2026-04-28', email: 'd.hickey@neom.com', phone: '+966 14 111 2233', linkedin: 'https://linkedin.com/in/denis-hickey-neom', buyingCenter: 'Development', notes: 'Controls platform and infrastructure decisions for NEOM build-out.' },
-  { id: 'sk14', accountId: 'a5', name: 'Reem Al-Dosari', title: 'VP Technology & Innovation', role: 'Champion', strength: 4, lastContact: '2026-05-01', email: 'r.aldosari@neom.com', phone: '+966 14 222 3344', linkedin: 'https://linkedin.com/in/reem-aldosari', buyingCenter: 'Technology', notes: 'Strongest internal advocate. Has presented our platform to CDO twice.' },
-  { id: 'sk15', accountId: 'a5', name: 'Nader Ashoor', title: 'CFO', role: 'Decision Maker', strength: 1, lastContact: '2026-03-20', email: 'n.ashoor@neom.com', phone: '+966 14 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'Controls all vendor spend over $1M. Brief intro at FII conference.' },
+  { id: 'sk13', accountId: 'a5', name: 'Denis Hickey', title: 'Chief Development Officer', role: 'Decision Maker', strength: 2, lastContact: '2026-04-28', email: 'd.hickey@neom.com', phone: '+966 14 111 2233', linkedin: 'https://linkedin.com/in/denis-hickey-neom', buyingCenter: 'Development', notes: 'Controls platform and infrastructure decisions for NEOM build-out.', department: 'd6' },
+  { id: 'sk14', accountId: 'a5', name: 'Reem Al-Dosari', title: 'VP Technology & Innovation', role: 'Champion', strength: 4, lastContact: '2026-05-01', email: 'r.aldosari@neom.com', phone: '+966 14 222 3344', linkedin: 'https://linkedin.com/in/reem-aldosari', buyingCenter: 'Technology', notes: 'Strongest internal advocate. Has presented our platform to CDO twice.', department: 'd1' },
+  { id: 'sk15', accountId: 'a5', name: 'Nader Ashoor', title: 'CFO', role: 'Decision Maker', strength: 1, lastContact: '2026-03-20', email: 'n.ashoor@neom.com', phone: '+966 14 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'Controls all vendor spend over $1M. Brief intro at FII conference.', department: 'd3' },
 ];
 
 export const MOCK_WIKI_ASSETS: WikiAsset[] = [
@@ -311,3 +312,56 @@ export const MOCK_ACTIVITIES: ActivityEvent[] = [
   { id: 'ac16', accountId: 'a5', type: 'meeting',      date: '2026-04-20', title: 'Executive briefing with Denis Hickey', body: 'CDO confirmed NEOM needs a sovereign AI platform. Reem Al-Dosari will champion internally.', author: 'Turki Bin Nader' },
   { id: 'ac17', accountId: 'a5', type: 'email',        date: '2026-05-01', title: 'Sent NEOM playbook and giga-project brief', body: 'Shared smart city playbook and reference architecture tailored to NEOM\'s stated requirements.', author: 'Turki Bin Nader' },
 ];
+
+// ─── Account Planning Data ────────────────────────────────────────────────────
+
+export interface Product {
+  id: string;
+  name: string;
+  category: 'Platform' | 'AI/Data' | 'Security' | 'Services';
+  avgDealSize: number;
+  salesCycleDays: number;
+  icon: string;
+}
+
+export interface Department {
+  id: string;
+  name: string;
+  shortName: string;
+  budgetType: 'CAPEX' | 'OPEX' | 'Both';
+  typicalRole: 'Decision Maker' | 'Influencer' | 'User';
+  budgetWeight: number;
+}
+
+export const MOCK_PRODUCTS: Product[] = [
+  { id: 'p1', name: 'Core Platform',           category: 'Platform',  avgDealSize: 800000,  salesCycleDays: 120, icon: '⚙️' },
+  { id: 'p2', name: 'AI / ML Services',         category: 'AI/Data',   avgDealSize: 600000,  salesCycleDays: 90,  icon: '🤖' },
+  { id: 'p3', name: 'Data Sovereignty Module',  category: 'Security',  avgDealSize: 400000,  salesCycleDays: 60,  icon: '🛡️' },
+  { id: 'p4', name: 'Edge Computing',           category: 'Platform',  avgDealSize: 750000,  salesCycleDays: 135, icon: '📡' },
+  { id: 'p5', name: 'Managed Services',         category: 'Services',  avgDealSize: 350000,  salesCycleDays: 45,  icon: '🔧' },
+  { id: 'p6', name: 'Security & Compliance',    category: 'Security',  avgDealSize: 500000,  salesCycleDays: 75,  icon: '🔒' },
+  { id: 'p7', name: 'Analytics & BI',           category: 'AI/Data',   avgDealSize: 450000,  salesCycleDays: 60,  icon: '📊' },
+  { id: 'p8', name: 'Professional Services',    category: 'Services',  avgDealSize: 300000,  salesCycleDays: 30,  icon: '👥' },
+];
+
+export const MOCK_DEPARTMENTS: Department[] = [
+  { id: 'd1', name: 'IT / Technology',      shortName: 'IT',      budgetType: 'Both',   typicalRole: 'Decision Maker', budgetWeight: 0.95 },
+  { id: 'd2', name: 'Operations',           shortName: 'Ops',     budgetType: 'CAPEX',  typicalRole: 'Influencer',     budgetWeight: 0.80 },
+  { id: 'd3', name: 'Finance / CFO Office', shortName: 'Finance', budgetType: 'Both',   typicalRole: 'Decision Maker', budgetWeight: 1.00 },
+  { id: 'd4', name: 'Digital Innovation',   shortName: 'Digital', budgetType: 'CAPEX',  typicalRole: 'Influencer',     budgetWeight: 0.85 },
+  { id: 'd5', name: 'Compliance / Legal',   shortName: 'Legal',   budgetType: 'OPEX',   typicalRole: 'Influencer',     budgetWeight: 0.75 },
+  { id: 'd6', name: 'C-Suite / Executive',  shortName: 'C-Suite', budgetType: 'Both',   typicalRole: 'Decision Maker', budgetWeight: 1.00 },
+  { id: 'd7', name: 'HR / People',          shortName: 'HR',      budgetType: 'OPEX',   typicalRole: 'User',           budgetWeight: 0.60 },
+];
+
+// Product × Department intrinsic fit strength (1–5, 0 = no meaningful fit)
+export const PRODUCT_DEPT_FIT: Record<string, Record<string, number>> = {
+  p1: { d1: 5, d2: 3, d3: 2, d4: 4, d5: 2, d6: 3, d7: 1 },
+  p2: { d1: 4, d2: 3, d3: 3, d4: 5, d5: 2, d6: 4, d7: 2 },
+  p3: { d1: 5, d2: 2, d3: 3, d4: 3, d5: 5, d6: 4, d7: 2 },
+  p4: { d1: 4, d2: 5, d3: 1, d4: 3, d5: 1, d6: 2, d7: 1 },
+  p5: { d1: 5, d2: 4, d3: 2, d4: 3, d5: 3, d6: 2, d7: 1 },
+  p6: { d1: 5, d2: 3, d3: 3, d4: 2, d5: 5, d6: 4, d7: 2 },
+  p7: { d1: 3, d2: 4, d3: 5, d4: 4, d5: 3, d6: 5, d7: 3 },
+  p8: { d1: 4, d2: 3, d3: 2, d4: 4, d5: 3, d6: 3, d7: 2 },
+};

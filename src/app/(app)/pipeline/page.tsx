@@ -1,12 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { AppShellCard, Badge, Button, Avatar } from '@humain-foundation/ui';
+import { AppShellCard, Badge, Button } from '@humain-foundation/ui';
+import { toast } from '@humain-foundation/ui';
 import {
   AlertTriangle, Clock, TrendingUp, Users, Sparkles,
-  CheckCircle2, XCircle, ArrowRight, Target, Calendar,
-  ShieldAlert, ChevronRight,
+  CheckCircle2, XCircle, Target, Calendar,
+  ShieldAlert, ChevronRight, BrainCircuit, Lightbulb,
+  ChevronDown, ChevronUp, StickyNote, Save,
 } from 'lucide-react';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 import {
   MOCK_DEALS,
   MOCK_ACCOUNTS,
@@ -115,7 +119,177 @@ function HealthBar({ score, label, color }: { score: number; label: string; colo
   );
 }
 
+const COACHING_TIPS: Record<string, { action: string; why: string; priority: 'high' | 'medium' }> = {
+  'Champion': {
+    action: 'Identify an internal advocate who uses the platform daily and has budget influence. Schedule a working session — not a demo — to co-build the business case together.',
+    why: 'Deals without a champion are 3× more likely to stall. A champion pulls from the inside while you push from outside.',
+    priority: 'high',
+  },
+  'Economic Buyer': {
+    action: 'Ask your champion: "Who owns the budget for this initiative?" Then request an executive briefing — not a sales call. Bring a 1-page financial impact summary (ROI, payback period, risk of inaction).',
+    why: 'Without Economic Buyer engagement, proposals sit in queues. The EB is the one person who can say "yes" regardless of consensus.',
+    priority: 'high',
+  },
+  'Metrics': {
+    action: 'Run a value quantification session. Ask: "What does this cost you per month in lost productivity / revenue / compliance risk?" Anchor the deal to a number they already care about.',
+    why: 'Without agreed metrics, any price feels arbitrary. Metrics give your champion ammunition to justify the spend internally.',
+    priority: 'high',
+  },
+  'Decision Criteria': {
+    action: 'Ask to review the evaluation framework or be included in the RFP process. If none exists, offer to help build it — and make sure your strengths are reflected in the criteria.',
+    why: 'Letting the customer define criteria without your input means competitors who got there first shaped the rules.',
+    priority: 'medium',
+  },
+  'Decision Process': {
+    action: 'Map the full approval chain with your champion. Ask: "Walk me through the last time you bought something at this spend level — who signed, who reviewed, who could veto?"',
+    why: 'Surprise stakeholders kill deals at the finish line. You need to know every person who can say no before you reach Stage 4.',
+    priority: 'medium',
+  },
+  'Identified Pain': {
+    action: 'Re-run discovery focused entirely on business impact. Use the Pain Chain: operational pain → business problem → financial impact → executive priority. If you can\'t state the pain in their words, you don\'t own it yet.',
+    why: 'Pain is the engine of urgency. Without it, every competitor looks the same and price becomes the differentiator.',
+    priority: 'high',
+  },
+};
+
+const RISK_COACHING: Record<Deal['risk'], { headline: string; actions: string[] }> = {
+  high: {
+    headline: 'This deal needs immediate attention',
+    actions: [
+      'Schedule an urgent account review with your manager this week',
+      'Identify the single biggest blocker and create a targeted action plan',
+      'Reach out to your executive sponsor for top-down support',
+      'Consider whether a "mutual close plan" document would add structure',
+    ],
+  },
+  medium: {
+    headline: 'Watch for early warning signs',
+    actions: [
+      'Confirm close date is still realistic with your champion',
+      'Ensure all decision-makers are aligned — no surprises late in the process',
+      'Validate that the budget is still approved and allocated',
+    ],
+  },
+  low: {
+    headline: 'Keep momentum — don\'t let it coast',
+    actions: [
+      'Keep cadence high — weekly touchpoints to maintain velocity',
+      'Start procurement / legal prep now to avoid last-minute delays',
+      'Lock in the mutual close plan dates to hold the customer accountable',
+    ],
+  },
+};
+
+function CoachingNote({ dealId }: { dealId: string }) {
+  const [note, setNote] = useLocalStorage<string>(`coach-note:${dealId}`, '');
+  const [draft, setDraft] = useState(note);
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-1.5">
+        <StickyNote className="size-3.5 text-muted-foreground" />
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Coach's Note</p>
+      </div>
+      <textarea
+        className="w-full min-h-[80px] resize-y rounded-lg border border-border bg-background p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+        placeholder="Log your coaching insights, next steps, or blockers here…"
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+      />
+      <Button
+        size="sm"
+        appearance="outline"
+        startIcon={<Save className="size-3.5" />}
+        onClick={() => { setNote(draft); toast.success('Note saved'); }}
+      >
+        Save note
+      </Button>
+    </div>
+  );
+}
+
+function CoachingPanel({ deal, meddic, onClose }: {
+  deal: Deal;
+  meddic: { filled: number; total: number; gaps: string[] };
+  onClose: () => void;
+}) {
+  const riskCoach = RISK_COACHING[deal.risk];
+  return (
+    <div className="border-t border-brand-500/20 bg-brand-500/[0.03] px-5 py-5 flex flex-col gap-5">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <BrainCircuit className="size-4 text-brand-500" />
+          <p className="text-sm font-semibold text-foreground">Deal Coach</p>
+          <Badge color="primary">AI Assist</Badge>
+        </div>
+        <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
+          <ChevronUp className="size-4" />
+        </button>
+      </div>
+
+      {/* Risk guidance */}
+      <div className={`rounded-xl border px-4 py-3 ${
+        deal.risk === 'high' ? 'border-destructive/30 bg-destructive/5' :
+        deal.risk === 'medium' ? 'border-warning/30 bg-warning/5' : 'border-success/30 bg-success/5'
+      }`}>
+        <div className="flex items-center gap-2 mb-2">
+          <AlertTriangle className={`size-3.5 ${deal.risk === 'high' ? 'text-destructive' : deal.risk === 'medium' ? 'text-warning' : 'text-success'}`} />
+          <p className="text-xs font-semibold text-foreground">{riskCoach.headline}</p>
+        </div>
+        <ul className="flex flex-col gap-1">
+          {riskCoach.actions.map((a) => (
+            <li key={a} className="flex items-start gap-2 text-xs text-muted-foreground">
+              <ChevronRight className="size-3 shrink-0 mt-0.5 text-muted-foreground/60" />
+              {a}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* MEDDIC gap coaching */}
+      {meddic.gaps.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-1.5">
+            <Lightbulb className="size-3.5 text-warning" />
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              MEDDIC Gap Coaching ({meddic.gaps.length} gaps)
+            </p>
+          </div>
+          {meddic.gaps.map((gap) => {
+            const tip = COACHING_TIPS[gap];
+            if (!tip) return null;
+            return (
+              <div key={gap} className={`rounded-xl border px-4 py-3 ${tip.priority === 'high' ? 'border-destructive/20 bg-destructive/5' : 'border-warning/20 bg-warning/5'}`}>
+                <div className="flex items-center gap-2 mb-1.5">
+                  {tip.priority === 'high'
+                    ? <XCircle className="size-3.5 text-destructive shrink-0" />
+                    : <AlertTriangle className="size-3.5 text-warning shrink-0" />
+                  }
+                  <p className="text-xs font-bold text-foreground">{gap}</p>
+                  <Badge color={tip.priority === 'high' ? 'destructive' : 'warning'}>{tip.priority}</Badge>
+                </div>
+                <p className="text-xs text-foreground mb-1.5">{tip.action}</p>
+                <p className="text-xs text-muted-foreground italic">Why: {tip.why}</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {meddic.gaps.length === 0 && (
+        <div className="flex items-center gap-2 rounded-xl border border-success/30 bg-success/5 px-4 py-3">
+          <CheckCircle2 className="size-4 text-success" />
+          <p className="text-sm text-foreground font-medium">MEDDIC complete — this deal is well qualified.</p>
+        </div>
+      )}
+
+      {/* Coach note */}
+      <CoachingNote dealId={deal.id} />
+    </div>
+  );
+}
+
 function DealCard({ deal }: { deal: Deal }) {
+  const [coachOpen, setCoachOpen] = useState(false);
   const account = MOCK_ACCOUNTS.find((a) => a.id === deal.accountId)!;
   const staks   = MOCK_STAKEHOLDERS.filter((s) => s.accountId === deal.accountId);
   const sigs    = MOCK_SIGNALS.filter((s) => s.accountId === deal.accountId);
@@ -212,12 +386,29 @@ function DealCard({ deal }: { deal: Deal }) {
           endIcon={<ChevronRight className="size-4" />}>
           Account 360
         </Button>
-        <Button variant="primary" size="sm" className="flex-1"
+        <Button variant="primary" size="sm"
           render={<Link href={`/accounts/${deal.accountId}/brief`} />}
           startIcon={<Sparkles className="size-4" />}>
           Brief
         </Button>
+        <Button
+          appearance={coachOpen ? 'solid' : 'outline'}
+          variant={coachOpen ? 'primary' : undefined}
+          size="sm"
+          startIcon={<BrainCircuit className="size-4" />}
+          endIcon={coachOpen ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
+          onClick={() => setCoachOpen((v) => !v)}
+        >
+          Coach
+        </Button>
       </div>
+
+      {/* Coaching panel */}
+      {coachOpen && (
+        <div className="-mx-5 -mb-5 mt-1 rounded-b-2xl overflow-hidden">
+          <CoachingPanel deal={deal} meddic={meddic} onClose={() => setCoachOpen(false)} />
+        </div>
+      )}
     </div>
   );
 }

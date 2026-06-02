@@ -22,6 +22,11 @@ import {
   CheckCircle2,
   AlertCircle,
   Briefcase,
+  History,
+  Mail,
+  Video,
+  GitCommitHorizontal,
+  ListChecks,
 } from 'lucide-react';
 import { ExecutiveProfiles } from '@/components/executive-profiles';
 import { AccountHero } from '@/components/account-hero';
@@ -32,8 +37,10 @@ import {
   MOCK_SIGNALS,
   MOCK_WIKI_ASSETS,
   MOCK_MEETING_SUMMARY,
+  MOCK_ACTIVITIES,
   type Signal,
   type StakeholderRole,
+  type ActivityType,
 } from '@/lib/mock-data';
 import { computeAccountHealth, HEALTH_STYLE } from '@/lib/health';
 
@@ -52,6 +59,22 @@ const ROLE_COLOR: Record<StakeholderRole, BadgeColor> = {
   Influencer: 'secondary',
   Blocker: 'destructive',
   Coach: 'secondary',
+};
+
+const ACTIVITY_ICON: Record<ActivityType, React.ReactNode> = {
+  meeting:      <Video className="size-3.5" />,
+  email:        <Mail className="size-3.5" />,
+  signal:       <Zap className="size-3.5" />,
+  stage_change: <GitCommitHorizontal className="size-3.5" />,
+  action_item:  <ListChecks className="size-3.5" />,
+};
+
+const ACTIVITY_COLOR: Record<ActivityType, string> = {
+  meeting:      'bg-brand-500 text-white',
+  email:        'bg-secondary text-secondary-foreground',
+  signal:       'bg-warning text-warning-foreground',
+  stage_change: 'bg-success text-success-foreground',
+  action_item:  'bg-destructive text-destructive-foreground',
 };
 
 const STRENGTH_LABELS: Record<number, string> = {
@@ -146,6 +169,11 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
   // Latest meeting summary for this account (MEDDIC data)
   const meetingSummary = MOCK_MEETING_SUMMARY.accountId === account.id ? MOCK_MEETING_SUMMARY : null;
 
+  // Activity timeline for this account, newest first
+  const activities = MOCK_ACTIVITIES
+    .filter((a) => a.accountId === account.id)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+
   return (
     <div className="flex flex-col gap-4">
       {/* Hero card — no padding so the banner bleeds edge-to-edge */}
@@ -198,6 +226,10 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
             <Tabs.Trigger value="content">
               <FileText className="size-4" />
               Relevant Content
+            </Tabs.Trigger>
+            <Tabs.Trigger value="timeline">
+              <History className="size-4" />
+              Timeline
             </Tabs.Trigger>
           </Tabs.List>
 
@@ -361,6 +393,36 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
                     <Button appearance="outline" size="sm">
                       Use
                     </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Tabs.Content>
+          {/* Timeline tab */}
+          <Tabs.Content value="timeline" className="mt-4">
+            {activities.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No activity recorded for this account.</p>
+            ) : (
+              <div className="border-l-2 border-border ml-4 flex flex-col gap-6">
+                {activities.map((event) => (
+                  <div key={event.id} className="flex gap-4 relative">
+                    {/* Icon dot */}
+                    <div className={`-ml-[1.15rem] shrink-0 flex h-6 w-6 items-center justify-center rounded-full ${ACTIVITY_COLOR[event.type]}`}>
+                      {ACTIVITY_ICON[event.type]}
+                    </div>
+                    {/* Card */}
+                    <div className="flex-1 rounded-xl border border-border bg-card px-4 py-3">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <p className="text-sm font-semibold text-foreground">{event.title}</p>
+                        <span className="text-xs text-muted-foreground shrink-0">{event.date}</span>
+                      </div>
+                      <p className="text-sm text-foreground/80">{event.body}</p>
+                      {event.author && (
+                        <span className="mt-2 inline-block rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                          {event.author}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

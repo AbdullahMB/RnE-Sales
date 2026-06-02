@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Badge, Button, Dialog, Input } from '@humain-foundation/ui';
 import {
   ImagePlus, Pencil, Check, ExternalLink, Map, Sparkles,
-  Globe, BarChart2, Building2, Calendar, UserCog,
+  Globe, BarChart2, Building2, Calendar, UserCog, ClipboardList,
 } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { AccountAvatar } from '@/components/account-avatar';
@@ -104,6 +104,14 @@ export function AccountHero({ account, health }: AccountHeroProps) {
               startIcon={<Map className="size-4" />}
             >
               Stakeholder Map
+            </Button>
+            <Button
+              appearance="outline"
+              size="sm"
+              render={<Link href={`/accounts/${account.id}/plan`} />}
+              startIcon={<ClipboardList className="size-4" />}
+            >
+              Account Plan
             </Button>
             <Button
               variant="primary"

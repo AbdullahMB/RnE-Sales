@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { ExecutiveProfiles } from '@/components/executive-profiles';
 import { AccountHero } from '@/components/account-hero';
+import { toast } from '@humain-foundation/ui';
 import {
   MOCK_ACCOUNTS,
   MOCK_DEALS,
@@ -274,7 +275,12 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
               )}
               <p className="text-xs text-muted-foreground">
                 Opportunity data is read-only. To update stage or amount,{' '}
-                <button className="text-brand-500 hover:underline">open in Salesforce</button>.
+                <button
+                  className="text-brand-500 hover:underline"
+                  onClick={() => toast.info('Opening Salesforce…', { description: 'CRM integration coming soon.' })}
+                >
+                  open in Salesforce
+                </button>.
               </p>
 
               {/* MEDDICC gap bar */}
@@ -390,7 +396,11 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
                       </div>
                       <p className="text-sm font-medium text-foreground truncate">{asset.title}</p>
                     </div>
-                    <Button appearance="outline" size="sm">
+                    <Button
+                      appearance="outline"
+                      size="sm"
+                      onClick={() => toast.success('Content copied to clipboard', { description: asset.title })}
+                    >
                       Use
                     </Button>
                   </div>

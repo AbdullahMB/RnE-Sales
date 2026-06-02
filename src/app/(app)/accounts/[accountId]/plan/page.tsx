@@ -149,9 +149,9 @@ function parseTarget(val: string): number {
 // ─── Sub-components ────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function SectionHeader({ icon, title, subtitle }: { icon: any; title: string; subtitle?: string }) {
+function SectionHeader({ icon, title, subtitle, noMargin }: { icon: any; title: string; subtitle?: string; noMargin?: boolean }) {
   return (
-    <div className="flex items-center gap-2 mb-4">
+    <div className={`flex items-center gap-2 ${noMargin ? '' : 'mb-4'}`}>
       <span className="text-brand-500">{icon}</span>
       <div>
         <h2 className="text-sm font-semibold text-foreground">{title}</h2>
@@ -475,6 +475,7 @@ export default function AccountPlanPage({ params }: { params: Promise<{ accountI
               icon={<ShieldAlert className="size-4" />}
               title="Risk Register"
               subtitle="Track risks, impact, mitigation and status"
+              noMargin
             />
             <Button
               appearance="outline"

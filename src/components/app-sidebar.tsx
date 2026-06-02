@@ -1,6 +1,7 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   AppSidebar,
   NavAccountMenu,
@@ -38,6 +39,7 @@ const NAV_ITEMS = [
 
 export function SalesAppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <AppSidebar
@@ -72,10 +74,16 @@ export function SalesAppSidebar() {
         <NavAccountMenuContent side="right" align="end">
           <NavAccountMenuHeader title="Turki Bin Nader" subtitle="Enterprise AE" />
           <NavAccountMenuSection>
-            <NavAccountMenuItem icon={<User className="size-4" />}>
+            <NavAccountMenuItem
+              icon={<User className="size-4" />}
+              render={(props) => <Link {...props} href="/settings" />}
+            >
               View profile
             </NavAccountMenuItem>
-            <NavAccountMenuItem icon={<Settings className="size-4" />}>
+            <NavAccountMenuItem
+              icon={<Settings className="size-4" />}
+              render={(props) => <Link {...props} href="/settings" />}
+            >
               Settings
             </NavAccountMenuItem>
           </NavAccountMenuSection>
@@ -84,7 +92,11 @@ export function SalesAppSidebar() {
           </NavAccountMenuSection>
           <NavAccountMenuSeparator />
           <NavAccountMenuSection>
-            <NavAccountMenuItem icon={<LogOut className="size-4" />} destructive>
+            <NavAccountMenuItem
+              icon={<LogOut className="size-4" />}
+              destructive
+              onSelect={() => router.push('/login')}
+            >
               Sign out
             </NavAccountMenuItem>
           </NavAccountMenuSection>

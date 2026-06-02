@@ -94,7 +94,12 @@ export function AccountHero({ account, health }: AccountHeroProps) {
 
           {/* Action buttons aligned to the logo baseline */}
           <div className="flex items-center gap-2 flex-wrap justify-end">
-            <Button appearance="ghost" size="sm" endIcon={<ExternalLink className="size-4" />}>
+            <Button
+              appearance="ghost"
+              size="sm"
+              endIcon={<ExternalLink className="size-4" />}
+              onClick={() => toast.info('Opening Salesforce…', { description: 'CRM integration coming soon.' })}
+            >
               Salesforce
             </Button>
             <Button

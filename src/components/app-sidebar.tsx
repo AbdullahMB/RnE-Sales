@@ -23,6 +23,8 @@ import {
   User,
   FileText,
   BrainCircuit,
+  Bot,
+  Sparkles,
 } from 'lucide-react';
 import { MOCK_DEALS } from '@/lib/mock-data';
 
@@ -32,8 +34,10 @@ const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard />, badge: highRiskCount > 0 ? highRiskCount : undefined },
   { href: '/accounts', label: 'Accounts', icon: <Building2 /> },
   { href: '/pipeline', label: 'Deal Intelligence', icon: <BrainCircuit /> },
+  { href: '/agents', label: 'AI Sales Agents', icon: <Bot /> },
   { href: '/wiki', label: 'Sales Wiki', icon: <BookOpen /> },
   { href: '/summarize', label: 'Meeting Summaries', icon: <FileText /> },
+  { href: '/collateral', label: 'Collateral Builder', icon: <Sparkles /> },
   { href: '/settings', label: 'Settings', icon: <Settings /> },
 ];
 

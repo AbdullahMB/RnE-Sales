@@ -1,1 +1,42 @@
 @import '@humain-foundation/ui/styles.css';
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.5); }
+
+/* ── Selection ──────────────────────────────────────────────────────────── */
+::selection { background: hsl(var(--brand-500) / 0.2); color: hsl(var(--foreground)); }
+
+/* ── Smooth scroll ──────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+/* ── Page fade-in ───────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter { animation: fadeUp 0.22s ease forwards; }
+
+/* ── Stat card count animation ──────────────────────────────────────────── */
+@keyframes countIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.count-in { animation: countIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* ── Pulse indicator ────────────────────────────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 hsl(var(--destructive) / 0.45); }
+  70%  { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.pulse-dot { animation: pulse-ring 2s ease infinite; }
+
+/* ── Card hover lift ────────────────────────────────────────────────────── */
+.card-lift { transition: box-shadow 0.16s ease, transform 0.16s ease; }
+.card-lift:hover {
+  box-shadow: 0 8px 28px -4px hsl(var(--foreground) / 0.08);
+  transform: translateY(-2px);
+}

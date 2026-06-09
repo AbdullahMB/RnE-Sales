@@ -7,12 +7,16 @@ import {
   Badge,
   Button,
   Input,
-  Avatar,
-  Tooltip,
 } from '@humain-foundation/ui';
-import { Search, ChevronRight, Building2 } from 'lucide-react';
+import {
+  Search,
+  Building2,
+  TrendingUp,
+  Users,
+  ArrowRight,
+  Briefcase,
+} from 'lucide-react';
 import { AccountAvatar } from '@/components/account-avatar';
-import { AssignManager } from '@/components/assign-manager';
 import {
   MOCK_ACCOUNTS,
   MOCK_DEALS,
@@ -30,22 +34,49 @@ const TIER_COLOR: Record<Account['tier'], BadgeColor> = {
   'Mid-Market': 'warning',
 };
 
-const ALL_TIERS = ['All', 'Strategic', 'Enterprise', 'Mid-Market'] as const;
-const ALL_HEALTH = ['All', 'Healthy', 'At Risk', 'Critical'] as const;
+const TIER_BORDER: Record<Account['tier'], string> = {
+  Strategic:    'border-l-brand-500',
+  Enterprise:   'border-l-blue-500',
+  'Mid-Market': 'border-l-amber-500',
+};
+
+const HEALTH_RING: Record<string, string> = {
+  Healthy:  'ring-1 ring-success/30',
+  'At Risk': 'ring-1 ring-warning/30',
+  Critical: 'ring-1 ring-destructive/30',
+};
+
+const HEALTH_DOT: Record<string, string> = {
+  Healthy:  'bg-success',
+  'At Risk': 'bg-warning',
+  Critical: 'bg-destructive',
+};
+
+const ALL_TIERS   = ['All', 'Strategic', 'Enterprise', 'Mid-Market'] as const;
+const ALL_HEALTH  = ['All', 'Healthy', 'At Risk', 'Critical'] as const;
+
+function fmtAcv(v: number) {
+  if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
+  if (v >= 1_000)     return `$${(v / 1_000).toFixed(0)}K`;
+  return `$${v}`;
+}
 
 export default function AccountsPage() {
-  const [query, setQuery]       = useState('');
-  const [tier, setTier]         = useState<string>('All');
-  const [health, setHealth]     = useState<string>('All');
+  const [query, setQuery]   = useState('');
+  const [tier, setTier]     = useState<string>('All');
+  const [health, setHealth] = useState<string>('All');
 
   const enriched = useMemo(() =>
     MOCK_ACCOUNTS.map((a) => {
-      const deals = MOCK_DEALS.filter((d) => d.accountId === a.id);
-      const staks = MOCK_STAKEHOLDERS.filter((s) => s.accountId === a.id);
-      const sigs  = MOCK_SIGNALS.filter((s) => s.accountId === a.id);
-      const h     = computeAccountHealth(a, deals, staks, sigs);
-      const hs    = HEALTH_STYLE[h.status];
-      return { ...a, health: h, hs, execCount: a.executives?.length ?? 0 };
+      const deals   = MOCK_DEALS.filter((d) => d.accountId === a.id);
+      const staks   = MOCK_STAKEHOLDERS.filter((s) => s.accountId === a.id);
+      const sigs    = MOCK_SIGNALS.filter((s) => s.accountId === a.id);
+      const h       = computeAccountHealth(a, deals, staks, sigs);
+      const hs      = HEALTH_STYLE[h.status];
+      const openAcv = deals
+        .filter((d) => d.stage !== 'Won' && d.stage !== 'Lost' && d.stage !== 'Dropped')
+        .reduce((s, d) => s + d.acv, 0);
+      return { ...a, health: h, hs, openAcv, dealCount: deals.length, stakeholderCount: staks.length };
     }), []);
 
   const filtered = useMemo(() =>
@@ -60,16 +91,16 @@ export default function AccountsPage() {
     }), [enriched, tier, health, query]);
 
   return (
-    <AppShellCard>
+    <AppShellCard className="page-enter">
       <AppShellCard.Header>
         <div>
           <AppShellCard.Title>Accounts</AppShellCard.Title>
-          <AppShellCard.Subtitle>{MOCK_ACCOUNTS.length} accounts in your book</AppShellCard.Subtitle>
+          <AppShellCard.Subtitle>{MOCK_ACCOUNTS.length} accounts in your book of business</AppShellCard.Subtitle>
         </div>
       </AppShellCard.Header>
 
-      <div className="flex flex-col gap-5">
-        {/* Search + filters */}
+      <div className="flex flex-col gap-6">
+        {/* ── Search + filters ── */}
         <div className="flex flex-col gap-3">
           <Input
             placeholder="Search by name or industry…"
@@ -79,102 +110,130 @@ export default function AccountsPage() {
           />
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-xs text-muted-foreground font-medium mr-1">Tier</span>
+              <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mr-1">Tier</span>
               {ALL_TIERS.map((t) => (
-                <Button key={t} size="sm"
-                  appearance={tier === t ? 'solid' : 'outline'}
-                  variant={tier === t ? 'primary' : undefined}
-                  onClick={() => setTier(t)}>{t}</Button>
+                <button
+                  key={t}
+                  onClick={() => setTier(t)}
+                  className={[
+                    'px-3 py-1 rounded-full text-xs font-medium transition-all',
+                    tier === t
+                      ? 'bg-brand-500 text-white shadow-sm'
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80',
+                  ].join(' ')}
+                >
+                  {t}
+                </button>
               ))}
             </div>
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-xs text-muted-foreground font-medium mr-1">Health</span>
+              <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mr-1">Health</span>
               {ALL_HEALTH.map((h) => (
-                <Button key={h} size="sm"
-                  appearance={health === h ? 'solid' : 'outline'}
-                  variant={health === h ? 'primary' : undefined}
-                  onClick={() => setHealth(h)}>{h}</Button>
+                <button
+                  key={h}
+                  onClick={() => setHealth(h)}
+                  className={[
+                    'px-3 py-1 rounded-full text-xs font-medium transition-all',
+                    health === h
+                      ? 'bg-brand-500 text-white shadow-sm'
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80',
+                  ].join(' ')}
+                >
+                  {h}
+                </button>
               ))}
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">{filtered.length} of {MOCK_ACCOUNTS.length} accounts</p>
+          <p className="text-xs text-muted-foreground">
+            {filtered.length} of {MOCK_ACCOUNTS.length} accounts
+          </p>
         </div>
 
-        {/* Table */}
+        {/* ── Card grid ── */}
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center gap-3 py-16">
-            <Building2 className="size-10 text-muted-foreground" />
-            <p className="text-sm font-medium text-foreground">No accounts match</p>
-            <p className="text-xs text-muted-foreground">Try adjusting your filters.</p>
+          <div className="flex flex-col items-center gap-3 py-20">
+            <div className="size-14 rounded-2xl bg-muted flex items-center justify-center">
+              <Building2 className="size-7 text-muted-foreground" />
+            </div>
+            <p className="text-sm font-semibold text-foreground">No accounts match</p>
+            <p className="text-xs text-muted-foreground">Try adjusting your search or filters.</p>
           </div>
         ) : (
-          <div className="rounded-xl border border-border overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/60">
-                <tr>
-                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground">Account</th>
-                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground hidden md:table-cell">Revenue (FY)</th>
-                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground hidden lg:table-cell">Headcount</th>
-                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground hidden sm:table-cell">Tier</th>
-                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground">Health</th>
-                  <th className="text-right px-4 py-2.5 text-xs font-semibold text-muted-foreground hidden sm:table-cell">Pipeline ACV</th>
-                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-muted-foreground hidden lg:table-cell">Owner</th>
-                  <th className="px-4 py-2.5" />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border bg-card">
-                {filtered.map((account) => (
-                  <tr key={account.id} className="hover:bg-accent transition-colors cursor-pointer group">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2.5">
-                        <AccountAvatar accountId={account.id} name={account.name} size="sm" />
-                        <div className="min-w-0">
-                          <p className="font-semibold text-foreground truncate">{account.name}</p>
-                          <p className="text-xs text-muted-foreground truncate">{account.industry} · {account.hq ?? account.region}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground hidden md:table-cell">
-                      <div>
-                        <p className="font-medium text-foreground">{account.revenue}</p>
-                        {account.lastQuarterRevenue && (
-                          <p className="text-xs text-muted-foreground">Q last: {account.lastQuarterRevenue}</p>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground hidden lg:table-cell">{account.headcount}</td>
-                    <td className="px-4 py-3 hidden sm:table-cell">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            {filtered.map((account) => (
+              <Link
+                key={account.id}
+                href={`/accounts/${account.id}`}
+                className={[
+                  'group relative flex flex-col gap-4 rounded-2xl border border-l-4 bg-card p-5',
+                  'transition-all duration-150 hover:shadow-lg hover:-translate-y-0.5',
+                  TIER_BORDER[account.tier],
+                  HEALTH_RING[account.hs.label] ?? '',
+                ].join(' ')}
+              >
+                {/* ── Header ── */}
+                <div className="flex items-start gap-3">
+                  <AccountAvatar accountId={account.id} name={account.name} size="md" />
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-foreground leading-tight truncate">{account.name}</p>
+                    <p className="text-xs text-muted-foreground truncate mt-0.5">
+                      {account.industry} · {account.hq ?? account.region}
+                    </p>
+                    <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                       <Badge color={TIER_COLOR[account.tier]}>{account.tier}</Badge>
-                    </td>
-                    <td className="px-4 py-3">
-                      <Tooltip.Root>
-                        <Tooltip.Trigger>
-                          <Badge color={account.hs.color}>{account.hs.label}</Badge>
-                        </Tooltip.Trigger>
-                        <Tooltip.Popup>
-                          <div className="text-xs space-y-1">
-                            {account.health.reasons.map((r) => <p key={r}>{r}</p>)}
-                          </div>
-                        </Tooltip.Popup>
-                      </Tooltip.Root>
-                    </td>
-                    <td className="px-4 py-3 text-right font-semibold text-foreground hidden sm:table-cell">
-                      ${(account.totalAcv / 1000).toFixed(0)}K
-                    </td>
-                    <td className="px-4 py-3 hidden lg:table-cell">
-                      <AssignManager accountId={account.id} defaultManagerId={account.accountManagerId} variant="compact" />
-                    </td>
-                    <td className="px-4 py-3">
-                      <Button appearance="ghost" size="sm"
-                        render={<Link href={`/accounts/${account.id}`} />}
-                        endIcon={<ChevronRight className="size-4" />}>
-                        View
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      <span className={[
+                        'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold',
+                        account.hs.label === 'Healthy'
+                          ? 'bg-success/15 text-success'
+                          : account.hs.label === 'At Risk'
+                            ? 'bg-warning/15 text-warning'
+                            : 'bg-destructive/15 text-destructive',
+                      ].join(' ')}>
+                        <span className={['size-1.5 rounded-full', HEALTH_DOT[account.hs.label]].join(' ')} />
+                        {account.hs.label}
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowRight className="size-4 text-muted-foreground/40 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all shrink-0 mt-1" />
+                </div>
+
+                {/* ── Divider ── */}
+                <div className="h-px bg-border" />
+
+                {/* ── Stats row ── */}
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div>
+                    <div className="flex items-center justify-center gap-1 text-brand-500 mb-1">
+                      <TrendingUp className="size-3.5" />
+                    </div>
+                    <p className="text-xs font-bold text-foreground">{fmtAcv(account.openAcv)}</p>
+                    <p className="text-[10px] text-muted-foreground">Open ACV</p>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-center gap-1 text-blue-500 mb-1">
+                      <Briefcase className="size-3.5" />
+                    </div>
+                    <p className="text-xs font-bold text-foreground">{account.dealCount}</p>
+                    <p className="text-[10px] text-muted-foreground">Deals</p>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-center gap-1 text-amber-500 mb-1">
+                      <Users className="size-3.5" />
+                    </div>
+                    <p className="text-xs font-bold text-foreground">{account.stakeholderCount}</p>
+                    <p className="text-[10px] text-muted-foreground">Contacts</p>
+                  </div>
+                </div>
+
+                {/* ── Revenue footer ── */}
+                {account.revenue && (
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="text-muted-foreground">Revenue</span>
+                    <span className="font-semibold text-foreground">{account.revenue}</span>
+                  </div>
+                )}
+              </Link>
+            ))}
           </div>
         )}
       </div>

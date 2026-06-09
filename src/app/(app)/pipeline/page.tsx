@@ -9,11 +9,12 @@ import {
   CheckCircle2, XCircle, Target, Calendar,
   ShieldAlert, ChevronRight, BrainCircuit, Lightbulb,
   ChevronDown, ChevronUp, StickyNote, Save, Trophy,
-  Layers, BarChart3, Filter,
+  Layers, BarChart3, Filter, Database,
 } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
+import { usePipelineData } from '@/hooks/use-pipeline-data';
+import { ExcelImportDialog } from '@/components/excel-import-dialog';
 import {
-  MOCK_DEALS,
   MOCK_ACCOUNTS,
   MOCK_STAKEHOLDERS,
   MOCK_SIGNALS,
@@ -489,9 +490,10 @@ function SubSectorBreakdown({ deals }: { deals: Deal[] }) {
 export default function DealIntelligencePage() {
   const [sectorFilter, setSectorFilter] = useState<string | null>(null);
   const [showClosed, setShowClosed] = useState(false);
+  const { deals, importDeals, resetImport, hasCustomData } = usePipelineData();
 
-  const activeDeals = MOCK_DEALS.filter((d) => !CLOSED_STAGES.has(d.stage));
-  const closedDeals = MOCK_DEALS.filter((d) => CLOSED_STAGES.has(d.stage));
+  const activeDeals = deals.filter((d) => !CLOSED_STAGES.has(d.stage));
+  const closedDeals = deals.filter((d) => CLOSED_STAGES.has(d.stage));
   const wonDeals    = closedDeals.filter((d) => d.stage === 'Won');
 
   const totalPipeline = activeDeals.reduce((s, d) => s + d.acv, 0);
@@ -500,7 +502,7 @@ export default function DealIntelligencePage() {
   const atRisk        = activeDeals.filter((d) => d.risk === 'high').length;
   const daysToQEnd    = daysUntil('2026-06-30');
 
-  const allSectors    = [...new Set(MOCK_DEALS.map((d) => d.subSector))];
+  const allSectors    = [...new Set(deals.map((d) => d.subSector))];
 
   const filteredActive = sectorFilter
     ? activeDeals.filter((d) => d.subSector === sectorFilter)
@@ -530,11 +532,23 @@ export default function DealIntelligencePage() {
     <AppShellCard>
       <AppShellCard.Header>
         <div>
-          <AppShellCard.Title>Deal Intelligence</AppShellCard.Title>
+          <div className="flex items-center gap-2">
+            <AppShellCard.Title>Deal Intelligence</AppShellCard.Title>
+            {hasCustomData && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-brand-500/10 border border-brand-500/20 px-2 py-0.5 text-xs font-medium text-brand-500">
+                <Database className="size-3" /> Imported data
+              </span>
+            )}
+          </div>
           <AppShellCard.Subtitle>
             {activeDeals.length} active deals · {wonDeals.length} won · {closedDeals.filter((d) => d.stage === 'Lost').length} lost
           </AppShellCard.Subtitle>
         </div>
+        <ExcelImportDialog
+          onImport={(newDeals) => { importDeals(newDeals); toast.success(`Imported ${newDeals.length} deals from Excel`); }}
+          onReset={() => { resetImport(); toast.success('Reset to default pipeline data'); }}
+          hasCustomData={hasCustomData}
+        />
       </AppShellCard.Header>
 
       <div className="flex flex-col gap-8">
@@ -586,7 +600,7 @@ export default function DealIntelligencePage() {
             <h2 className="text-sm font-semibold text-foreground">Sub Sector Breakdown</h2>
             <Badge color="secondary">{allSectors.length} sectors</Badge>
           </div>
-          <SubSectorBreakdown deals={MOCK_DEALS} />
+          <SubSectorBreakdown deals={deals} />
         </section>
 
         {/* ── DEAL HEALTH CARDS ─────────────────────────────────────── */}

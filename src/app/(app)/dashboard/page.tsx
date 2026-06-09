@@ -89,13 +89,13 @@ export default function DashboardPage() {
   const setDismissedTasks = (fn: (prev: Set<string>) => Set<string>) =>
     setDismissedArr((arr) => [...fn(new Set(arr))]);
 
-  // Pipeline by stage for BarChart
-  const stageOrder = ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Stage 5'] as const;
+  // Pipeline by stage for BarChart (active deals only)
+  const stageOrder = ['Qualification', 'Develop Proposal', 'Submit Proposal', 'Negotiate', 'Won'] as const;
   const pipelineByStage = stageOrder.map((s) => ({
     id: s,
-    label: s,
+    label: s === 'Develop Proposal' ? 'Develop' : s === 'Submit Proposal' ? 'Submit' : s,
     values: {
-      acv: MOCK_DEALS.filter((d) => d.stage === s).reduce((sum, d) => sum + d.acv, 0) / 1000,
+      acv: MOCK_DEALS.filter((d) => d.stage === s).reduce((sum, d) => sum + d.acv, 0) / 1_000_000,
     },
   })).filter((d) => d.values.acv > 0);
 

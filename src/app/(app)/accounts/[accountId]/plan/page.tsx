@@ -69,31 +69,34 @@ interface Risk {
 
 const QUARTERS = ['Q2 2026', 'Q3 2026', 'Q4 2026', 'Q1 2027'] as const;
 
-const STAGE_COLOR: Record<DealStage, string> = {
-  'Stage 1': 'secondary',
-  'Stage 2': 'secondary',
-  'Stage 3': 'warning',
-  'Stage 4': 'primary',
-  'Stage 5': 'success',
+const STAGE_COLOR: Partial<Record<DealStage, string>> & { default: string } = {
+  'Qualification':    'secondary',
+  'Develop Proposal': 'warning',
+  'Submit Proposal':  'primary',
+  'Negotiate':        'primary',
+  'Won':              'success',
+  'Lost':             'destructive',
+  'Dropped':          'destructive',
+  default:            'secondary',
 };
 
 // ─── Defaults ────────────────────────────────────────────────────────────────
 
 function defaultMilestones(accountId: string, stage: DealStage | undefined): Milestone[] {
   const base: Omit<Milestone, 'id'>[] =
-    !stage || stage === 'Stage 1' ? [
+    !stage || stage === 'Qualification' ? [
       { quarter: 'Q2 2026', text: 'Complete discovery & qualify pain points', done: false },
       { quarter: 'Q2 2026', text: 'Identify economic buyer and champion', done: false },
       { quarter: 'Q3 2026', text: 'Deliver technical proof of concept', done: false },
-    ] : stage === 'Stage 2' ? [
+    ] : stage === 'Develop Proposal' ? [
       { quarter: 'Q2 2026', text: 'Complete technical evaluation', done: false },
       { quarter: 'Q2 2026', text: 'Secure champion sponsorship', done: false },
       { quarter: 'Q3 2026', text: 'Submit commercial proposal', done: false },
-    ] : stage === 'Stage 3' ? [
+    ] : stage === 'Submit Proposal' ? [
       { quarter: 'Q2 2026', text: 'Deliver business case to economic buyer', done: false },
       { quarter: 'Q2 2026', text: 'Conduct CFO / executive briefing', done: false },
       { quarter: 'Q3 2026', text: 'Navigate legal & procurement review', done: false },
-    ] : stage === 'Stage 4' ? [
+    ] : stage === 'Negotiate' ? [
       { quarter: 'Q2 2026', text: 'Resolve all commercial objections', done: false },
       { quarter: 'Q2 2026', text: 'Secure verbal commitment', done: false },
       { quarter: 'Q3 2026', text: 'Close deal and initiate onboarding', done: false },
@@ -306,7 +309,7 @@ export default function AccountPlanPage({ params }: { params: Promise<{ accountI
                         <p className="text-xs text-muted-foreground">Close {d.closeDate}</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
-                        <Badge color={STAGE_COLOR[d.stage] as 'secondary' | 'warning' | 'primary' | 'success'}>{d.stage}</Badge>
+                        <Badge color={(STAGE_COLOR[d.stage] ?? STAGE_COLOR.default) as 'secondary' | 'warning' | 'primary' | 'success' | 'destructive'}>{d.stage}</Badge>
                         <span className="text-sm font-semibold text-foreground">{formatAcv(d.acv)}</span>
                       </div>
                     </div>

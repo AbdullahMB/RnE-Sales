@@ -80,8 +80,8 @@ function generateTalkingPoints(
 
   // Deal stage points
   if (deal) {
-    if (deal.stage === 'Stage 3') points.push('You\'re in Develop — focus on quantifying the business case. Push for specific metrics (cost savings, time-to-deployment) that will anchor the CFO conversation.');
-    if (deal.stage === 'Stage 4') points.push('You\'re at Propose — confirm the commercial terms are still aligned and ask explicitly: "Is there anything stopping us from proceeding?"');
+    if (deal.stage === 'Develop Proposal') points.push('You\'re in Develop — focus on quantifying the business case. Push for specific metrics (cost savings, time-to-deployment) that will anchor the CFO conversation.');
+    if (deal.stage === 'Submit Proposal' || deal.stage === 'Negotiate') points.push('You\'re at Propose — confirm the commercial terms are still aligned and ask explicitly: "Is there anything stopping us from proceeding?"');
     if (deal.daysSinceActivity > 14) points.push(`Deal has been idle ${deal.daysSinceActivity} days — address momentum directly. Ask what's changed internally and what you can do to re-engage.`);
   }
 

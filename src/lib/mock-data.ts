@@ -1,14 +1,18 @@
-export type DealStage = 'Stage 1' | 'Stage 2' | 'Stage 3' | 'Stage 4' | 'Stage 5';
+export type DealStage = 'Qualification' | 'Develop Proposal' | 'Submit Proposal' | 'Negotiate' | 'Won' | 'Lost' | 'Dropped';
 export type RiskLevel = 'low' | 'medium' | 'high';
 export type StakeholderRole = 'Decision Maker' | 'Champion' | 'Influencer' | 'Blocker' | 'Coach';
 export type RelationshipStrength = 1 | 2 | 3 | 4 | 5;
 
 export interface Deal {
   id: string;
-  accountName: string;
+  title: string;
+  accountName: string;      // customer display name
   accountId: string;
+  customer: string;         // customer short name (from CRM)
+  subSector: string;
   stage: DealStage;
   acv: number;
+  probability: number;      // 0–100
   closeDate: string;
   daysSinceActivity: number;
   risk: RiskLevel;
@@ -123,11 +127,25 @@ export interface MeetingSummary {
 }
 
 export const MOCK_DEALS: Deal[] = [
-  { id: 'd1', accountName: 'Aramco Digital', accountId: 'a1', stage: 'Stage 3', acv: 1200000, closeDate: '2026-06-30', daysSinceActivity: 3, risk: 'medium', owner: 'Turki Bin Nader' },
-  { id: 'd2', accountName: 'SABIC', accountId: 'a2', stage: 'Stage 4', acv: 480000, closeDate: '2026-05-31', daysSinceActivity: 18, risk: 'high', owner: 'Turki Bin Nader' },
-  { id: 'd3', accountName: 'STC Group', accountId: 'a3', stage: 'Stage 2', acv: 750000, closeDate: '2026-07-31', daysSinceActivity: 7, risk: 'low', owner: 'Turki Bin Nader' },
-  { id: 'd4', accountName: 'Mobily', accountId: 'a4', stage: 'Stage 3', acv: 320000, closeDate: '2026-06-15', daysSinceActivity: 22, risk: 'high', owner: 'Turki Bin Nader' },
-  { id: 'd5', accountName: 'NEOM', accountId: 'a5', stage: 'Stage 1', acv: 2100000, closeDate: '2026-09-30', daysSinceActivity: 1, risk: 'low', owner: 'Turki Bin Nader' },
+  // ── Won ─────────────────────────────────────────────────────────────────────
+  { id: 'd1',  title: 'AI Program',                                        accountName: 'MiM',           accountId: 'a11', customer: 'MiM',          subSector: 'Mining',                   stage: 'Won',             acv: 17399904, probability: 100, closeDate: '2026-03-31', daysSinceActivity: 45,  risk: 'low',    owner: 'H. Muneef' },
+  // ── Active ──────────────────────────────────────────────────────────────────
+  { id: 'd2',  title: 'Sabic Program',                                     accountName: 'SABIC',         accountId: 'a2',  customer: 'Sabic',        subSector: 'Industrial Manufacturing', stage: 'Qualification',   acv: 20000000, probability: 20,  closeDate: '2026-12-31', daysSinceActivity: 12,  risk: 'medium', owner: 'T. Nader' },
+  { id: 'd3',  title: 'Energy LLM',                                        accountName: 'Aramco',        accountId: 'a1',  customer: 'Aramco',       subSector: 'Energy',                   stage: 'Qualification',   acv: 25000000, probability: 20,  closeDate: '2026-12-31', daysSinceActivity: 8,   risk: 'medium', owner: 'A. Almeer' },
+  { id: 'd4',  title: 'Safety Opt',                                        accountName: 'Aramco',        accountId: 'a1',  customer: 'Aramco',       subSector: 'Energy',                   stage: 'Qualification',   acv: 15000000, probability: 20,  closeDate: '2026-12-31', daysSinceActivity: 15,  risk: 'medium', owner: 'Y. Alanazi' },
+  { id: 'd5',  title: 'ASMO — Agentic Platform RFP',                       accountName: 'ASMO',          accountId: 'a6',  customer: 'ASMO',         subSector: 'Energy',                   stage: 'Develop Proposal',acv: 12000000, probability: 40,  closeDate: '2026-09-30', daysSinceActivity: 5,   risk: 'medium', owner: 'A. Almeer' },
+  { id: 'd6',  title: 'AI and Emerging Technologies in Waste Management',  accountName: 'MWAN',          accountId: 'a7',  customer: 'MWAN',         subSector: 'Energy',                   stage: 'Submit Proposal', acv: 2000000,  probability: 50,  closeDate: '2026-08-31', daysSinceActivity: 3,   risk: 'low',    owner: 'B. Alawfi' },
+  { id: 'd7',  title: 'Sport Solutions',                                   accountName: 'Aramco Sports', accountId: 'a13', customer: 'Aramco Sports', subSector: 'Energy',                   stage: 'Qualification',   acv: 9000000,  probability: 20,  closeDate: '2026-12-31', daysSinceActivity: 20,  risk: 'medium', owner: 'A. Almeer' },
+  { id: 'd8',  title: 'Industrial Cloud',                                  accountName: 'Aramco Digital',accountId: 'a1',  customer: 'Aramco Digital',subSector: 'Energy',                   stage: 'Qualification',   acv: 8000000,  probability: 20,  closeDate: '2026-12-31', daysSinceActivity: 10,  risk: 'medium', owner: 'A. Almeer' },
+  { id: 'd9',  title: 'AI Solution Hosting on Sovereign Cloud',            accountName: 'Aramco',        accountId: 'a1',  customer: 'Aramco',       subSector: 'Energy',                   stage: 'Develop Proposal',acv: 2800000,  probability: 40,  closeDate: '2026-09-30', daysSinceActivity: 7,   risk: 'medium', owner: 'A. Almeer' },
+  { id: 'd10', title: 'SLB Infra & Compute',                               accountName: 'Aramco',        accountId: 'a1',  customer: 'Aramco',       subSector: 'Energy',                   stage: 'Qualification',   acv: 3000000,  probability: 20,  closeDate: '2026-12-31', daysSinceActivity: 25,  risk: 'high',   owner: 'Y. Alanazi' },
+  { id: 'd11', title: 'Reservoir Simulation Agent',                        accountName: 'Aramco',        accountId: 'a1',  customer: 'Aramco',       subSector: 'Energy',                   stage: 'Qualification',   acv: 7000000,  probability: 20,  closeDate: '2026-12-31', daysSinceActivity: 9,   risk: 'medium', owner: 'A. Almeer' },
+  { id: 'd12', title: 'Energy AI Assistant',                               accountName: 'MoE',           accountId: 'a8',  customer: 'MoE',          subSector: 'Energy',                   stage: 'Qualification',   acv: 20000000, probability: 20,  closeDate: '2026-12-31', daysSinceActivity: 30,  risk: 'high',   owner: 'A. Almeer' },
+  { id: 'd13', title: 'P&ID Agent',                                        accountName: 'Aramco',        accountId: 'a1',  customer: 'Aramco',       subSector: 'Energy',                   stage: 'Qualification',   acv: 5000000,  probability: 20,  closeDate: '2026-12-31', daysSinceActivity: 14,  risk: 'medium', owner: 'Y. Alanazi' },
+  { id: 'd14', title: 'MEWA — Humain Brain',                               accountName: 'MEWA',          accountId: 'a9',  customer: 'MEWA',         subSector: 'Utilities & Services',     stage: 'Qualification',   acv: 3000000,  probability: 40,  closeDate: '2026-10-31', daysSinceActivity: 18,  risk: 'medium', owner: 'A. Almeer' },
+  // ── Closed ──────────────────────────────────────────────────────────────────
+  { id: 'd15', title: 'Agentic Advanced Artificial Intelligence Products Platform', accountName: 'SWA', accountId: 'a10', customer: 'SWA',  subSector: 'Energy',                   stage: 'Lost',            acv: 14283318, probability: 0,   closeDate: '2026-05-01', daysSinceActivity: 60,  risk: 'high',   owner: 'B. Alawfi' },
+  { id: 'd16', title: 'Intelligent Factory',                               accountName: 'MiM',           accountId: 'a11', customer: 'MiM',          subSector: 'Mining',                   stage: 'Dropped',         acv: 900000,   probability: 0,   closeDate: '2026-04-15', daysSinceActivity: 75,  risk: 'high',   owner: 'B. Alawfi' },
 ];
 
 export const MOCK_SIGNALS: Signal[] = [
@@ -138,10 +156,13 @@ export const MOCK_SIGNALS: Signal[] = [
 ];
 
 export const MOCK_TASKS: SuggestedTask[] = [
-  { id: 't1', dealId: 'd2', accountName: 'SABIC', action: 'Follow up with CFO on Stage 4 approval', reason: 'Deal is at Stage 4 with no CFO contact in 18 days. Required for close.', priority: 'high' },
-  { id: 't2', dealId: 'd4', accountName: 'Mobily', action: 'Send FSI case study to technical team', reason: 'Technical evaluation stalled. Similar deals unblocked with reference architecture.', priority: 'high' },
-  { id: 't3', dealId: 'd1', accountName: 'Aramco Digital', action: 'Schedule intro with new CTO Khalid Al-Rashid', reason: 'Leadership change detected. New CTO is likely reassessing vendor relationships.', priority: 'medium' },
-  { id: 't4', dealId: 'd3', accountName: 'STC Group', action: 'Send AI partnership reference architecture', reason: 'STC announced an AI co-development deal — align our platform pitch to their new strategic direction.', priority: 'medium' },
+  { id: 't1',  dealId: 'd2',  accountName: 'SABIC',         action: 'Engage SABIC technical leadership on Sabic Program scope', reason: 'Deal at Qualification with no senior stakeholder engagement in 12 days.', priority: 'high' },
+  { id: 't2',  dealId: 'd10', accountName: 'Aramco',        action: 'Re-engage Aramco on SLB Infra — 25 days idle', reason: 'No activity in 25 days. Risk of deal going cold.', priority: 'high' },
+  { id: 't3',  dealId: 'd12', accountName: 'MoE',           action: 'Schedule executive briefing on Energy AI Assistant', reason: '30-day idle on a $20M deal. Requires C-level outreach to revive.', priority: 'high' },
+  { id: 't4',  dealId: 'd4',  accountName: 'Aramco',        action: 'Follow up on Safety Opt evaluation status', reason: '15-day idle. Technical review may have stalled — confirm status with champion.', priority: 'medium' },
+  { id: 't5',  dealId: 'd5',  accountName: 'ASMO',          action: 'Complete Agentic Platform RFP response', reason: 'Develop Proposal stage — RFP deadline approaching.', priority: 'high' },
+  { id: 't6',  dealId: 'd7',  accountName: 'Aramco Sports', action: 'Identify and engage champion for Sport Solutions', reason: 'No stakeholder mapped. Deal at risk of stalling at Qualification.', priority: 'medium' },
+  { id: 't7',  dealId: 'd14', accountName: 'MEWA',          action: 'Advance MEWA — Humain Brain to next stage', reason: '18-day idle on a deal at 40% probability — keep momentum.', priority: 'medium' },
 ];
 
 export const MOCK_ACCOUNTS: Account[] = [
@@ -207,6 +228,41 @@ export const MOCK_ACCOUNTS: Account[] = [
       { id: 'e-a5-5', name: 'Dr. Manar Al Moneef', title: 'Chief Investment Officer' },
       { id: 'e-a5-6', name: 'Stefan Ricketts', title: 'Chief Legal Officer' },
     ],
+  },
+  {
+    id: 'a6', name: 'ASMO', industry: 'Energy / Standards',
+    revenue: 'Government Authority', headcount: '~500', region: 'KSA', hq: 'Riyadh, KSA', founded: '2000',
+    website: 'asmo.gov.sa', tier: 'Strategic', accountManagerId: 'tm1', openDeals: 1, totalAcv: 12000000, lastActivity: '2026-05-20',
+  },
+  {
+    id: 'a7', name: 'MWAN', industry: 'Infrastructure / Waste Management',
+    revenue: 'Government Authority', headcount: '~300', region: 'KSA', hq: 'Riyadh, KSA', founded: '2018',
+    website: 'mwan.gov.sa', tier: 'Enterprise', accountManagerId: 'tm2', openDeals: 1, totalAcv: 2000000, lastActivity: '2026-06-01',
+  },
+  {
+    id: 'a8', name: 'Ministry of Energy (MoE)', industry: 'Energy',
+    revenue: 'Government Ministry', headcount: '~5,000', region: 'KSA', hq: 'Riyadh, KSA', founded: '1975',
+    website: 'moenergy.gov.sa', tier: 'Strategic', accountManagerId: 'tm1', openDeals: 1, totalAcv: 20000000, lastActivity: '2026-05-01',
+  },
+  {
+    id: 'a9', name: 'MEWA', industry: 'Infrastructure / Utilities',
+    revenue: 'Government Ministry', headcount: '~8,000', region: 'KSA', hq: 'Riyadh, KSA', founded: '2001',
+    website: 'mewa.gov.sa', tier: 'Strategic', accountManagerId: 'tm1', openDeals: 1, totalAcv: 3000000, lastActivity: '2026-05-05',
+  },
+  {
+    id: 'a10', name: 'Saudi Water Authority (SWA)', industry: 'Infrastructure / Utilities',
+    revenue: 'Government Authority', headcount: '~3,000', region: 'KSA', hq: 'Riyadh, KSA', founded: '2018',
+    website: 'swa.gov.sa', tier: 'Strategic', accountManagerId: 'tm2', openDeals: 0, totalAcv: 0, lastActivity: '2026-04-01',
+  },
+  {
+    id: 'a11', name: 'MiM', industry: 'Mining / Industrial',
+    revenue: 'Not disclosed', headcount: '~1,000', region: 'KSA', hq: 'KSA', founded: '2010',
+    tier: 'Enterprise', accountManagerId: 'tm3', openDeals: 0, totalAcv: 17399904, lastActivity: '2026-03-31',
+  },
+  {
+    id: 'a13', name: 'Aramco Sports', industry: 'Energy / Sports',
+    revenue: 'Subsidiary (Saudi Aramco)', headcount: '~200', region: 'KSA', hq: 'Dhahran, KSA', founded: '2021',
+    website: 'aramcosports.com', tier: 'Enterprise', accountManagerId: 'tm1', openDeals: 1, totalAcv: 9000000, lastActivity: '2026-05-10',
   },
 ];
 

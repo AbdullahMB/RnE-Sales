@@ -25,6 +25,7 @@ import {
   BrainCircuit,
   Bot,
   Sparkles,
+  Layers2,
 } from 'lucide-react';
 import { MOCK_DEALS } from '@/lib/mock-data';
 
@@ -34,6 +35,7 @@ const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard />, badge: highRiskCount > 0 ? highRiskCount : undefined },
   { href: '/accounts', label: 'Accounts', icon: <Building2 /> },
   { href: '/pipeline', label: 'Deal Intelligence', icon: <BrainCircuit /> },
+  { href: '/subsectors', label: 'Sub Sectors', icon: <Layers2 /> },
   { href: '/agents', label: 'AI Sales Agents', icon: <Bot /> },
   { href: '/wiki', label: 'Sales Wiki', icon: <BookOpen /> },
   { href: '/summarize', label: 'Meeting Summaries', icon: <FileText /> },
@@ -71,12 +73,12 @@ export function SalesAppSidebar() {
 
       <NavAccountMenu>
         <NavAccountMenuTrigger
-          avatar={<Avatar fallback="Turki Bin Nader" size="sm" />}
-          name="Turki Bin Nader"
-          email="turki.binnader@company.com"
+          avatar={<Avatar fallback="Abdullah" size="sm" />}
+          name="Abdullah"
+          email="abdullah@company.com"
         />
         <NavAccountMenuContent side="right" align="end">
-          <NavAccountMenuHeader title="Turki Bin Nader" subtitle="Enterprise AE" />
+          <NavAccountMenuHeader title="Abdullah" subtitle="Senior Account Executive" />
           <NavAccountMenuSection>
             <NavAccountMenuItem
               icon={<User className="size-4" />}

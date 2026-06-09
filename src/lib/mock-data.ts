@@ -336,12 +336,14 @@ export interface ActivityEvent {
 }
 
 export const MOCK_TEAM: TeamMember[] = [
-  { id: 'tm1', name: 'Turki Bin Nader',   title: 'Enterprise Account Executive', email: 'turki.binnader@company.com',    region: 'KSA' },
-  { id: 'tm2', name: 'Layla Al-Farsi',    title: 'Senior Account Executive',     email: 'layla.alfarsi@company.com',     region: 'KSA' },
-  { id: 'tm3', name: 'Khalid Mansouri',   title: 'Account Executive',            email: 'khalid.mansouri@company.com',   region: 'KSA / UAE' },
-  { id: 'tm4', name: 'Priya Nair',        title: 'Solutions Engineer',           email: 'priya.nair@company.com',        region: 'KSA' },
-  { id: 'tm5', name: 'Omar Barakati',     title: 'Enterprise Account Executive', email: 'omar.barakati@company.com',     region: 'GCC' },
-  { id: 'tm6', name: 'Nadia Chokri',      title: 'Customer Success Manager',     email: 'nadia.chokri@company.com',      region: 'KSA / GCC' },
+  { id: 'tm1', name: 'Hissah',     title: 'Sales Director',               email: 'hissah@company.com',       region: 'KSA' },
+  { id: 'tm2', name: 'Abdullah',   title: 'Senior Account Executive',     email: 'abdullah@company.com',     region: 'KSA' },
+  { id: 'tm3', name: 'Abdulaziz',  title: 'Enterprise Account Executive', email: 'abdulaziz@company.com',    region: 'KSA' },
+  { id: 'tm4', name: 'Yasir',      title: 'Account Executive',            email: 'yasir@company.com',        region: 'KSA' },
+  { id: 'tm5', name: 'Turki',      title: 'Account Executive',            email: 'turki@company.com',        region: 'KSA' },
+  { id: 'tm6', name: 'Ghadeer',    title: 'Account Executive',            email: 'ghadeer@company.com',      region: 'KSA' },
+  { id: 'tm7', name: 'Sara',       title: 'Solutions Consultant',         email: 'sara@company.com',         region: 'KSA' },
+  { id: 'tm8', name: 'Basmah',     title: 'Customer Success Manager',     email: 'basmah@company.com',       region: 'KSA' },
 ];
 
 export const MOCK_ACTIVITIES: ActivityEvent[] = [

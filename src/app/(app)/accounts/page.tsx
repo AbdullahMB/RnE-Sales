@@ -36,8 +36,8 @@ const TIER_COLOR: Record<Account['tier'], BadgeColor> = {
 
 const TIER_BORDER: Record<Account['tier'], string> = {
   Strategic:    'border-l-brand-500',
-  Enterprise:   'border-l-blue-500',
-  'Mid-Market': 'border-l-amber-500',
+  Enterprise:   'border-l-brand-300',
+  'Mid-Market': 'border-l-border',
 };
 
 const HEALTH_RING: Record<string, string> = {
@@ -210,14 +210,14 @@ export default function AccountsPage() {
                     <p className="text-[10px] text-muted-foreground">Open ACV</p>
                   </div>
                   <div>
-                    <div className="flex items-center justify-center gap-1 text-blue-500 mb-1">
+                    <div className="flex items-center justify-center gap-1 text-brand-500 mb-1">
                       <Briefcase className="size-3.5" />
                     </div>
                     <p className="text-xs font-bold text-foreground">{account.dealCount}</p>
                     <p className="text-[10px] text-muted-foreground">Deals</p>
                   </div>
                   <div>
-                    <div className="flex items-center justify-center gap-1 text-amber-500 mb-1">
+                    <div className="flex items-center justify-center gap-1 text-brand-500 mb-1">
                       <Users className="size-3.5" />
                     </div>
                     <p className="text-xs font-bold text-foreground">{account.stakeholderCount}</p>

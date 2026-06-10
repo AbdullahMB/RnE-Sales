@@ -20,43 +20,18 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 
 // ─── Sub sector config ────────────────────────────────────────────────────────
 
+const BRAND_STYLE = {
+  bg:     'bg-brand-500/10',
+  text:   'text-brand-600 dark:text-brand-400',
+  border: 'border-l-brand-500',
+  ring:   'ring-brand-500/15',
+} as const;
+
 const SUB_SECTORS = [
-  {
-    key: 'Energy',
-    icon: <Zap className="size-5" />,
-    color: 'amber',
-    bg:   'bg-amber-500/10',
-    text: 'text-amber-600',
-    border: 'border-l-amber-500',
-    ring:   'ring-amber-500/20',
-  },
-  {
-    key: 'Mining',
-    icon: <Pickaxe className="size-5" />,
-    color: 'stone',
-    bg:   'bg-stone-500/10',
-    text: 'text-stone-600',
-    border: 'border-l-stone-500',
-    ring:   'ring-stone-500/20',
-  },
-  {
-    key: 'Industrial Manufacturing',
-    icon: <Factory className="size-5" />,
-    color: 'blue',
-    bg:   'bg-blue-500/10',
-    text: 'text-blue-600',
-    border: 'border-l-blue-500',
-    ring:   'ring-blue-500/20',
-  },
-  {
-    key: 'Utilities & Services',
-    icon: <Droplets className="size-5" />,
-    color: 'teal',
-    bg:   'bg-teal-500/10',
-    text: 'text-teal-600',
-    border: 'border-l-teal-500',
-    ring:   'ring-teal-500/20',
-  },
+  { key: 'Energy',                   icon: <Zap className="size-5" />,     ...BRAND_STYLE },
+  { key: 'Mining',                   icon: <Pickaxe className="size-5" />, ...BRAND_STYLE },
+  { key: 'Industrial Manufacturing', icon: <Factory className="size-5" />, ...BRAND_STYLE },
+  { key: 'Utilities & Services',     icon: <Droplets className="size-5" />,...BRAND_STYLE },
 ] as const;
 
 type SubSectorKey = (typeof SUB_SECTORS)[number]['key'];

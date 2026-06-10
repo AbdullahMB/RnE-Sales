@@ -1,17 +1,16 @@
 'use client';
 
-import { useState } from 'react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { toast } from '@humain-foundation/ui';
 import Link from 'next/link';
 import {
-  AppShellCard, Badge, Button, Avatar, Tooltip, BarChart, DonutChart,
+  AppShellCard, Badge, Button, Tooltip, BarChart, DonutChart,
 } from '@humain-foundation/ui';
 import {
   AlertTriangle, TrendingUp, TrendingDown, Zap, ChevronRight,
   Check, X, Newspaper, UserMinus, DollarSign, ArrowRight, Minus,
   Target, Activity, BarChart2, ShieldAlert, Sparkles, Calendar,
-  CircleDot, Clock, Building2,
+  Clock, Building2,
 } from 'lucide-react';
 import { AccountAvatar } from '@/components/account-avatar';
 import {
@@ -30,11 +29,11 @@ const RISK_BADGE: Record<RiskLevel, { color: BadgeColor; label: string }> = {
   low:    { color: 'success',     label: 'On Track' },
 };
 
-const SIGNAL_STYLE: Record<Signal['type'], { bg: string; text: string; icon: React.ReactNode; label: string }> = {
-  leadership: { bg: 'bg-blue-500/10',    text: 'text-blue-500',   icon: <UserMinus className="size-3.5" />,  label: 'Leadership' },
-  funding:    { bg: 'bg-success/10',     text: 'text-success',    icon: <DollarSign className="size-3.5" />, label: 'Funding' },
-  news:       { bg: 'bg-amber-500/10',   text: 'text-amber-500',  icon: <Newspaper className="size-3.5" />, label: 'News' },
-  product:    { bg: 'bg-brand-500/10',   text: 'text-brand-500',  icon: <Zap className="size-3.5" />,       label: 'Product' },
+const SIGNAL_ICON: Record<Signal['type'], { icon: React.ReactNode; label: string }> = {
+  leadership: { icon: <UserMinus className="size-4" />,  label: 'Leadership' },
+  funding:    { icon: <DollarSign className="size-4" />, label: 'Funding' },
+  news:       { icon: <Newspaper className="size-4" />,  label: 'News' },
+  product:    { icon: <Zap className="size-4" />,        label: 'Product' },
 };
 
 const PRIORITY_COLOR: Record<SuggestedTask['priority'], BadgeColor> = {
@@ -44,48 +43,52 @@ const PRIORITY_COLOR: Record<SuggestedTask['priority'], BadgeColor> = {
 const DEAL_DELTA: Record<string, { icon: React.ReactNode; label: string; color: string }> = {
   d1: { icon: <TrendingUp className="size-3" />,    label: 'Advanced',   color: 'text-success' },
   d2: { icon: <AlertTriangle className="size-3" />, label: 'Stalled',    color: 'text-destructive' },
-  d3: { icon: <TrendingUp className="size-3" />,    label: 'New signal', color: 'text-brand-500' },
+  d3: { icon: <TrendingUp className="size-3" />,    label: 'New signal', color: 'text-brand-600' },
   d4: { icon: <TrendingDown className="size-3" />,  label: 'Slipped',    color: 'text-destructive' },
   d5: { icon: <Minus className="size-3" />,         label: 'No change',  color: 'text-muted-foreground' },
 };
 
-// ─── Stat card ────────────────────────────────────────────────────────────────
+// ─── Brand building blocks (HUMAIN visual language) ───────────────────────────
 
-function StatCard({
-  label, value, sub, accent, icon, trend,
-}: {
-  label: string;
-  value: string | number;
-  sub: string;
-  accent: string;
-  icon: React.ReactNode;
-  trend?: { dir: 'up' | 'down' | 'neutral'; text: string };
-}) {
+/** Bold title with the short brand underline used across HUMAIN decks. */
+function SectionTitle({ children, badge }: { children: React.ReactNode; badge?: React.ReactNode }) {
   return (
-    <div className="relative rounded-2xl border border-border bg-card px-5 py-5 overflow-hidden group card-lift">
-      {/* Top accent bar */}
-      <div className={`absolute top-0 inset-x-0 h-[3px] rounded-t-2xl ${accent}`} />
-
-      <div className="flex items-start justify-between mb-4">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{label}</p>
-        <div className={`size-8 rounded-xl flex items-center justify-center ${accent.replace('bg-', 'bg-').replace('/100', '/10')} bg-muted/60 text-muted-foreground`}>
-          {icon}
-        </div>
+    <div className="mb-5">
+      <div className="flex items-center gap-2.5">
+        <h2 className="text-base font-bold tracking-tight text-foreground">{children}</h2>
+        {badge}
       </div>
+      <div className="mt-1.5 h-0.5 w-9 rounded-full bg-brand-500" />
+    </div>
+  );
+}
 
-      <p className="text-3xl font-extrabold tracking-tight text-foreground count-in">{value}</p>
+/** Outlined numbered circle, like the step markers on HUMAIN slides. */
+function StepCircle({ n, filled = false }: { n: number; filled?: boolean }) {
+  return (
+    <span
+      className={[
+        'flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold',
+        filled
+          ? 'bg-brand-500 text-white'
+          : 'border-2 border-brand-500 text-brand-600 dark:text-brand-400',
+      ].join(' ')}
+    >
+      {n}
+    </span>
+  );
+}
 
-      <div className="flex items-center justify-between mt-2">
-        <p className="text-xs text-muted-foreground">{sub}</p>
-        {trend && (
-          <span className={`inline-flex items-center gap-0.5 text-xs font-medium ${
-            trend.dir === 'up' ? 'text-success' : trend.dir === 'down' ? 'text-destructive' : 'text-muted-foreground'
-          }`}>
-            {trend.dir === 'up' ? <TrendingUp className="size-3" /> : trend.dir === 'down' ? <TrendingDown className="size-3" /> : <Minus className="size-3" />}
-            {trend.text}
-          </span>
-        )}
-      </div>
+/** Light brand-tinted circular icon chip. */
+function IconChip({ children, size = 'md' }: { children: React.ReactNode; size?: 'md' | 'lg' }) {
+  return (
+    <div
+      className={[
+        'flex shrink-0 items-center justify-center rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400',
+        size === 'lg' ? 'size-11' : 'size-9',
+      ].join(' ')}
+    >
+      {children}
     </div>
   );
 }
@@ -147,201 +150,182 @@ export default function DashboardPage() {
   const fmtAcv = (v: number) =>
     v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(1)}M` : `$${(v / 1000).toFixed(0)}K`;
 
-  return (
-    <AppShellCard>
-      {/* ── GREETING BANNER ───────────────────────────────────────── */}
-      <div className="relative rounded-2xl overflow-hidden mb-6 border border-border">
-        {/* gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-600/90 via-brand-700/95 to-brand-900" />
-        {/* decorative circles */}
-        <div className="absolute -top-10 -right-10 size-48 rounded-full bg-white/5" />
-        <div className="absolute -bottom-12 -left-8 size-36 rounded-full bg-white/5" />
+  const kpis = [
+    { label: 'Active Pipeline',   value: fmtAcv(totalPipeline), sub: `${activeDeals.length} open deals`, icon: <BarChart2 className="size-4.5" /> },
+    { label: 'Weighted Forecast', value: fmtAcv(weightedFcast), sub: 'Probability-adjusted',             icon: <Target className="size-4.5" /> },
+    { label: 'Stalled Deals',     value: stalledDeals.length,   sub: 'More than 14 days idle',           icon: <Clock className="size-4.5" />,       alert: stalledDeals.length > 0 },
+    { label: 'High Risk',         value: highRiskDeals.length,  sub: 'Require attention',                icon: <ShieldAlert className="size-4.5" />, alert: highRiskDeals.length > 0 },
+  ];
 
-        <div className="relative px-6 py-6 text-white">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-xs font-medium text-white/60 mb-1 flex items-center gap-1.5">
-                <Calendar className="size-3" />
-                {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-                <span className="opacity-40">·</span>
-                <span className="text-white/50">Synced 2 min ago</span>
-              </p>
-              <h1 className="text-2xl font-bold tracking-tight">{greeting}, Turki</h1>
-              <p className="text-sm text-white/70 mt-1">
-                {priorityItems.length > 0
-                  ? `You have ${priorityItems.length} item${priorityItems.length > 1 ? 's' : ''} needing attention today`
-                  : 'Pipeline is looking healthy — keep the momentum going'}
-              </p>
-            </div>
-            <div className="hidden sm:flex items-center gap-3">
-              <div className="text-right">
-                <p className="text-xs text-white/50 mb-0.5">Active pipeline</p>
-                <p className="text-xl font-bold text-white">{fmtAcv(totalPipeline)}</p>
-              </div>
-              <div className="h-10 w-px bg-white/20" />
-              <div className="text-right">
-                <p className="text-xs text-white/50 mb-0.5">Weighted</p>
-                <p className="text-xl font-bold text-white">{fmtAcv(weightedFcast)}</p>
-              </div>
-            </div>
-          </div>
+  return (
+    <AppShellCard className="page-enter">
+      {/* ── Brand top accent ─────────────────────────────────────────── */}
+      <div className="h-[3px] w-full rounded-full bg-gradient-to-r from-brand-500 via-brand-300 to-transparent mb-7" />
+
+      {/* ── HEADER ───────────────────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-9">
+        <div>
+          <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1.5">
+            <Calendar className="size-3" />
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+            <span className="opacity-40">·</span>
+            Synced 2 min ago
+          </p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">{greeting}, Abdullah</h1>
+          <div className="mt-2.5 h-0.5 w-12 rounded-full bg-brand-500" />
+          <p className="text-sm text-muted-foreground mt-3 max-w-lg">
+            {priorityItems.length > 0
+              ? `You have ${priorityItems.length} item${priorityItems.length > 1 ? 's' : ''} needing attention today.`
+              : 'Pipeline is looking healthy — keep the momentum going.'}
+          </p>
         </div>
       </div>
 
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-12">
 
-        {/* ── TODAY'S PRIORITIES ─────────────────────────────────────── */}
+        {/* ── KPI STRIP (Expected-Outcomes style pills) ────────────────── */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+          {kpis.map((kpi) => (
+            <div
+              key={kpi.label}
+              className="flex items-center gap-3.5 rounded-2xl border border-border bg-card px-4 py-4"
+            >
+              <IconChip size="lg">{kpi.icon}</IconChip>
+              <div className="min-w-0">
+                <div className="flex items-baseline gap-2">
+                  <p className="text-2xl font-bold tracking-tight text-foreground count-in">{kpi.value}</p>
+                  {kpi.alert && <span className="size-1.5 rounded-full bg-destructive pulse-dot" />}
+                </div>
+                <p className="text-xs font-semibold text-foreground">{kpi.label}</p>
+                <p className="text-[11px] text-muted-foreground">{kpi.sub}</p>
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {/* ── TODAY'S PRIORITIES (numbered step cards) ─────────────────── */}
         {priorityItems.length > 0 && (
           <section>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="size-2 rounded-full bg-destructive pulse-dot" />
-              <h2 className="text-sm font-bold text-foreground">Today's Priorities</h2>
-              <Badge color="destructive">{priorityItems.length}</Badge>
-            </div>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <SectionTitle badge={<Badge color="primary">{priorityItems.length}</Badge>}>
+              Today&apos;s Priorities
+            </SectionTitle>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
               {priorityItems.map((item, i) => (
                 <Link
                   key={item.id}
                   href={item.href}
-                  className={`group flex items-center gap-3 rounded-xl border px-4 py-3.5 hover:shadow-md transition-all ${
+                  className={[
+                    'group flex flex-col gap-3 rounded-2xl border p-4 transition-all hover:shadow-md hover:-translate-y-0.5',
                     item.urgent
-                      ? 'border-destructive/30 bg-destructive/5 hover:bg-destructive/8'
-                      : 'border-border bg-card hover:bg-accent hover:border-brand-500/30'
-                  }`}
+                      ? 'border-brand-500/60 bg-brand-500/[0.06]'
+                      : 'border-border bg-card hover:border-brand-500/40',
+                  ].join(' ')}
                 >
-                  <span className={`flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                    item.urgent ? 'bg-destructive/15 text-destructive' : 'bg-brand-500/10 text-brand-500'
-                  }`}>
-                    {i + 1}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-foreground truncate leading-tight">{item.label}</p>
-                    <p className={`text-xs mt-0.5 truncate ${item.urgent ? 'text-destructive/70' : 'text-muted-foreground'}`}>{item.sub}</p>
+                  <div className="flex items-center justify-between">
+                    <StepCircle n={i + 1} filled={item.urgent} />
+                    {item.urgent && (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-destructive">
+                        <AlertTriangle className="size-3" /> Urgent
+                      </span>
+                    )}
                   </div>
-                  <ArrowRight className="size-4 text-muted-foreground group-hover:text-brand-500 shrink-0 transition-colors" />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-foreground leading-snug line-clamp-2">{item.label}</p>
+                    <p className="text-xs text-muted-foreground mt-1 truncate">{item.sub}</p>
+                  </div>
+                  <span className="mt-auto inline-flex items-center gap-1 text-xs font-semibold text-brand-600 dark:text-brand-400">
+                    Open account
+                    <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
+                  </span>
                 </Link>
               ))}
             </div>
           </section>
         )}
 
-        {/* ── KPI STATS ──────────────────────────────────────────────── */}
+        {/* ── CHARTS ───────────────────────────────────────────────────── */}
         <section>
-          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Pipeline Health</h2>
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <StatCard
-              label="Active Pipeline" icon={<BarChart2 className="size-4" />}
-              value={fmtAcv(totalPipeline)} sub={`${activeDeals.length} open deals`}
-              accent="bg-brand-500" trend={{ dir: 'up', text: '+12% this quarter' }}
-            />
-            <StatCard
-              label="Weighted Forecast" icon={<Target className="size-4" />}
-              value={fmtAcv(weightedFcast)} sub="probability-adjusted"
-              accent="bg-indigo-500"
-            />
-            <StatCard
-              label="Stalled Deals" icon={<Clock className="size-4" />}
-              value={stalledDeals.length} sub=">14 days idle"
-              accent={stalledDeals.length > 0 ? 'bg-warning' : 'bg-success'}
-              trend={stalledDeals.length > 0 ? { dir: 'down', text: 'needs action' } : { dir: 'neutral', text: 'all clear' }}
-            />
-            <StatCard
-              label="High Risk" icon={<ShieldAlert className="size-4" />}
-              value={highRiskDeals.length} sub="require attention"
-              accent={highRiskDeals.length > 0 ? 'bg-destructive' : 'bg-success'}
-              trend={highRiskDeals.length > 0 ? { dir: 'down', text: 'act now' } : { dir: 'neutral', text: 'all clear' }}
-            />
-          </div>
-        </section>
-
-        {/* ── CHARTS ─────────────────────────────────────────────────── */}
-        <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="lg:col-span-2 rounded-2xl border border-border bg-card px-5 pt-5 pb-3">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-sm font-semibold text-foreground">Pipeline by Stage</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Active deal value in $M</p>
+          <SectionTitle>Pipeline Overview</SectionTitle>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            <div className="lg:col-span-2 rounded-2xl border border-border bg-card px-5 pt-5 pb-3">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-sm font-bold text-foreground">Pipeline by Stage</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Active deal value in $M</p>
+                </div>
+                <Badge color="secondary">ACV</Badge>
               </div>
-              <Badge color="secondary">ACV</Badge>
-            </div>
-            <BarChart
-              data={pipelineByStage}
-              series={[{ id: 'acv', label: 'ACV ($M)', color: 'var(--color-brand-500)' }]}
-              showYAxis showXAxis showTooltip
-              yAxisFormat={(v) => `$${v}M`}
-              size="sm"
-              aria-label="Pipeline ACV by stage"
-            />
-          </div>
-          <div className="rounded-2xl border border-border bg-card px-5 py-5 flex flex-col gap-4">
-            <div>
-              <p className="text-sm font-semibold text-foreground">Risk Distribution</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Active deals only</p>
-            </div>
-            <div className="flex-1 flex flex-col items-center justify-center">
-              <DonutChart
-                data={[
-                  { value: riskCounts.high,   maxValue: activeDeals.length, color: 'var(--color-destructive)' },
-                  { value: riskCounts.medium, maxValue: activeDeals.length, color: 'var(--color-warning)' },
-                  { value: riskCounts.low,    maxValue: activeDeals.length, color: 'var(--color-success)' },
-                ]}
-                series={[
-                  { id: 'high',   label: 'High Risk', color: 'var(--color-destructive)' },
-                  { id: 'medium', label: 'Medium',    color: 'var(--color-warning)' },
-                  { id: 'low',    label: 'On Track',  color: 'var(--color-success)' },
-                ]}
-                centerValue={activeDeals.length}
-                centerLabel="Deals"
-                legendPosition="bottom"
-                showTooltip
+              <BarChart
+                data={pipelineByStage}
+                series={[{ id: 'acv', label: 'ACV ($M)', color: 'var(--color-brand-500)' }]}
+                showYAxis showXAxis showTooltip
+                yAxisFormat={(v) => `$${v}M`}
                 size="sm"
-                aria-label="Deal risk distribution"
+                aria-label="Pipeline ACV by stage"
               />
             </div>
-            {/* quick stats */}
-            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border">
-              {[
-                { label: 'High', val: riskCounts.high, color: 'text-destructive' },
-                { label: 'Medium', val: riskCounts.medium, color: 'text-warning' },
-                { label: 'On Track', val: riskCounts.low, color: 'text-success' },
-              ].map(({ label, val, color }) => (
-                <div key={label} className="text-center">
-                  <p className={`text-lg font-bold ${color}`}>{val}</p>
-                  <p className="text-[10px] text-muted-foreground">{label}</p>
-                </div>
-              ))}
+            <div className="rounded-2xl border border-border bg-card px-5 py-5 flex flex-col gap-4">
+              <div>
+                <p className="text-sm font-bold text-foreground">Risk Distribution</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Active deals only</p>
+              </div>
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <DonutChart
+                  data={[
+                    { value: riskCounts.high,   maxValue: activeDeals.length, color: 'var(--color-destructive)' },
+                    { value: riskCounts.medium, maxValue: activeDeals.length, color: 'var(--color-warning)' },
+                    { value: riskCounts.low,    maxValue: activeDeals.length, color: 'var(--color-brand-500)' },
+                  ]}
+                  series={[
+                    { id: 'high',   label: 'High Risk', color: 'var(--color-destructive)' },
+                    { id: 'medium', label: 'Medium',    color: 'var(--color-warning)' },
+                    { id: 'low',    label: 'On Track',  color: 'var(--color-brand-500)' },
+                  ]}
+                  centerValue={activeDeals.length}
+                  centerLabel="Deals"
+                  legendPosition="bottom"
+                  showTooltip
+                  size="sm"
+                  aria-label="Deal risk distribution"
+                />
+              </div>
+              <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border">
+                {[
+                  { label: 'High',     val: riskCounts.high,   color: 'text-destructive' },
+                  { label: 'Medium',   val: riskCounts.medium, color: 'text-warning' },
+                  { label: 'On Track', val: riskCounts.low,    color: 'text-brand-600 dark:text-brand-400' },
+                ].map(({ label, val, color }) => (
+                  <div key={label} className="text-center">
+                    <p className={`text-lg font-bold ${color}`}>{val}</p>
+                    <p className="text-[10px] text-muted-foreground">{label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ── ACCOUNT SIGNALS ────────────────────────────────────────── */}
+        {/* ── ACCOUNT SIGNALS ──────────────────────────────────────────── */}
         <section>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Activity className="size-4 text-brand-500" />
-              <h2 className="text-sm font-semibold text-foreground">Account Signals</h2>
-              <Badge color="secondary">{MOCK_SIGNALS.length} new</Badge>
-            </div>
-          </div>
+          <SectionTitle badge={<Badge color="secondary">{MOCK_SIGNALS.length} new</Badge>}>
+            Account Signals
+          </SectionTitle>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {MOCK_SIGNALS.map((signal) => {
-              const style = SIGNAL_STYLE[signal.type];
+              const s = SIGNAL_ICON[signal.type];
               return (
                 <div
                   key={signal.id}
-                  className="group flex items-start gap-3 rounded-xl border border-border bg-card px-4 py-4 hover:shadow-md hover:border-brand-500/20 transition-all card-lift"
+                  className="group flex items-start gap-3.5 rounded-2xl border border-border bg-card p-4 transition-all hover:border-brand-500/40 hover:shadow-md"
                 >
-                  {/* type icon */}
-                  <div className={`mt-0.5 size-8 rounded-xl flex items-center justify-center shrink-0 ${style.bg}`}>
-                    <span className={style.text}>{style.icon}</span>
-                  </div>
+                  <IconChip>{s.icon}</IconChip>
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>{style.label}</span>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[11px] font-bold uppercase tracking-wide text-brand-600 dark:text-brand-400">{s.label}</span>
                       <span className="text-xs font-semibold text-foreground">{signal.accountName}</span>
-                      <span className="text-xs text-muted-foreground ml-auto">{signal.date}</span>
+                      <span className="text-[11px] text-muted-foreground ml-auto shrink-0">{signal.date}</span>
                     </div>
-                    <p className="text-sm font-medium text-foreground leading-snug">{signal.title}</p>
+                    <p className="text-sm font-semibold text-foreground leading-snug">{signal.title}</p>
                     <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{signal.summary}</p>
                   </div>
                 </div>
@@ -350,34 +334,25 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* ── SUGGESTED ACTIONS ──────────────────────────────────────── */}
+        {/* ── SUGGESTED ACTIONS ────────────────────────────────────────── */}
         {activeTasks.length > 0 && (
           <section>
-            <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="size-4 text-brand-500" />
-              <h2 className="text-sm font-semibold text-foreground">AI-Suggested Actions</h2>
-              <Badge color="primary">{activeTasks.length}</Badge>
-            </div>
-            <div className="flex flex-col gap-2">
+            <SectionTitle badge={<Badge color="primary">{activeTasks.length}</Badge>}>
+              AI-Suggested Actions
+            </SectionTitle>
+            <div className="flex flex-col gap-2.5">
               {activeTasks.map((task) => (
                 <div
                   key={task.id}
-                  className={`group flex items-start gap-4 rounded-xl border px-4 py-4 transition-all hover:shadow-sm ${
-                    task.priority === 'high'
-                      ? 'border-destructive/25 bg-destructive/[0.03] hover:bg-destructive/[0.05]'
-                      : 'border-border bg-card hover:bg-accent'
-                  }`}
+                  className="group flex items-start gap-3.5 rounded-2xl border border-border bg-card px-4 py-4 transition-all hover:border-brand-500/40 hover:shadow-sm"
                 >
-                  {/* priority indicator */}
-                  <div className={`mt-0.5 size-2 rounded-full shrink-0 mt-2 ${
-                    task.priority === 'high' ? 'bg-destructive' : task.priority === 'medium' ? 'bg-warning' : 'bg-muted-foreground'
-                  }`} />
+                  <IconChip><Sparkles className="size-4" /></IconChip>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <Badge color={PRIORITY_COLOR[task.priority]}>{task.priority}</Badge>
                       <span className="text-xs font-semibold text-muted-foreground">{task.accountName}</span>
                     </div>
-                    <p className="text-sm font-medium text-foreground leading-snug">{task.action}</p>
+                    <p className="text-sm font-semibold text-foreground leading-snug">{task.action}</p>
                     <p className="text-xs text-muted-foreground mt-1">{task.reason}</p>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
@@ -402,23 +377,21 @@ export default function DashboardPage() {
           </section>
         )}
 
-        {/* ── ALL DEALS ──────────────────────────────────────────────── */}
+        {/* ── ALL DEALS ────────────────────────────────────────────────── */}
         <section>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Building2 className="size-4 text-brand-500" />
-              <h2 className="text-sm font-semibold text-foreground">All Open Deals</h2>
-              <Badge color="secondary">{activeDeals.length}</Badge>
-            </div>
-            <span className="text-xs text-muted-foreground hidden sm:block">Click to open account</span>
+          <div className="flex items-end justify-between">
+            <SectionTitle badge={<Badge color="secondary">{activeDeals.length}</Badge>}>
+              All Open Deals
+            </SectionTitle>
+            <span className="text-xs text-muted-foreground hidden sm:block mb-5">Click a row to open the account</span>
           </div>
 
           <div className="rounded-2xl border border-border overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-muted/50 border-b border-border">
+                <tr className="border-b border-border bg-muted/40">
                   {['Account / Deal', 'Stage', 'Value', 'Probability', 'Status', 'Health', ''].map((h) => (
-                    <th key={h} className={`px-4 py-3 text-xs font-semibold text-muted-foreground ${h === 'Value' || h === 'Probability' ? 'text-right hidden sm:table-cell' : h === '' ? '' : 'text-left'} ${h === 'Health' ? 'hidden md:table-cell' : ''}`}>
+                    <th key={h} className={`px-4 py-3 text-[11px] font-bold uppercase tracking-wide text-muted-foreground ${h === 'Value' || h === 'Probability' ? 'text-right hidden sm:table-cell' : h === '' ? '' : 'text-left'} ${h === 'Health' ? 'hidden md:table-cell' : ''}`}>
                       {h}
                     </th>
                   ))}
@@ -426,7 +399,6 @@ export default function DashboardPage() {
               </thead>
               <tbody className="divide-y divide-border bg-card">
                 {activeDeals.map((deal) => {
-                  const risk   = RISK_BADGE[deal.risk];
                   const delta  = DEAL_DELTA[deal.id];
                   const acct   = MOCK_ACCOUNTS.find((a) => a.id === deal.accountId);
                   const staks  = MOCK_STAKEHOLDERS.filter((s) => s.accountId === deal.accountId);
@@ -436,10 +408,7 @@ export default function DashboardPage() {
                   const isStalled = deal.daysSinceActivity > 14;
 
                   return (
-                    <tr
-                      key={deal.id}
-                      className={`group transition-colors cursor-pointer ${isStalled ? 'bg-warning/[0.03] hover:bg-warning/[0.06]' : 'hover:bg-accent'}`}
-                    >
+                    <tr key={deal.id} className="group transition-colors hover:bg-brand-500/[0.04] cursor-pointer">
                       <td className="px-4 py-3.5">
                         <div className="flex items-center gap-2.5">
                           <AccountAvatar accountId={deal.accountId} name={deal.customer} size="sm" />
@@ -458,10 +427,7 @@ export default function DashboardPage() {
                       <td className="px-4 py-3.5 text-right hidden sm:table-cell">
                         <div className="flex items-center justify-end gap-1.5">
                           <div className="w-12 h-1.5 rounded-full bg-muted overflow-hidden">
-                            <div
-                              className="h-full rounded-full bg-brand-500"
-                              style={{ width: `${deal.probability}%` }}
-                            />
+                            <div className="h-full rounded-full bg-brand-500" style={{ width: `${deal.probability}%` }} />
                           </div>
                           <span className="text-xs text-muted-foreground w-8 text-right">{deal.probability}%</span>
                         </div>

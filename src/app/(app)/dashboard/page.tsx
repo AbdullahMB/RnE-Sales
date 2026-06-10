@@ -159,8 +159,23 @@ export default function DashboardPage() {
 
   return (
     <AppShellCard className="page-enter">
-      {/* ── Brand top accent ─────────────────────────────────────────── */}
-      <div className="h-[3px] w-full rounded-full bg-gradient-to-r from-brand-500 via-brand-300 to-transparent mb-7" />
+      {/* ── HUMAIN-style header bar ──────────────────────────────────── */}
+      <div className="relative overflow-hidden rounded-2xl border border-border mb-7">
+        {/* decorative wave / brand glow */}
+        <div className="absolute inset-y-0 right-0 w-2/5 bg-gradient-to-bl from-brand-400/20 via-brand-200/10 to-transparent" />
+        <div className="absolute -right-12 -top-12 size-32 rounded-full bg-brand-300/15 blur-2xl" />
+
+        <div className="relative flex items-center justify-between px-5 py-3">
+          <p className="text-sm font-extrabold tracking-tight text-foreground">
+            RnE <span className="text-brand-500">SALES</span>
+          </p>
+          <p className="text-xs font-semibold text-muted-foreground tracking-wide hidden sm:block">
+            Sales Execution Toolkit
+          </p>
+        </div>
+        {/* signature gradient underline */}
+        <div className="h-[3px] w-full bg-gradient-to-r from-brand-500 via-brand-300 to-transparent" />
+      </div>
 
       {/* ── HEADER ───────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-9">

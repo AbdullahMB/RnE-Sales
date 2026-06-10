@@ -15,12 +15,12 @@ import type { Account } from '@/lib/mock-data';
 import { HEALTH_STYLE, type HealthScore } from '@/lib/health';
 
 const INDUSTRY_GRADIENT: Record<string, string> = {
-  'Energy':        'from-orange-950 via-orange-900 to-amber-800',
-  'Oil':           'from-orange-950 via-orange-900 to-amber-800',
-  'Petrochemical': 'from-teal-950 via-teal-900 to-teal-700',
-  'Telecom':       'from-blue-950 via-blue-900 to-blue-700',
-  'Smart City':    'from-violet-950 via-violet-900 to-indigo-700',
-  'Infrastructure':'from-violet-950 via-violet-900 to-indigo-700',
+  'Energy':        'from-brand-950 via-brand-800 to-brand-600',
+  'Oil':           'from-brand-950 via-brand-800 to-brand-600',
+  'Petrochemical': 'from-brand-950 via-brand-900 to-brand-700',
+  'Telecom':       'from-info to-brand-900',
+  'Smart City':    'from-brand-950 via-brand-700 to-info',
+  'Infrastructure':'from-brand-950 via-brand-700 to-info',
 };
 function gradientFor(industry: string) {
   const key = Object.keys(INDUSTRY_GRADIENT).find((k) => industry.includes(k));

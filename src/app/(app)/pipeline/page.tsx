@@ -427,10 +427,10 @@ function DealCard({ deal }: { deal: Deal }) {
 // ─── Sub Sector Breakdown ─────────────────────────────────────────────────────
 
 const SECTOR_COLORS: Record<string, string> = {
-  'Energy':                  'bg-amber-500/10 border-amber-400/30 text-amber-600 dark:text-amber-400',
-  'Mining':                  'bg-stone-500/10 border-stone-400/30 text-stone-600 dark:text-stone-400',
-  'Industrial Manufacturing':'bg-blue-500/10 border-blue-400/30 text-blue-600 dark:text-blue-400',
-  'Utilities & Services':    'bg-teal-500/10 border-teal-400/30 text-teal-600 dark:text-teal-400',
+  'Energy':                  'bg-warning/10 border-warning/30 text-warning',
+  'Mining':                  'bg-info/10 border-info/30 text-info',
+  'Industrial Manufacturing':'bg-brand-500/10 border-brand-500/30 text-brand-600',
+  'Utilities & Services':    'bg-success/10 border-success/30 text-success',
 };
 
 function getSectorColor(sector: string) {

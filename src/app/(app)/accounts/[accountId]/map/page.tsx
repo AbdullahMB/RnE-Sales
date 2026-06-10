@@ -70,13 +70,15 @@ function StrengthPips({
   value,
   editable = false,
   onChange,
+  compact = false,
 }: {
   value: number;
   editable?: boolean;
   onChange?: (v: RelationshipStrength) => void;
+  compact?: boolean;
 }) {
   return (
-    <div className="flex gap-1.5">
+    <div className="flex items-center gap-1.5">
       {[1, 2, 3, 4, 5].map((pip) => (
         <button
           key={pip}
@@ -89,7 +91,7 @@ function StrengthPips({
           title={editable ? STRENGTH_LABELS[pip] : undefined}
         />
       ))}
-      <span className="text-xs text-muted-foreground ml-1">{STRENGTH_LABELS[value]}</span>
+      {!compact && <span className="text-xs text-muted-foreground ml-1">{STRENGTH_LABELS[value]}</span>}
     </div>
   );
 }
@@ -440,6 +442,126 @@ function CoverageGap({ role }: { role: string }) {
   );
 }
 
+// ─── Hierarchical view ────────────────────────────────────────────────────────
+
+function HierarchyNode({
+  stakeholder,
+  onSelect,
+  tone = 'default',
+}: {
+  stakeholder: Stakeholder;
+  onSelect: (s: Stakeholder) => void;
+  tone?: 'default' | 'destructive';
+}) {
+  const days = daysSince(stakeholder.lastContact);
+  return (
+    <button
+      onClick={() => onSelect(stakeholder)}
+      className={`flex w-44 flex-col items-center gap-1.5 rounded-xl border bg-card px-3 py-3 text-center transition-all hover:shadow-md ${
+        tone === 'destructive'
+          ? 'border-destructive/30 hover:border-destructive/50'
+          : 'border-border hover:border-brand-500/40'
+      }`}
+    >
+      <Avatar fallback={stakeholder.name} size="md" />
+      <div className="min-w-0 w-full">
+        <p className="text-sm font-semibold text-foreground leading-tight truncate">{stakeholder.name}</p>
+        <p className="text-xs text-muted-foreground leading-tight truncate">{stakeholder.title}</p>
+      </div>
+      <Badge color={ROLE_COLOR[stakeholder.role]}>{stakeholder.role}</Badge>
+      <StrengthPips value={stakeholder.strength} compact />
+      <span className={`text-[10px] flex items-center gap-1 ${lastContactColor(stakeholder.lastContact)}`}>
+        <Clock className="size-2.5" />
+        {stakeholder.lastContact === 'Never'
+          ? 'Never contacted'
+          : days !== null
+          ? `${days}d ago`
+          : stakeholder.lastContact}
+      </span>
+    </button>
+  );
+}
+
+/** Connects a row of nodes to the tier above via a horizontal bar with vertical stubs. */
+function ConnectorRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex flex-wrap justify-center gap-x-8 gap-y-6 border-t border-border pt-6 w-fit max-w-full mx-auto">
+      {children}
+    </div>
+  );
+}
+
+function NodeStub({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative flex flex-col items-center">
+      <div className="absolute -top-6 h-6 w-px bg-border" />
+      {children}
+    </div>
+  );
+}
+
+function TierConnector() {
+  return <div className="h-8 w-px bg-border" />;
+}
+
+function HierarchyView({
+  stakeholders,
+  onSelect,
+}: {
+  stakeholders: Stakeholder[];
+  onSelect: (s: Stakeholder) => void;
+}) {
+  const decisionMakers = stakeholders.filter((s) => s.role === 'Decision Maker');
+  const champions = stakeholders.filter((s) => s.role === 'Champion');
+  const influencers = stakeholders.filter((s) => s.role === 'Influencer' || s.role === 'Coach');
+  const blockers = stakeholders.filter((s) => s.role === 'Blocker');
+
+  const tiers: Array<{ key: string; label: string; desc: string; badgeColor: BadgeColor; people: Stakeholder[] }> = [
+    { key: 'dm',  label: 'Decision Makers',        desc: 'Budget authority · final approval',   badgeColor: 'primary' as BadgeColor,   people: decisionMakers },
+    { key: 'ch',  label: 'Champions',              desc: 'Internal advocates · guide the deal', badgeColor: 'success' as BadgeColor,   people: champions },
+    { key: 'inf', label: 'Influencers & Coaches',  desc: 'Shape criteria · provide access',     badgeColor: 'secondary' as BadgeColor, people: influencers },
+  ].filter((t) => t.people.length > 0 || t.key === 'dm');
+
+  return (
+    <div className="flex flex-col items-center overflow-x-auto pb-2">
+      {tiers.map((tier, i) => (
+        <div key={tier.key} className="flex flex-col items-center w-full">
+          {i > 0 && <TierConnector />}
+          <div className="flex flex-col items-center gap-1 mb-5 text-center">
+            <Badge color={tier.badgeColor}>{tier.label}</Badge>
+            <p className="text-xs text-muted-foreground">{tier.desc}</p>
+          </div>
+          {tier.people.length === 0 ? (
+            <CoverageGap role={tier.label} />
+          ) : (
+            <ConnectorRow>
+              {tier.people.map((p) => (
+                <NodeStub key={p.id}>
+                  <HierarchyNode stakeholder={p} onSelect={onSelect} />
+                </NodeStub>
+              ))}
+            </ConnectorRow>
+          )}
+        </div>
+      ))}
+
+      {blockers.length > 0 && (
+        <div className="w-full mt-10 pt-6 border-t border-dashed border-destructive/30 flex flex-col items-center">
+          <div className="flex flex-col items-center gap-1 mb-5 text-center">
+            <Badge color="destructive">Blockers</Badge>
+            <p className="text-xs text-muted-foreground">Active opposition · monitor closely</p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-6">
+            {blockers.map((p) => (
+              <HierarchyNode key={p.id} stakeholder={p} onSelect={onSelect} tone="destructive" />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 const EMPTY_FORM = {
@@ -457,6 +579,7 @@ export default function AccountMapPage({ params }: { params: Promise<{ accountId
   const [selected, setSelected] = useState<Stakeholder | null>(null);
   const [addOpen, setAddOpen] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
+  const [view, setView] = useState<'hierarchy' | 'grid'>('hierarchy');
 
   const decisionMakers = stakeholders.filter((s) => s.role === 'Decision Maker');
   const champions = stakeholders.filter((s) => s.role === 'Champion');
@@ -505,6 +628,24 @@ export default function AccountMapPage({ params }: { params: Promise<{ accountId
           </div>
         </AppShellCard.Header>
         <AppShellCard.Actions>
+          <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/40 p-0.5">
+            <button
+              onClick={() => setView('hierarchy')}
+              className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${
+                view === 'hierarchy' ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Hierarchy
+            </button>
+            <button
+              onClick={() => setView('grid')}
+              className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${
+                view === 'grid' ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Grid
+            </button>
+          </div>
           <Button
             appearance="solid"
             size="sm"
@@ -515,53 +656,57 @@ export default function AccountMapPage({ params }: { params: Promise<{ accountId
           </Button>
         </AppShellCard.Actions>
 
-        <div className="flex flex-col gap-8">
-          <section>
-            <div className="flex items-center gap-2 mb-3">
-              <Badge color="primary">Decision Makers</Badge>
-              <span className="text-xs text-muted-foreground">Budget authority · Final approval</span>
-            </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {decisionMakers.map((s) => <StakeholderCard key={s.id} stakeholder={s} onSelect={setSelected} />)}
-              {decisionMakers.length === 0 && <CoverageGap role="Decision Maker" />}
-            </div>
-          </section>
-
-          <section>
-            <div className="flex items-center gap-2 mb-3">
-              <Badge color="success">Champions</Badge>
-              <span className="text-xs text-muted-foreground">Internal advocates · Guide the deal</span>
-            </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {champions.map((s) => <StakeholderCard key={s.id} stakeholder={s} onSelect={setSelected} />)}
-              {champions.length === 0 && <CoverageGap role="Champion" />}
-            </div>
-          </section>
-
-          {influencers.length > 0 && (
+        {view === 'hierarchy' ? (
+          <HierarchyView stakeholders={stakeholders} onSelect={setSelected} />
+        ) : (
+          <div className="flex flex-col gap-8">
             <section>
               <div className="flex items-center gap-2 mb-3">
-                <Badge color="secondary">Influencers & Coaches</Badge>
-                <span className="text-xs text-muted-foreground">Shape criteria · Provide access</span>
+                <Badge color="primary">Decision Makers</Badge>
+                <span className="text-xs text-muted-foreground">Budget authority · Final approval</span>
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {influencers.map((s) => <StakeholderCard key={s.id} stakeholder={s} onSelect={setSelected} />)}
+                {decisionMakers.map((s) => <StakeholderCard key={s.id} stakeholder={s} onSelect={setSelected} />)}
+                {decisionMakers.length === 0 && <CoverageGap role="Decision Maker" />}
               </div>
             </section>
-          )}
 
-          {blockers.length > 0 && (
             <section>
               <div className="flex items-center gap-2 mb-3">
-                <Badge color="destructive">Blockers</Badge>
-                <span className="text-xs text-muted-foreground">Active opposition · Monitor closely</span>
+                <Badge color="success">Champions</Badge>
+                <span className="text-xs text-muted-foreground">Internal advocates · Guide the deal</span>
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {blockers.map((s) => <StakeholderCard key={s.id} stakeholder={s} onSelect={setSelected} />)}
+                {champions.map((s) => <StakeholderCard key={s.id} stakeholder={s} onSelect={setSelected} />)}
+                {champions.length === 0 && <CoverageGap role="Champion" />}
               </div>
             </section>
-          )}
-        </div>
+
+            {influencers.length > 0 && (
+              <section>
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge color="secondary">Influencers & Coaches</Badge>
+                  <span className="text-xs text-muted-foreground">Shape criteria · Provide access</span>
+                </div>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {influencers.map((s) => <StakeholderCard key={s.id} stakeholder={s} onSelect={setSelected} />)}
+                </div>
+              </section>
+            )}
+
+            {blockers.length > 0 && (
+              <section>
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge color="destructive">Blockers</Badge>
+                  <span className="text-xs text-muted-foreground">Active opposition · Monitor closely</span>
+                </div>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {blockers.map((s) => <StakeholderCard key={s.id} stakeholder={s} onSelect={setSelected} />)}
+                </div>
+              </section>
+            )}
+          </div>
+        )}
       </AppShellCard>
 
       {/* Detail sheet */}

@@ -48,9 +48,9 @@ function fmtAcv(v: number) {
 
 const STAGE_COLOR: Record<Deal['stage'], string> = {
   'Qualification':    'bg-muted-foreground/30',
-  'Develop Proposal': 'bg-blue-400',
+  'Develop Proposal': 'bg-info',
   'Submit Proposal':  'bg-brand-400',
-  'Negotiate':        'bg-amber-400',
+  'Negotiate':        'bg-warning',
   'Won':              'bg-success',
   'Lost':             'bg-destructive',
   'Dropped':          'bg-muted-foreground',

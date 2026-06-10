@@ -330,7 +330,7 @@ export default function AccountPlanPage({ params }: { params: Promise<{ accountI
               noMargin
             />
             <div className="flex items-center gap-2 shrink-0">
-              <Zap className="size-3.5 text-amber-500" />
+              <Zap className="size-3.5 text-warning" />
               <span className="text-xs font-semibold text-foreground">Addressable whitespace:</span>
               <Badge color="warning">{formatAcv(totalWhitespaceAcv)}</Badge>
             </div>

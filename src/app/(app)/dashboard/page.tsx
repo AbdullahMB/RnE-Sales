@@ -9,7 +9,7 @@ import {
 import {
   AlertTriangle, TrendingUp, TrendingDown, Zap, ChevronRight,
   Check, X, Newspaper, UserMinus, DollarSign, ArrowRight, Minus,
-  Target, Activity, BarChart2, ShieldAlert, Sparkles, Calendar,
+  Target, Activity, BarChart2, ShieldAlert, Sparkles,
   Clock, Building2,
 } from 'lucide-react';
 import { AccountAvatar } from '@/components/account-avatar';
@@ -159,23 +159,51 @@ export default function DashboardPage() {
 
   return (
     <AppShellCard className="page-enter">
-      {/* ── HUMAIN-style header bar ──────────────────────────────────── */}
-      <div className="flex items-center justify-between px-1 pb-3 mb-7 border-b border-border">
-        <p className="text-sm font-extrabold tracking-tight text-foreground">
-          RnE <span className="text-brand-500">SALES</span>
-        </p>
-        <p className="text-xs font-semibold text-muted-foreground tracking-wide hidden sm:block">
-          Sales Execution Toolkit
-        </p>
+      {/* ── HUMAIN brand banner ──────────────────────────────────────── */}
+      <div
+        className="relative overflow-hidden rounded-2xl mb-7 px-6 py-7 sm:px-8 sm:py-8"
+        style={{ background: 'linear-gradient(135deg, var(--brand-950) 0%, var(--brand-900) 45%, var(--brand-700) 100%)' }}
+      >
+        {/* concentric ripple rings */}
+        <svg className="absolute inset-0 size-full opacity-20" preserveAspectRatio="none" aria-hidden="true">
+          <circle cx="9%"  cy="125%" r="90"  fill="none" stroke="white" strokeWidth="1.5" />
+          <circle cx="9%"  cy="125%" r="135" fill="none" stroke="white" strokeWidth="1.5" />
+          <circle cx="9%"  cy="125%" r="180" fill="none" stroke="white" strokeWidth="1.5" />
+          <circle cx="9%"  cy="125%" r="225" fill="none" stroke="white" strokeWidth="1.5" />
+          <circle cx="93%" cy="-25%" r="100" fill="none" stroke="white" strokeWidth="1.5" />
+          <circle cx="93%" cy="-25%" r="150" fill="none" stroke="white" strokeWidth="1.5" />
+          <circle cx="93%" cy="-25%" r="200" fill="none" stroke="white" strokeWidth="1.5" />
+        </svg>
+
+        {/* soft lagoon glow */}
+        <div className="absolute -right-12 -bottom-20 size-64 rounded-full blur-3xl" style={{ background: 'color-mix(in srgb, var(--brand-400) 35%, transparent)' }} />
+
+        {/* bokeh dots */}
+        <div className="absolute right-[18%] top-[28%] size-1.5 rounded-full blur-[1px]" style={{ background: 'rgba(255,255,255,0.4)' }} />
+        <div className="absolute right-[32%] top-[62%] size-1 rounded-full blur-[1px]" style={{ background: 'rgba(255,255,255,0.3)' }} />
+        <div className="absolute right-[8%] top-[55%] size-2 rounded-full blur-[2px]" style={{ background: 'rgba(255,255,255,0.2)' }} />
+        <div className="absolute left-[38%] top-[20%] size-1 rounded-full blur-[1px]" style={{ background: 'rgba(255,255,255,0.2)' }} />
+
+        <div className="relative flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+          <div>
+            <p className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+              RnE <span style={{ color: 'var(--brand-300)' }}>SALES</span>
+            </p>
+            <p className="mt-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.25em]" style={{ color: 'rgba(255,255,255,0.7)' }}>
+              SALES EXECUTION TOOLKIT
+            </p>
+          </div>
+          <p className="text-xs font-medium tracking-wide uppercase" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+          </p>
+        </div>
       </div>
 
       {/* ── HEADER ───────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-9">
         <div>
           <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1.5">
-            <Calendar className="size-3" />
-            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-            <span className="opacity-40">·</span>
+            <Clock className="size-3" />
             Synced 2 min ago
           </p>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">{greeting}, Abdullah</h1>

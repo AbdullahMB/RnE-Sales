@@ -161,8 +161,11 @@ export default function DashboardPage() {
     <AppShellCard className="page-enter">
       {/* ── HUMAIN brand banner ──────────────────────────────────────── */}
       <div
-        className="relative overflow-hidden rounded-2xl mb-7 px-6 py-7 sm:px-8 sm:py-8"
-        style={{ background: 'linear-gradient(135deg, var(--brand-950) 0%, var(--brand-900) 45%, var(--brand-700) 100%)' }}
+        className="relative overflow-hidden rounded-2xl mb-7"
+        style={{
+          background: 'linear-gradient(135deg, var(--brand-950) 0%, var(--brand-900) 45%, var(--brand-700) 100%)',
+          height: '7rem',
+        }}
       >
         {/* concentric ripple rings */}
         <svg className="absolute inset-0 size-full opacity-20" preserveAspectRatio="none" aria-hidden="true">
@@ -183,20 +186,6 @@ export default function DashboardPage() {
         <div className="absolute right-[32%] top-[62%] size-1 rounded-full blur-[1px]" style={{ background: 'rgba(255,255,255,0.3)' }} />
         <div className="absolute right-[8%] top-[55%] size-2 rounded-full blur-[2px]" style={{ background: 'rgba(255,255,255,0.2)' }} />
         <div className="absolute left-[38%] top-[20%] size-1 rounded-full blur-[1px]" style={{ background: 'rgba(255,255,255,0.2)' }} />
-
-        <div className="relative flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-          <div>
-            <p className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-              RnE <span style={{ color: 'var(--brand-300)' }}>SALES</span>
-            </p>
-            <p className="mt-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.25em]" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              SALES EXECUTION TOOLKIT
-            </p>
-          </div>
-          <p className="text-xs font-medium tracking-wide uppercase" style={{ color: 'rgba(255,255,255,0.6)' }}>
-            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-          </p>
-        </div>
       </div>
 
       {/* ── HEADER ───────────────────────────────────────────────────── */}
@@ -493,11 +482,13 @@ export default function DashboardPage() {
                         )}
                       </td>
                       <td className="px-4 py-3.5">
-                        <Button appearance="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity"
-                          render={<Link href={`/accounts/${deal.accountId}`} />}
-                          endIcon={<ChevronRight className="size-4" />}>
+                        <Link
+                          href={`/accounts/${deal.accountId}`}
+                          className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm font-medium text-foreground opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted"
+                        >
                           View
-                        </Button>
+                          <ChevronRight className="size-4" />
+                        </Link>
                       </td>
                     </tr>
                   );

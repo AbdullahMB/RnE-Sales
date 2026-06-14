@@ -150,7 +150,7 @@ export const MOCK_DEALS: Deal[] = [
 
 export const MOCK_SIGNALS: Signal[] = [
   { id: 's1', accountId: 'a1', accountName: 'Aramco Digital', type: 'leadership', title: 'New CTO appointed', summary: 'Aramco Digital named Khalid Al-Rashid as CTO, replacing Ahmed Hassan who moved to parent company.', date: '2026-05-01' },
-  { id: 's2', accountId: 'a5', accountName: 'NEOM', type: 'funding', title: '$500M cloud infrastructure budget approved', summary: 'NEOM announced a major infrastructure investment cycle for 2026–2028 in their latest board filing.', date: '2026-04-29' },
+  { id: 's2', accountId: 'a5', accountName: 'NEOM', type: 'funding', title: 'SAR 1.9B cloud infrastructure budget approved', summary: 'NEOM announced a major infrastructure investment cycle for 2026–2028 in their latest board filing.', date: '2026-04-29' },
   { id: 's3', accountId: 'a3', accountName: 'STC Group', type: 'news', title: 'STC partners with hyperscaler for AI services', summary: 'STC announced a co-development agreement for enterprise AI services — directly relevant to our platform pitch.', date: '2026-04-27' },
   { id: 's4', accountId: 'a2', accountName: 'SABIC', type: 'leadership', title: 'VP Engineering promoted to SVP', summary: 'Internal promotion at SABIC. Our champion is now SVP — increase in influence and budget authority.', date: '2026-04-25' },
 ];
@@ -158,7 +158,7 @@ export const MOCK_SIGNALS: Signal[] = [
 export const MOCK_TASKS: SuggestedTask[] = [
   { id: 't1',  dealId: 'd2',  accountName: 'SABIC',         action: 'Engage SABIC technical leadership on Sabic Program scope', reason: 'Deal at Qualification with no senior stakeholder engagement in 12 days.', priority: 'high' },
   { id: 't2',  dealId: 'd10', accountName: 'Aramco',        action: 'Re-engage Aramco on SLB Infra — 25 days idle', reason: 'No activity in 25 days. Risk of deal going cold.', priority: 'high' },
-  { id: 't3',  dealId: 'd12', accountName: 'MoE',           action: 'Schedule executive briefing on Energy AI Assistant', reason: '30-day idle on a $20M deal. Requires C-level outreach to revive.', priority: 'high' },
+  { id: 't3',  dealId: 'd12', accountName: 'MoE',           action: 'Schedule executive briefing on Energy AI Assistant', reason: '30-day idle on a SAR 20M deal. Requires C-level outreach to revive.', priority: 'high' },
   { id: 't4',  dealId: 'd4',  accountName: 'Aramco',        action: 'Follow up on Safety Opt evaluation status', reason: '15-day idle. Technical review may have stalled — confirm status with champion.', priority: 'medium' },
   { id: 't5',  dealId: 'd5',  accountName: 'ASMO',          action: 'Complete Agentic Platform RFP response', reason: 'Develop Proposal stage — RFP deadline approaching.', priority: 'high' },
   { id: 't6',  dealId: 'd7',  accountName: 'Aramco Sports', action: 'Identify and engage champion for Sport Solutions', reason: 'No stakeholder mapped. Deal at risk of stalling at Qualification.', priority: 'medium' },
@@ -168,7 +168,7 @@ export const MOCK_TASKS: SuggestedTask[] = [
 export const MOCK_ACCOUNTS: Account[] = [
   {
     id: 'a1', name: 'Aramco Digital', industry: 'Energy / Digital Infrastructure',
-    revenue: 'Subsidiary (Saudi Aramco: $440B+)', lastQuarterRevenue: 'Not disclosed',
+    revenue: 'Subsidiary (Saudi Aramco: SAR 1.65T+)', lastQuarterRevenue: 'Not disclosed',
     headcount: '~150', region: 'KSA', hq: 'Dammam, KSA', founded: '2023',
     ticker: '2222.SR (parent)', website: 'aramcodigital.com',
     tier: 'Strategic', accountManagerId: 'tm1', openDeals: 1, totalAcv: 1200000, lastActivity: '2026-05-01',
@@ -180,7 +180,7 @@ export const MOCK_ACCOUNTS: Account[] = [
   },
   {
     id: 'a2', name: 'SABIC', industry: 'Petrochemicals',
-    revenue: '$37.3B (FY2024)', lastQuarterRevenue: '~$9.2B (Q4 2024)',
+    revenue: 'SAR 139.9B (FY2024)', lastQuarterRevenue: '~SAR 34.5B (Q4 2024)',
     headcount: '~33,000', region: 'KSA', hq: 'Riyadh, KSA', founded: '1976',
     ticker: '2010.SR', website: 'sabic.com',
     tier: 'Strategic', accountManagerId: 'tm1', openDeals: 1, totalAcv: 480000, lastActivity: '2026-04-15',
@@ -191,7 +191,7 @@ export const MOCK_ACCOUNTS: Account[] = [
   },
   {
     id: 'a3', name: 'STC Group', industry: 'Telecom',
-    revenue: '$20.2B (FY2024, record)', lastQuarterRevenue: '~$5.1B (Q4 2024)',
+    revenue: 'SAR 75.8B (FY2024, record)', lastQuarterRevenue: '~SAR 19.1B (Q4 2024)',
     headcount: '~19,863', region: 'KSA', hq: 'Riyadh, KSA', founded: '1998',
     ticker: '7010.SR', website: 'stc.com.sa',
     tier: 'Enterprise', accountManagerId: 'tm2', openDeals: 1, totalAcv: 750000, lastActivity: '2026-04-26',
@@ -204,7 +204,7 @@ export const MOCK_ACCOUNTS: Account[] = [
   },
   {
     id: 'a4', name: 'Mobily', industry: 'Telecom',
-    revenue: '$4.85B (FY2024, record)', lastQuarterRevenue: '~$1.25B (Q4 2024)',
+    revenue: 'SAR 18.2B (FY2024, record)', lastQuarterRevenue: '~SAR 4.7B (Q4 2024)',
     headcount: '~4,000', region: 'KSA', hq: 'Riyadh, KSA', founded: '2004',
     ticker: '7020.SR', website: 'mobily.com.sa',
     tier: 'Enterprise', accountManagerId: 'tm3', openDeals: 1, totalAcv: 320000, lastActivity: '2026-04-11',
@@ -216,7 +216,7 @@ export const MOCK_ACCOUNTS: Account[] = [
   },
   {
     id: 'a5', name: 'NEOM', industry: 'Smart City / Infrastructure',
-    revenue: '$50B+ invested (PIF-funded)', lastQuarterRevenue: 'N/A (development project)',
+    revenue: 'SAR 187.5B+ invested (PIF-funded)', lastQuarterRevenue: 'N/A (development project)',
     headcount: '~9,500', region: 'KSA', hq: 'Tabuk Province, KSA', founded: '2017',
     ticker: 'Private (PIF)', website: 'neom.com',
     tier: 'Strategic', accountManagerId: 'tm1', openDeals: 1, totalAcv: 2100000, lastActivity: '2026-05-02',
@@ -285,7 +285,7 @@ export const MOCK_STAKEHOLDERS: Stakeholder[] = [
   // NEOM (a5)
   { id: 'sk13', accountId: 'a5', name: 'Denis Hickey', title: 'Chief Development Officer', role: 'Decision Maker', strength: 2, lastContact: '2026-04-28', email: 'd.hickey@neom.com', phone: '+966 14 111 2233', linkedin: 'https://linkedin.com/in/denis-hickey-neom', buyingCenter: 'Development', notes: 'Controls platform and infrastructure decisions for NEOM build-out.', department: 'd6' },
   { id: 'sk14', accountId: 'a5', name: 'Reem Al-Dosari', title: 'VP Technology & Innovation', role: 'Champion', strength: 4, lastContact: '2026-05-01', email: 'r.aldosari@neom.com', phone: '+966 14 222 3344', linkedin: 'https://linkedin.com/in/reem-aldosari', buyingCenter: 'Technology', notes: 'Strongest internal advocate. Has presented our platform to CDO twice.', department: 'd1' },
-  { id: 'sk15', accountId: 'a5', name: 'Nader Ashoor', title: 'CFO', role: 'Decision Maker', strength: 1, lastContact: '2026-03-20', email: 'n.ashoor@neom.com', phone: '+966 14 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'Controls all vendor spend over $1M. Brief intro at FII conference.', department: 'd3' },
+  { id: 'sk15', accountId: 'a5', name: 'Nader Ashoor', title: 'CFO', role: 'Decision Maker', strength: 1, lastContact: '2026-03-20', email: 'n.ashoor@neom.com', phone: '+966 14 333 4455', linkedin: '', buyingCenter: 'Finance', notes: 'Controls all vendor spend over SAR 1M. Brief intro at FII conference.', department: 'd3' },
 ];
 
 export const MOCK_WIKI_ASSETS: WikiAsset[] = [
@@ -366,7 +366,7 @@ export const MOCK_ACTIVITIES: ActivityEvent[] = [
   { id: 'ac13', accountId: 'a4', type: 'stage_change', date: '2026-04-05', title: 'Advanced to Stage 3',                 body: 'Technical evaluation kicked off with Tariq Al-Ghamdi\'s team.', author: 'Turki Bin Nader' },
   { id: 'ac14', accountId: 'a4', type: 'meeting',      date: '2026-04-01', title: 'Technical evaluation kickoff',        body: 'Mobily team reviewed platform architecture. OT/IT integration raised as a concern — same as Aramco.', author: 'Turki Bin Nader' },
   // NEOM (a5)
-  { id: 'ac15', accountId: 'a5', type: 'signal',       date: '2026-04-29', title: '$500M cloud infrastructure approved',  body: 'NEOM board approved major infrastructure investment for 2026-2028.' },
+  { id: 'ac15', accountId: 'a5', type: 'signal',       date: '2026-04-29', title: 'SAR 1.9B cloud infrastructure approved',  body: 'NEOM board approved major infrastructure investment for 2026-2028.' },
   { id: 'ac16', accountId: 'a5', type: 'meeting',      date: '2026-04-20', title: 'Executive briefing with Denis Hickey', body: 'CDO confirmed NEOM needs a sovereign AI platform. Reem Al-Dosari will champion internally.', author: 'Turki Bin Nader' },
   { id: 'ac17', accountId: 'a5', type: 'email',        date: '2026-05-01', title: 'Sent NEOM playbook and giga-project brief', body: 'Shared smart city playbook and reference architecture tailored to NEOM\'s stated requirements.', author: 'Turki Bin Nader' },
   // SABIC (a2) — Stage 4 commercial review update

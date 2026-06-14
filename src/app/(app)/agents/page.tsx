@@ -307,7 +307,7 @@ function AccountSelector({
               </div>
               {deal && (
                 <p className="text-xs text-muted-foreground">
-                  {deal.stage} · ${(deal.acv / 1_000).toFixed(0)}K ACV · closes {deal.closeDate}
+                  {deal.stage} · SAR {(deal.acv / 1_000).toFixed(0)}K ACV · closes {deal.closeDate}
                 </p>
               )}
               <p className="text-xs text-muted-foreground">{account.hq ?? account.region}</p>
@@ -391,7 +391,7 @@ function ContextPanel({ agentId, accountId }: { agentId: AgentId; accountId: str
             <>
               <p className="font-semibold text-foreground">{deal.stage}</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                ACV: ${(deal.acv / 1_000).toFixed(0)}K · Closes: {deal.closeDate}
+                ACV: SAR {(deal.acv / 1_000).toFixed(0)}K · Closes: {deal.closeDate}
               </p>
               <div className="mt-2">
                 <Badge

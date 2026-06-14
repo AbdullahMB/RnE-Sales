@@ -97,7 +97,7 @@ function generateTalkingPoints(
     points.push('Telecom angle: emphasize platform scalability and AI services enablement — telcos are under pressure to monetize their networks.');
   }
   if (account.name === 'NEOM') {
-    points.push('NEOM context: reference the $500M infrastructure investment. Position as the AI backbone for the smart city stack, not just a point solution.');
+    points.push('NEOM context: reference the SAR 1.9B infrastructure investment. Position as the AI backbone for the smart city stack, not just a point solution.');
   }
 
   // Always-on close
@@ -181,7 +181,7 @@ export default function BriefPage({ params }: { params: Promise<{ accountId: str
           <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
               { label: 'Deal Stage', value: deal.stage, icon: <TrendingUp className="size-3.5" /> },
-              { label: 'ACV', value: `$${(deal.acv / 1000).toFixed(0)}K`, icon: <DollarSign className="size-3.5" /> },
+              { label: 'ACV', value: `SAR ${(deal.acv / 1000).toFixed(0)}K`, icon: <DollarSign className="size-3.5" /> },
               { label: 'Close Date', value: deal.closeDate, icon: <Clock className="size-3.5" /> },
               { label: 'Days Idle', value: `${deal.daysSinceActivity}d`, icon: <AlertTriangle className="size-3.5" />, warn: deal.daysSinceActivity > 14 },
             ].map(({ label, value, icon, warn }) => (

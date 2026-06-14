@@ -142,7 +142,7 @@ export default function DashboardPage() {
   ].slice(0, 4);
 
   const fmtAcv = (v: number) =>
-    v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(1)}M` : `$${(v / 1000).toFixed(0)}K`;
+    v >= 1_000_000 ? `SAR ${(v / 1_000_000).toFixed(1)}M` : `SAR ${(v / 1000).toFixed(0)}K`;
 
   const kpis = [
     { label: 'Active Pipeline',   value: fmtAcv(totalPipeline), sub: `${activeDeals.length} open deals`, icon: <BarChart2 className="size-4.5" /> },
@@ -269,15 +269,15 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <p className="text-sm font-bold text-foreground">Pipeline by Stage</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Active deal value in $M</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Active deal value in SAR M</p>
                 </div>
                 <Badge color="secondary">ACV</Badge>
               </div>
               <BarChart
                 data={pipelineByStage}
-                series={[{ id: 'acv', label: 'ACV ($M)', color: 'var(--color-brand-500)' }]}
+                series={[{ id: 'acv', label: 'ACV (SAR M)', color: 'var(--color-brand-500)' }]}
                 showYAxis showXAxis showTooltip
-                yAxisFormat={(v) => `$${v}M`}
+                yAxisFormat={(v) => `SAR ${v}M`}
                 size="sm"
                 aria-label="Pipeline ACV by stage"
               />

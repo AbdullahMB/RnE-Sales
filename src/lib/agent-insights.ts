@@ -236,7 +236,7 @@ export function getAccountStrategy(accountId: string): AccountStrategyInsight {
 
   return {
     accountPriority: priority,
-    strategicRationale: `${account?.name ?? 'This account'} is a ${account?.tier ?? 'key'} account in the ${account?.industry ?? ''} sector with ${account?.headcount ?? 'significant'} employees and reported revenue of ${account?.revenue ?? 'undisclosed'}. The active deal (ACV: $${(acv / 1_000_000).toFixed(1)}M) represents a significant expansion opportunity aligned with HUMAIN's Vision 2030 positioning. ${account?.tier === 'Strategic' ? 'Its strategic tier classification requires executive-level engagement and executive sponsorship.' : 'Continued investment in relationship depth will accelerate deal velocity.'}`,
+    strategicRationale: `${account?.name ?? 'This account'} is a ${account?.tier ?? 'key'} account in the ${account?.industry ?? ''} sector with ${account?.headcount ?? 'significant'} employees and reported revenue of ${account?.revenue ?? 'undisclosed'}. The active deal (ACV: SAR ${(acv / 1_000_000).toFixed(1)}M) represents a significant expansion opportunity aligned with HUMAIN's Vision 2030 positioning. ${account?.tier === 'Strategic' ? 'Its strategic tier classification requires executive-level engagement and executive sponsorship.' : 'Continued investment in relationship depth will accelerate deal velocity.'}`,
     keyRelationshipGaps: missingRoles.map(
       (r) => `${r} not yet engaged or relationship strength below threshold`
     ),
@@ -328,7 +328,7 @@ turki.binnader@company.com`;
 
   const nextStepBullets = [
     `Send Energy Sector Reference Architecture to ${recipientName.split(' ')[0]} by end of this week`,
-    `Draft 1-page business case for CFO review (ACV: $${(acv / 1_000_000).toFixed(1)}M)`,
+    `Draft 1-page business case for CFO review (ACV: SAR ${(acv / 1_000_000).toFixed(1)}M)`,
     `Confirm PoC timeline and environment requirements with ${recipientTitle || 'technical team'}`,
     `Schedule intro call with CFO / Economic Buyer`,
     `Align on close date: ${deal?.closeDate ?? 'TBC'}`,

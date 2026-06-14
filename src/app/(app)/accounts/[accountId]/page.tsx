@@ -257,7 +257,7 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold text-foreground">
-                          ${(deal.acv / 1000).toFixed(0)}K ACV
+                          SAR {(deal.acv / 1000).toFixed(0)}K ACV
                         </span>
                         <Badge
                           color={

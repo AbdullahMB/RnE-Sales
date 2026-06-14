@@ -117,7 +117,7 @@ function defaultRisks(accountId: string): Risk[] {
 }
 
 function parseTarget(val: string): number {
-  const clean = val.replace(/[$,]/g, '').trim();
+  const clean = val.replace(/(SAR|\$|,)/gi, '').trim();
   const num = parseFloat(clean);
   if (isNaN(num)) return 0;
   if (/[Mm]/.test(val)) return num * 1_000_000;
@@ -280,7 +280,7 @@ export default function AccountPlanPage({ params }: { params: Promise<{ accountI
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Revenue Targets</p>
               <div>
                 <label className="block text-xs font-medium text-foreground mb-1">FY Target</label>
-                <Input value={targetRaw} onChange={(e) => setTargetRaw(e.target.value)} placeholder="e.g. $1.2M" />
+                <Input value={targetRaw} onChange={(e) => setTargetRaw(e.target.value)} placeholder="e.g. SAR 1.2M" />
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1.5">

@@ -142,7 +142,7 @@ function PreviewTable({ deals }: { deals: Deal[] }) {
                   </Badge>
                 </td>
                 <td className="px-3 py-2 text-muted-foreground whitespace-nowrap">
-                  {d.acv >= 1_000_000 ? `$${(d.acv / 1_000_000).toFixed(1)}M` : `$${(d.acv / 1000).toFixed(0)}K`}
+                  {d.acv >= 1_000_000 ? `SAR ${(d.acv / 1_000_000).toFixed(1)}M` : `SAR ${(d.acv / 1000).toFixed(0)}K`}
                 </td>
                 <td className="px-3 py-2 text-muted-foreground">{d.subSector}</td>
                 <td className="px-3 py-2 text-muted-foreground">{d.owner}</td>

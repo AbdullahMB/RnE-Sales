@@ -55,9 +55,9 @@ const ALL_TIERS   = ['All', 'Strategic', 'Enterprise', 'Mid-Market'] as const;
 const ALL_HEALTH  = ['All', 'Healthy', 'At Risk', 'Critical'] as const;
 
 function fmtAcv(v: number) {
-  if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
-  if (v >= 1_000)     return `$${(v / 1_000).toFixed(0)}K`;
-  return `$${v}`;
+  if (v >= 1_000_000) return `SAR ${(v / 1_000_000).toFixed(1)}M`;
+  if (v >= 1_000)     return `SAR ${(v / 1_000).toFixed(0)}K`;
+  return `SAR ${v}`;
 }
 
 export default function AccountsPage() {

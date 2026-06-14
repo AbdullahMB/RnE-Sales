@@ -39,7 +39,7 @@ function buildGroups(): CommandMenuGroup[] {
       options: MOCK_DEALS.map((d) => ({
         id: `/accounts/${d.accountId}`,
         label: d.accountName,
-        subtitle: `${d.stage} · $${(d.acv / 1000).toFixed(0)}K ACV`,
+        subtitle: `${d.stage} · SAR ${(d.acv / 1000).toFixed(0)}K ACV`,
         icon: <Map className="size-4" />,
       })),
     },

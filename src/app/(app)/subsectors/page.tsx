@@ -39,9 +39,9 @@ const SUB_SECTORS = [
 const CLOSED = new Set<Deal['stage']>(['Won', 'Lost', 'Dropped']);
 
 function fmtAcv(v: number) {
-  if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
-  if (v >= 1_000)     return `$${(v / 1_000).toFixed(0)}K`;
-  return `$${v}`;
+  if (v >= 1_000_000) return `SAR ${(v / 1_000_000).toFixed(1)}M`;
+  if (v >= 1_000)     return `SAR ${(v / 1_000).toFixed(0)}K`;
+  return `SAR ${v}`;
 }
 
 const STAGE_COLOR: Record<Deal['stage'], string> = {

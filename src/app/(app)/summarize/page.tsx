@@ -35,17 +35,18 @@ const MEDDIC_LABELS: Record<keyof MeetingSummary['meddic'], string> = {
 
 type Stage = 'input' | 'analyzing' | 'review';
 
-const SAMPLE_TRANSCRIPT = `Meeting: Stage 3 Discovery Deep-Dive — Platform Architecture
-Date: 2026-05-02 | Duration: 62 min
-Participants: Turki Bin Nader (AE), Sara Al-Otaibi (VP Eng), Tariq Bin-Laden (Architect), Priya Nair (SE)
+const SAMPLE_TRANSCRIPT = `Meeting: Stage 4 Commercial Review — Proposal Walkthrough with Finance
+Date: 2026-05-12 | Duration: 54 min
+Participants: Turki Bin Nader (AE), Nora Al-Harbi (SVP Eng, Champion), Salah Al-Hareky (EVP Corporate Finance), Omar Al-Zahrani (Head of IT Infra)
 
-[00:00] Turki: Thanks for joining, Sara. Today we want to go deep on the architecture requirements…
-[02:15] Sara: Absolutely. Our number one non-negotiable is data residency — everything must stay in KSA, in-region processing only.
-[08:40] Tariq: We have a significant OT/IT integration complexity. Our current setup requires third-party middleware which is slowing everything down.
-[14:22] Turki: That's exactly where our edge compute pattern addresses the gap…
-[31:05] Sara: The CFO needs to approve anything over SAR 3 million. He's not involved yet but I can facilitate an introduction once we have a business case document.
-[45:10] Sara: What we're measuring is a 30% reduction in platform integration costs and getting AI projects to market 6 months faster.
-[58:30] Turki: So next steps — reference architecture to Tariq by May 7, business case draft by May 14, then we set up the CFO intro.`;
+[00:00] Turki: Thanks everyone for joining — and congratulations again on the promotion, Nora.
+[01:30] Nora: Thank you. I wanted Salah in the room now that I have more budget oversight — this is the introduction we've been waiting on.
+[06:10] Salah: I've reviewed the SAR 20 million proposal. Before this goes to the board, I need a 3-year ROI and TCO comparison against our incumbent platform.
+[18:45] Omar: From the infrastructure side, technical validation is nearly done, but security sign-off from my team is still outstanding — that's the critical path for procurement right now.
+[27:20] Salah: I'd also like the commercial proposal restructured with milestone-based payment terms rather than a single upfront payment.
+[39:55] Turki: Understood. We'll get the ROI/TCO model and revised proposal to you by May 19.
+[44:30] Omar: I'll push to close out the security sign-off by May 16 so it doesn't block procurement.
+[52:00] Turki: Great — so next steps: ROI/TCO model and revised proposal by May 19, security sign-off by May 16, and we target procurement kickoff for the week of May 26.`;
 
 export default function SummarizePage() {
   const [stage, setStage] = useState<Stage>('input');

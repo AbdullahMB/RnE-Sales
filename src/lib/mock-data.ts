@@ -299,26 +299,26 @@ export const MOCK_WIKI_ASSETS: WikiAsset[] = [
 
 export const MOCK_MEETING_SUMMARY: MeetingSummary = {
   id: 'ms1',
-  accountId: 'a1',
-  accountName: 'Aramco Digital',
-  meetingTitle: 'Stage 3 Discovery Deep-Dive — Platform Architecture',
-  date: '2026-05-02',
-  duration: '62 minutes',
-  participants: ['Turki Bin Nader (AE)', 'Sara Al-Otaibi (VP Eng)', 'Tariq Bin-Laden (Architect)', 'Priya Nair (SE)'],
-  summary: 'Productive architecture review call. Sara confirmed that data residency in KSA is non-negotiable — all processing must remain on-region. Tariq raised concerns about OT/IT integration complexity in their existing environment. We positioned our edge compute pattern as the differentiator; they asked for a reference architecture document. No CFO engagement yet — Sara mentioned the CFO has budget approval authority for deals over SAR 3M. She offered to facilitate an introduction if we can produce a business case document first. Next step is a business case draft + reference architecture by May 14.',
+  accountId: 'a2',
+  accountName: 'SABIC',
+  meetingTitle: 'Stage 4 Commercial Review — Proposal Walkthrough with Finance',
+  date: '2026-05-12',
+  duration: '54 minutes',
+  participants: ['Turki Bin Nader (AE)', 'Nora Al-Harbi (SVP Eng, Champion)', 'Salah Al-Hareky (EVP Corporate Finance)', 'Omar Al-Zahrani (Head of IT Infra)'],
+  summary: 'Strong commercial review following Nora\'s promotion to SVP. She facilitated the long-awaited introduction to Salah Al-Hareky (EVP Corporate Finance), who reviewed the SAR 20M proposal and asked for a 3-year ROI/TCO comparison against the incumbent platform before he can take it to the board. Omar confirmed technical validation is nearly complete but flagged that security sign-off is still pending from his infrastructure team — this is now the critical path for procurement. Salah also requested the commercial proposal be restructured with milestone-based payment terms. Agreed plan: deliver the ROI/TCO model and revised proposal by May 19, close out security sign-off by May 16, and target procurement kickoff for the week of May 26.',
   actionItems: [
-    { id: 'ai1', text: 'Send Energy Sector Reference Architecture to Tariq', owner: 'Turki Bin Nader', due: '2026-05-07', checked: false },
-    { id: 'ai2', text: 'Draft business case document for CFO presentation', owner: 'Turki Bin Nader', due: '2026-05-14', checked: false },
-    { id: 'ai3', text: 'Schedule CFO introduction via Sara', owner: 'Turki Bin Nader', due: '2026-05-14', checked: false },
-    { id: 'ai4', text: 'Confirm KSA data residency compliance architecture with SE team', owner: 'Priya Nair', due: '2026-05-09', checked: false },
+    { id: 'ai1', text: 'Build 3-year ROI/TCO comparison model vs. incumbent for Salah Al-Hareky', owner: 'Turki Bin Nader', due: '2026-05-19', checked: false },
+    { id: 'ai2', text: 'Complete security sign-off documentation with Omar\'s infrastructure team', owner: 'Priya Nair', due: '2026-05-16', checked: false },
+    { id: 'ai3', text: 'Revise commercial proposal with milestone-based payment terms', owner: 'Turki Bin Nader', due: '2026-05-19', checked: false },
+    { id: 'ai4', text: 'Schedule procurement kickoff call with finance and infrastructure teams', owner: 'Turki Bin Nader', due: '2026-05-26', checked: false },
   ],
   meddic: {
-    metrics: 'Reduce platform integration costs by 30%; accelerate AI project delivery by 6 months.',
-    economicBuyer: 'CFO (name TBC) — SAR 3M+ approval authority. Not yet engaged.',
-    decisionCriteria: 'Data residency (KSA), OT/IT integration capability, vendor support SLA.',
-    decisionProcess: 'Technical validation → Business case → CFO approval → Legal/procurement → Contract.',
-    identifiedPain: 'OT/IT integration complexity slowing AI deployment. Current approach requires 3rd-party middleware.',
-    champion: 'Sara Al-Otaibi (VP Engineering) — strong advocate, offered CFO introduction.',
+    metrics: 'Target 22% TCO reduction vs. incumbent over 3 years; SAR 20M program value.',
+    economicBuyer: 'Salah Al-Hareky (EVP Corporate Finance) — newly engaged via Nora\'s introduction. Requires 3-year ROI/TCO model before board approval.',
+    decisionCriteria: 'TCO vs. incumbent platform, security/infrastructure sign-off, milestone-based payment structure.',
+    decisionProcess: 'Technical validation → Security sign-off → Finance ROI review → Procurement → Contract execution.',
+    identifiedPain: 'Rising integration costs with incumbent platform; security review backlog delaying rollout timelines.',
+    champion: 'Nora Al-Harbi (SVP Engineering, recently promoted) — facilitated CFO-level introduction, strong internal advocate.',
   },
   status: 'pending',
 };
@@ -369,6 +369,11 @@ export const MOCK_ACTIVITIES: ActivityEvent[] = [
   { id: 'ac15', accountId: 'a5', type: 'signal',       date: '2026-04-29', title: '$500M cloud infrastructure approved',  body: 'NEOM board approved major infrastructure investment for 2026-2028.' },
   { id: 'ac16', accountId: 'a5', type: 'meeting',      date: '2026-04-20', title: 'Executive briefing with Denis Hickey', body: 'CDO confirmed NEOM needs a sovereign AI platform. Reem Al-Dosari will champion internally.', author: 'Turki Bin Nader' },
   { id: 'ac17', accountId: 'a5', type: 'email',        date: '2026-05-01', title: 'Sent NEOM playbook and giga-project brief', body: 'Shared smart city playbook and reference architecture tailored to NEOM\'s stated requirements.', author: 'Turki Bin Nader' },
+  // SABIC (a2) — Stage 4 commercial review update
+  { id: 'ac18', accountId: 'a2', type: 'meeting',      date: '2026-05-12', title: 'Stage 4 Commercial Review — Proposal Walkthrough with Finance', body: 'Nora facilitated intro to EVP Finance Salah Al-Hareky. He requested a 3-year ROI/TCO model and milestone-based payment terms before board approval. Omar flagged security sign-off as the critical path.', author: 'Turki Bin Nader' },
+  { id: 'ac19', accountId: 'a2', type: 'action_item',  date: '2026-05-12', title: 'ROI/TCO model due May 19',              body: 'Build 3-year ROI/TCO comparison vs. incumbent for Salah Al-Hareky.', author: 'Turki Bin Nader' },
+  { id: 'ac20', accountId: 'a2', type: 'action_item',  date: '2026-05-12', title: 'Security sign-off due May 16',          body: 'Complete security sign-off documentation with Omar Al-Zahrani\'s infrastructure team.', author: 'Priya Nair' },
+  { id: 'ac21', accountId: 'a2', type: 'action_item',  date: '2026-05-12', title: 'Procurement kickoff targeted for May 26', body: 'Schedule procurement kickoff call with finance and infrastructure teams once ROI model and sign-off are complete.', author: 'Turki Bin Nader' },
 ];
 
 // ─── Account Planning Data ────────────────────────────────────────────────────

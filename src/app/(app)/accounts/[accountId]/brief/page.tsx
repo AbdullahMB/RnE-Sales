@@ -245,7 +245,7 @@ export default function BriefPage({ params }: { params: Promise<{ accountId: str
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Users className="size-4 text-brand-500" />
-                <h3 className="text-sm font-semibold text-foreground">Who's in the Room</h3>
+                <h3 className="text-sm font-semibold text-foreground">Who&apos;s in the Room</h3>
               </div>
               <Button appearance="ghost" size="sm" render={<Link href={`/accounts/${account.id}/map`} />}
                 endIcon={<Map className="size-4" />}>

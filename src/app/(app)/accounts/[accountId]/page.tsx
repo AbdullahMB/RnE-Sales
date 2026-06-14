@@ -43,9 +43,11 @@ import {
   type StakeholderRole,
   type ActivityType,
 } from '@/lib/mock-data';
-import { computeAccountHealth, HEALTH_STYLE } from '@/lib/health';
+import { computeAccountHealth } from '@/lib/health';
 
 type BadgeColor = 'destructive' | 'warning' | 'success' | 'secondary' | 'primary';
+
+const EXPIRY_SOON_THRESHOLD = new Date(Date.now() + 30 * 86400_000);
 
 const SIGNAL_ICON: Record<Signal['type'], React.ReactNode> = {
   leadership: <UserMinus className="size-4" />,
@@ -159,13 +161,13 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
     w.industry.some((i) => account.industry.includes(i)) || w.tags.includes(account.region.toLowerCase())
   ).slice(0, 3);
 
+
   const hasEconomicBuyer = stakeholders.some(
     (s) => s.role === 'Decision Maker' && s.strength >= 2
   );
   const hasChampion = stakeholders.some((s) => s.role === 'Champion' && s.strength >= 3);
 
   const health = computeAccountHealth(account, deals, stakeholders, signals);
-  const hs = HEALTH_STYLE[health.status];
 
   // Latest meeting summary for this account (MEDDIC data)
   const meetingSummary = MOCK_MEETING_SUMMARY.accountId === account.id ? MOCK_MEETING_SUMMARY : null;
@@ -390,7 +392,7 @@ export default function AccountPage({ params }: { params: Promise<{ accountId: s
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
                         <Badge color="secondary">{asset.type}</Badge>
-                        {asset.expiresAt && new Date(asset.expiresAt) < new Date(Date.now() + 30 * 86400_000) && (
+                        {asset.expiresAt && new Date(asset.expiresAt) < EXPIRY_SOON_THRESHOLD && (
                           <Badge color="warning">Expires soon</Badge>
                         )}
                       </div>

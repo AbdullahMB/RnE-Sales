@@ -148,7 +148,7 @@ export default function CollateralBuilderPage() {
           },
         ]);
       }
-    } catch (error) {
+    } catch {
       setMessages((prev) => [
         ...prev,
         {
@@ -355,7 +355,7 @@ export default function CollateralBuilderPage() {
                 </h2>
                 <p className="text-muted-foreground mb-8 leading-relaxed">
                   Upload your product documents, pitch decks, or FAQ sheets to get started. 
-                  I'll help you generate customized sales materials tailored to your prospects.
+                  I&apos;ll help you generate customized sales materials tailored to your prospects.
                 </p>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="p-4 rounded-lg border border-border text-left">

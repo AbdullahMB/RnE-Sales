@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { AppShellCard, Badge, Button } from '@humain-foundation/ui';
 import { toast } from '@humain-foundation/ui';
 import {
-  AlertTriangle, Clock, TrendingUp, Users, Sparkles,
+  AlertTriangle, Sparkles,
   CheckCircle2, XCircle, Target, Calendar,
   ShieldAlert, ChevronRight, BrainCircuit, Lightbulb,
   ChevronDown, ChevronUp, StickyNote, Save, Trophy,
-  Layers, BarChart3, Filter, Database,
+  Layers, Filter, Database,
 } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { usePipelineData } from '@/hooks/use-pipeline-data';
@@ -28,16 +28,6 @@ import { AccountAvatar } from '@/components/account-avatar';
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const CLOSED_STAGES = new Set<Deal['stage']>(['Won', 'Lost', 'Dropped']);
-
-const STAGE_WEIGHT: Record<string, number> = {
-  'Qualification':   0.20,
-  'Develop Proposal':0.40,
-  'Submit Proposal': 0.60,
-  'Negotiate':       0.80,
-  'Won':             1.00,
-  'Lost':            0,
-  'Dropped':         0,
-};
 
 function fmtAcv(v: number): string {
   if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
@@ -204,7 +194,7 @@ function CoachingNote({ dealId }: { dealId: string }) {
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-1.5">
         <StickyNote className="size-3.5 text-muted-foreground" />
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Coach's Note</p>
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Coach&apos;s Note</p>
       </div>
       <textarea
         className="w-full min-h-[80px] resize-y rounded-lg border border-border bg-background p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-500/40"
@@ -499,7 +489,6 @@ export default function DealIntelligencePage() {
   const totalPipeline = activeDeals.reduce((s, d) => s + d.acv, 0);
   const weightedAcv   = activeDeals.reduce((s, d) => s + d.acv * (d.probability / 100), 0);
   const wonAcv        = wonDeals.reduce((s, d) => s + d.acv, 0);
-  const atRisk        = activeDeals.filter((d) => d.risk === 'high').length;
   const daysToQEnd    = daysUntil('2026-06-30');
 
   const allSectors    = [...new Set(deals.map((d) => d.subSector))];

@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       content,
       type,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Failed to generate" },
       { status: 500 }

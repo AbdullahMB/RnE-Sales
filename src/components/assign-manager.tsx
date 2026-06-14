@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Avatar, Badge, Button, Dialog } from '@humain-foundation/ui';
+import { Avatar, Button, Dialog } from '@humain-foundation/ui';
 import { ChevronDown, Check, UserCog } from 'lucide-react';
 import { MOCK_TEAM, type TeamMember } from '@/lib/mock-data';
 import { useLocalStorage } from '@/hooks/use-local-storage';

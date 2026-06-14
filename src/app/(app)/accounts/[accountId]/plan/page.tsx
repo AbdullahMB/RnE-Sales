@@ -6,6 +6,7 @@ import {
   AppShellCard,
   Badge,
   Button,
+  buttonVariants,
   Input,
   toast,
   Tooltip,
@@ -145,10 +146,10 @@ function SectionHeader({ icon, title, subtitle, noMargin }: {
 export default function AccountPlanPage({ params }: { params: Promise<{ accountId: string }> }) {
   const { accountId } = use(params);
 
-  const account      = MOCK_ACCOUNTS.find((a) => a.id === accountId) ?? MOCK_ACCOUNTS[0];
-  const deals        = MOCK_DEALS.filter((d) => d.accountId === account.id);
-  const stakeholders = MOCK_STAKEHOLDERS.filter((s) => s.accountId === account.id);
-  const signals      = MOCK_SIGNALS.filter((s) => s.accountId === account.id);
+  const account = useMemo(() => MOCK_ACCOUNTS.find((a) => a.id === accountId) ?? MOCK_ACCOUNTS[0], [accountId]);
+  const deals = useMemo(() => MOCK_DEALS.filter((d) => d.accountId === account.id), [account]);
+  const stakeholders = useMemo(() => MOCK_STAKEHOLDERS.filter((s) => s.accountId === account.id), [account]);
+  const signals = useMemo(() => MOCK_SIGNALS.filter((s) => s.accountId === account.id), [account]);
   const primaryDeal  = deals[0];
   const pipelineAcv  = deals.reduce((sum, d) => sum + d.acv, 0);
 
@@ -245,9 +246,10 @@ export default function AccountPlanPage({ params }: { params: Promise<{ accountI
         </div>
       </AppShellCard.Header>
       <AppShellCard.Actions>
-        <Button appearance="ghost" size="sm" render={<Link href={`/accounts/${accountId}`} />} startIcon={<ArrowLeft className="size-4" />}>
+        <Link href={`/accounts/${accountId}`} className={buttonVariants({ appearance: 'ghost', size: 'sm' })}>
+          <ArrowLeft className="size-4" />
           Back to Account 360
-        </Button>
+        </Link>
         {lastSaved && (
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Save className="size-3.5" />
@@ -413,25 +415,23 @@ export default function AccountPlanPage({ params }: { params: Promise<{ accountI
                           return (
                             <td key={dept.id} className="px-1 py-1.5">
                               <Tooltip.Root>
-                                <Tooltip.Trigger>
-                                  <button
-                                    onClick={() => cycleCell(product.id, dept.id)}
-                                    onMouseEnter={() => setHoveredCell(key)}
-                                    onMouseLeave={() => setHoveredCell(null)}
-                                    className={`w-full rounded-lg border transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer
-                                      ${style.bg} ${style.border}
-                                      ${isHovered ? 'opacity-80 scale-95' : 'opacity-100'}
-                                      ${state === 'not_applicable' ? 'opacity-40' : ''}
-                                    `}
-                                    style={{ height: '52px', minWidth: '68px' }}
-                                  >
-                                    <span className={`text-[10px] font-bold tracking-wide ${state === 'not_applicable' ? 'text-muted-foreground' : 'text-foreground'}`}>
-                                      {style.short}
-                                    </span>
-                                    {fitScore >= 30 && (
-                                      <span className="text-[9px] text-muted-foreground">{fitScore}%</span>
-                                    )}
-                                  </button>
+                                <Tooltip.Trigger
+                                  onClick={() => cycleCell(product.id, dept.id)}
+                                  onMouseEnter={() => setHoveredCell(key)}
+                                  onMouseLeave={() => setHoveredCell(null)}
+                                  className={`w-full rounded-lg border transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer
+                                    ${style.bg} ${style.border}
+                                    ${isHovered ? 'opacity-80 scale-95' : 'opacity-100'}
+                                    ${state === 'not_applicable' ? 'opacity-40' : ''}
+                                  `}
+                                  style={{ height: '52px', minWidth: '68px' }}
+                                >
+                                  <span className={`text-[10px] font-bold tracking-wide ${state === 'not_applicable' ? 'text-muted-foreground' : 'text-foreground'}`}>
+                                    {style.short}
+                                  </span>
+                                  {fitScore >= 30 && (
+                                    <span className="text-[9px] text-muted-foreground">{fitScore}%</span>
+                                  )}
                                 </Tooltip.Trigger>
                                 <Tooltip.Popup>
                                   <div className="text-xs space-y-0.5">

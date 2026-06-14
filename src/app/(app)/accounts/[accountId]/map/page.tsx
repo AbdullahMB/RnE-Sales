@@ -6,6 +6,7 @@ import {
   AppShellCard,
   Badge,
   Button,
+  buttonVariants,
   Avatar,
   Dialog,
   Sheet,
@@ -77,20 +78,26 @@ function StrengthPips({
   onChange?: (v: RelationshipStrength) => void;
   compact?: boolean;
 }) {
+  const pipClassName = (pip: number) =>
+    `h-3 w-3 rounded-full transition-colors ${
+      pip <= value ? 'bg-brand-500' : 'bg-muted border border-border'
+    } ${editable ? 'cursor-pointer hover:bg-brand-400' : 'cursor-default'}`;
+
   return (
     <div className="flex items-center gap-1.5">
-      {[1, 2, 3, 4, 5].map((pip) => (
-        <button
-          key={pip}
-          type="button"
-          disabled={!editable}
-          onClick={() => editable && onChange?.(pip as RelationshipStrength)}
-          className={`h-3 w-3 rounded-full transition-colors ${
-            pip <= value ? 'bg-brand-500' : 'bg-muted border border-border'
-          } ${editable ? 'cursor-pointer hover:bg-brand-400' : 'cursor-default'}`}
-          title={editable ? STRENGTH_LABELS[pip] : undefined}
-        />
-      ))}
+      {[1, 2, 3, 4, 5].map((pip) =>
+        editable ? (
+          <button
+            key={pip}
+            type="button"
+            onClick={() => onChange?.(pip as RelationshipStrength)}
+            className={pipClassName(pip)}
+            title={STRENGTH_LABELS[pip]}
+          />
+        ) : (
+          <span key={pip} className={pipClassName(pip)} />
+        )
+      )}
       {!compact && <span className="text-xs text-muted-foreground ml-1">{STRENGTH_LABELS[value]}</span>}
     </div>
   );
@@ -614,15 +621,13 @@ export default function AccountMapPage({ params }: { params: Promise<{ accountId
       <AppShellCard>
         <AppShellCard.Header>
           <div>
-            <Button
-              appearance="ghost"
-              size="sm"
-              render={<Link href={`/accounts/${account.id}`} />}
-              startIcon={<ArrowLeft className="size-4" />}
-              className="mb-1"
+            <Link
+              href={`/accounts/${account.id}`}
+              className={buttonVariants({ appearance: 'ghost', size: 'sm', className: 'mb-1' })}
             >
+              <ArrowLeft className="size-4" />
               {account.name}
-            </Button>
+            </Link>
             <AppShellCard.Title>Stakeholder Map</AppShellCard.Title>
             <AppShellCard.Subtitle>{stakeholders.length} stakeholders · Click any card to view or edit</AppShellCard.Subtitle>
           </div>

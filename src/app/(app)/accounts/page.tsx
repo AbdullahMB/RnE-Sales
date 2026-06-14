@@ -5,7 +5,6 @@ import Link from 'next/link';
 import {
   AppShellCard,
   Badge,
-  Button,
   Input,
 } from '@humain-foundation/ui';
 import {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Avatar, Badge, Button, Input, Dialog } from '@humain-foundation/ui';
+import { Avatar, Button, Input, Dialog } from '@humain-foundation/ui';
 import { Pencil, Plus, Trash2, Link2, Mail, Check } from 'lucide-react';
 import type { AccountExecutive } from '@/lib/mock-data';
 import { useLocalStorage } from '@/hooks/use-local-storage';

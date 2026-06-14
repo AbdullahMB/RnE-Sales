@@ -34,8 +34,6 @@ const SUB_SECTORS = [
   { key: 'Utilities & Services',     icon: <Droplets className="size-5" />,...BRAND_STYLE },
 ] as const;
 
-type SubSectorKey = (typeof SUB_SECTORS)[number]['key'];
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const CLOSED = new Set<Deal['stage']>(['Won', 'Lost', 'Dropped']);

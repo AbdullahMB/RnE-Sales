@@ -647,7 +647,6 @@ function ProposalOutput({ accountId }: { accountId: string }) {
 // Scope type is derived from deal stage and account context
 function deriveScopeType(accountId: string): { label: string; description: string } {
   const deal    = MOCK_DEALS.find((d) => d.accountId === accountId);
-  const account = MOCK_ACCOUNTS.find((a) => a.id === accountId);
   const stageNum = deal ? parseInt(deal.stage.replace('Stage ', ''), 10) : 0;
 
   if (stageNum <= 1)
@@ -1111,26 +1110,22 @@ export default function AgentsPage() {
   const [step,      setStep]      = useState<Step>(1);
   const [agentId,   setAgentId]   = useState<AgentId | null>(null);
   const [accountId, setAccountId] = useState<string | null>(null);
-  const [generated, setGenerated] = useState(false);
   const [copied,    setCopied]    = useState(false);
 
   // Selecting a new agent resets downstream state
   const handleSelectAgent = useCallback((id: AgentId) => {
     setAgentId(id);
     setAccountId(null);
-    setGenerated(false);
   }, []);
 
   // Changing account resets output
   const handleSelectAccount = useCallback((id: string) => {
     setAccountId(id);
-    setGenerated(false);
   }, []);
 
   // Jump to another agent (keep account)
   const handleRunAgent = useCallback((id: AgentId) => {
     setAgentId(id);
-    setGenerated(false);
     setStep(3);
   }, []);
 
@@ -1139,14 +1134,12 @@ export default function AgentsPage() {
     setStep(1);
     setAgentId(null);
     setAccountId(null);
-    setGenerated(false);
     setCopied(false);
   }, []);
 
   // Change account, keep agent
   const handleChangeAccount = useCallback(() => {
     setAccountId(null);
-    setGenerated(false);
     setStep(2);
   }, []);
 
@@ -1171,7 +1164,6 @@ export default function AgentsPage() {
 
   const handleBack = () => {
     if (step > 1) setStep((s) => (s - 1) as Step);
-    setGenerated(false);
   };
 
   return (
@@ -1215,7 +1207,7 @@ export default function AgentsPage() {
               <GeneratePanel
                 agentId={agentId}
                 accountId={accountId}
-                onGenerate={() => { setGenerated(true); setStep(4); }}
+                onGenerate={() => setStep(4)}
               />
             </div>
           )}

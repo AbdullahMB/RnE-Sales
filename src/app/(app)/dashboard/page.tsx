@@ -9,25 +9,19 @@ import {
 import {
   AlertTriangle, TrendingUp, TrendingDown, Zap, ChevronRight,
   Check, X, Newspaper, UserMinus, DollarSign, ArrowRight, Minus,
-  Target, Activity, BarChart2, ShieldAlert, Sparkles,
-  Clock, Building2,
+  Target, BarChart2, ShieldAlert, Sparkles,
+  Clock,
 } from 'lucide-react';
 import { AccountAvatar } from '@/components/account-avatar';
 import {
   MOCK_DEALS, MOCK_SIGNALS, MOCK_TASKS, MOCK_STAKEHOLDERS,
-  MOCK_ACCOUNTS, type RiskLevel, type Signal, type SuggestedTask,
+  MOCK_ACCOUNTS, type Signal, type SuggestedTask,
 } from '@/lib/mock-data';
 import { computeAccountHealth, HEALTH_STYLE } from '@/lib/health';
 
 // ─── Types & constants ────────────────────────────────────────────────────────
 
 type BadgeColor = 'destructive' | 'warning' | 'success' | 'secondary' | 'primary';
-
-const RISK_BADGE: Record<RiskLevel, { color: BadgeColor; label: string }> = {
-  high:   { color: 'destructive', label: 'High Risk' },
-  medium: { color: 'warning',     label: 'Medium' },
-  low:    { color: 'success',     label: 'On Track' },
-};
 
 const SIGNAL_ICON: Record<Signal['type'], { icon: React.ReactNode; label: string }> = {
   leadership: { icon: <UserMinus className="size-4" />,  label: 'Leadership' },

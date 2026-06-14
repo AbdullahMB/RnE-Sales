@@ -1,28 +1,61 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
+
+type Listener = () => void;
+
+const listeners = new Map<string, Set<Listener>>();
+
+function emitChange(key: string) {
+  listeners.get(key)?.forEach((listener) => listener());
+}
+
+function subscribe(key: string) {
+  return (callback: Listener) => {
+    let set = listeners.get(key);
+    if (!set) {
+      set = new Set();
+      listeners.set(key, set);
+    }
+    set.add(callback);
+    return () => set!.delete(callback);
+  };
+}
+
+function getSnapshot(key: string) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function getServerSnapshot() {
+  return null;
+}
 
 export function useLocalStorage<T>(key: string, initial: T): [T, (v: T | ((prev: T) => T)) => void] {
-  const [value, setValue] = useState<T>(() => {
-    if (typeof window === 'undefined') return initial;
-    try {
-      const raw = localStorage.getItem(key);
-      return raw ? (JSON.parse(raw) as T) : initial;
-    } catch {
-      return initial;
-    }
-  });
+  const subscribeToKey = useCallback((callback: Listener) => subscribe(key)(callback), [key]);
+  const getKeySnapshot = useCallback(() => getSnapshot(key), [key]);
 
-  useEffect(() => {
+  const raw = useSyncExternalStore(subscribeToKey, getKeySnapshot, getServerSnapshot);
+
+  let value: T = initial;
+  if (raw !== null) {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch {}
-  }, [key, value]);
+      value = JSON.parse(raw) as T;
+    } catch {
+      value = initial;
+    }
+  }
 
   const set = useCallback((v: T | ((prev: T) => T)) => {
-    setValue((prev) => {
+    try {
+      const rawCurrent = getSnapshot(key);
+      const prev: T = rawCurrent !== null ? (JSON.parse(rawCurrent) as T) : initial;
       const next = typeof v === 'function' ? (v as (p: T) => T)(prev) : v;
-      return next;
-    });
-  }, []);
+      localStorage.setItem(key, JSON.stringify(next));
+      emitChange(key);
+    } catch {}
+  }, [key, initial]);
 
   return [value, set];
 }

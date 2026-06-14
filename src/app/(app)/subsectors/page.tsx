@@ -13,7 +13,7 @@ import { toast } from '@humain-foundation/ui';
 import {
   Zap, Pickaxe, Factory, Droplets,
   TrendingUp, Trophy, Target, Check,
-  ChevronRight, UserCog, Users, Briefcase,
+  ChevronRight, UserCog, Users, Briefcase, Layers,
 } from 'lucide-react';
 import { MOCK_DEALS, MOCK_TEAM, type Deal, type TeamMember } from '@/lib/mock-data';
 import { useLocalStorage } from '@/hooks/use-local-storage';
@@ -278,7 +278,10 @@ export default function SubSectorsPage() {
     <AppShellCard className="page-enter">
       <AppShellCard.Header>
         <div>
-          <AppShellCard.Title>Sub Sector Overview</AppShellCard.Title>
+          <div className="flex items-center gap-2">
+            <Layers className="size-5 text-brand-500" />
+            <AppShellCard.Title>Sub Sector Overview</AppShellCard.Title>
+          </div>
           <AppShellCard.Subtitle>
             Pipeline breakdown by sector — {fmtAcv(totalOpen)} open · {fmtAcv(totalWon)} won
           </AppShellCard.Subtitle>

@@ -93,7 +93,10 @@ export default function AccountsPage() {
     <AppShellCard className="page-enter">
       <AppShellCard.Header>
         <div>
-          <AppShellCard.Title>Accounts</AppShellCard.Title>
+          <div className="flex items-center gap-2">
+            <Building2 className="size-5 text-brand-500" />
+            <AppShellCard.Title>Accounts</AppShellCard.Title>
+          </div>
           <AppShellCard.Subtitle>{MOCK_ACCOUNTS.length} accounts in your book of business</AppShellCard.Subtitle>
         </div>
       </AppShellCard.Header>

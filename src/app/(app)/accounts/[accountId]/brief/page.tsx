@@ -129,7 +129,10 @@ export default function BriefPage({ params }: { params: Promise<{ accountId: str
     return (
       <AppShellCard>
         <AppShellCard.Header>
-          <AppShellCard.Title>Pre-Meeting Brief</AppShellCard.Title>
+          <div className="flex items-center gap-2">
+            <Sparkles className="size-5 text-brand-500" />
+            <AppShellCard.Title>Pre-Meeting Brief</AppShellCard.Title>
+          </div>
         </AppShellCard.Header>
         <div className="flex flex-col items-center gap-5 py-24">
           <div className="relative flex items-center justify-center">

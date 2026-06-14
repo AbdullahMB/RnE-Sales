@@ -26,6 +26,7 @@ import {
   Clock,
   CheckCircle,
   Building2,
+  Users,
 } from 'lucide-react';
 import {
   MOCK_ACCOUNTS,
@@ -628,7 +629,10 @@ export default function AccountMapPage({ params }: { params: Promise<{ accountId
               <ArrowLeft className="size-4" />
               {account.name}
             </Link>
-            <AppShellCard.Title>Stakeholder Map</AppShellCard.Title>
+            <div className="flex items-center gap-2">
+              <Users className="size-5 text-brand-500" />
+              <AppShellCard.Title>Stakeholder Map</AppShellCard.Title>
+            </div>
             <AppShellCard.Subtitle>{stakeholders.length} stakeholders · Click any card to view or edit</AppShellCard.Subtitle>
           </div>
         </AppShellCard.Header>

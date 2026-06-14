@@ -55,8 +55,13 @@ export default function WikiPage() {
   return (
     <AppShellCard>
       <AppShellCard.Header>
-        <AppShellCard.Title>Sales Wiki</AppShellCard.Title>
-        <AppShellCard.Subtitle>Case studies, battle cards, playbooks, and templates</AppShellCard.Subtitle>
+        <div>
+          <div className="flex items-center gap-2">
+            <BookOpen className="size-5 text-brand-500" />
+            <AppShellCard.Title>Sales Wiki</AppShellCard.Title>
+          </div>
+          <AppShellCard.Subtitle>Case studies, battle cards, playbooks, and templates</AppShellCard.Subtitle>
+        </div>
       </AppShellCard.Header>
 
       <div className="flex flex-col gap-6">

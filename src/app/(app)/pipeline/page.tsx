@@ -522,6 +522,7 @@ export default function DealIntelligencePage() {
       <AppShellCard.Header>
         <div>
           <div className="flex items-center gap-2">
+            <BrainCircuit className="size-5 text-brand-500" />
             <AppShellCard.Title>Deal Intelligence</AppShellCard.Title>
             {hasCustomData && (
               <span className="inline-flex items-center gap-1 rounded-full bg-brand-500/10 border border-brand-500/20 px-2 py-0.5 text-xs font-medium text-brand-500">

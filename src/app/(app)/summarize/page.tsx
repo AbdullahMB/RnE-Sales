@@ -95,8 +95,13 @@ export default function SummarizePage() {
     return (
       <AppShellCard>
         <AppShellCard.Header>
-          <AppShellCard.Title>Meeting Summarizer</AppShellCard.Title>
-          <AppShellCard.Subtitle>Paste a transcript or recording notes — AI extracts MEDDIC, action items, and summary</AppShellCard.Subtitle>
+          <div>
+            <div className="flex items-center gap-2">
+              <FileText className="size-5 text-brand-500" />
+              <AppShellCard.Title>Meeting Summarizer</AppShellCard.Title>
+            </div>
+            <AppShellCard.Subtitle>Paste a transcript or recording notes — AI extracts MEDDIC, action items, and summary</AppShellCard.Subtitle>
+          </div>
         </AppShellCard.Header>
         <div className="flex flex-col gap-5 max-w-2xl">
           <div className="rounded-xl border border-border bg-card p-5 flex flex-col gap-3">
@@ -140,7 +145,10 @@ export default function SummarizePage() {
     return (
       <AppShellCard>
         <AppShellCard.Header>
-          <AppShellCard.Title>Meeting Summarizer</AppShellCard.Title>
+          <div className="flex items-center gap-2">
+            <FileText className="size-5 text-brand-500" />
+            <AppShellCard.Title>Meeting Summarizer</AppShellCard.Title>
+          </div>
         </AppShellCard.Header>
         <div className="flex flex-col items-center gap-6 py-24">
           <div className="relative flex items-center justify-center">
@@ -160,7 +168,10 @@ export default function SummarizePage() {
     return (
       <AppShellCard>
         <AppShellCard.Header>
-          <AppShellCard.Title>Meeting Summaries</AppShellCard.Title>
+          <div className="flex items-center gap-2">
+            <FileText className="size-5 text-brand-500" />
+            <AppShellCard.Title>Meeting Summaries</AppShellCard.Title>
+          </div>
         </AppShellCard.Header>
         <div className="flex flex-col items-center gap-4 py-20">
           <CheckCircle className="size-12 text-success" />
@@ -181,7 +192,10 @@ export default function SummarizePage() {
     <AppShellCard>
       <AppShellCard.Header>
         <div>
-          <AppShellCard.Title>Meeting Summarizer</AppShellCard.Title>
+          <div className="flex items-center gap-2">
+            <FileText className="size-5 text-brand-500" />
+            <AppShellCard.Title>Meeting Summarizer</AppShellCard.Title>
+          </div>
           <AppShellCard.Subtitle>AI-drafted · Review before writing to Salesforce</AppShellCard.Subtitle>
         </div>
       </AppShellCard.Header>

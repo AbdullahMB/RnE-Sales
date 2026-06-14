@@ -16,6 +16,7 @@ import {
   Shield,
   CheckCircle,
   ExternalLink,
+  Settings as SettingsIcon,
 } from 'lucide-react';
 
 function SettingRow({
@@ -47,8 +48,13 @@ export default function SettingsPage() {
   return (
     <AppShellCard>
       <AppShellCard.Header>
-        <AppShellCard.Title>Settings</AppShellCard.Title>
-        <AppShellCard.Subtitle>Account, integrations, and preferences</AppShellCard.Subtitle>
+        <div>
+          <div className="flex items-center gap-2">
+            <SettingsIcon className="size-5 text-brand-500" />
+            <AppShellCard.Title>Settings</AppShellCard.Title>
+          </div>
+          <AppShellCard.Subtitle>Account, integrations, and preferences</AppShellCard.Subtitle>
+        </div>
       </AppShellCard.Header>
 
       <Tabs defaultValue="profile">

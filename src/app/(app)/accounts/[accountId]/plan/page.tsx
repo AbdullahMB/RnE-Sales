@@ -241,7 +241,10 @@ export default function AccountPlanPage({ params }: { params: Promise<{ accountI
     <AppShellCard>
       <AppShellCard.Header>
         <div>
-          <AppShellCard.Title>Account Plan — {account.name}</AppShellCard.Title>
+          <div className="flex items-center gap-2">
+            <Target className="size-5 text-brand-500" />
+            <AppShellCard.Title>Account Plan — {account.name}</AppShellCard.Title>
+          </div>
           <AppShellCard.Subtitle>{account.industry} · {account.tier}</AppShellCard.Subtitle>
         </div>
       </AppShellCard.Header>

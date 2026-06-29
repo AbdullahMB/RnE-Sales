@@ -165,7 +165,7 @@ export default function DashboardPage() {
         <div>
           <div className="flex items-center gap-2">
             <LayoutDashboard className="size-5 text-brand-500" />
-            <AppShellCard.Title>{greeting}, Abdullah</AppShellCard.Title>
+            <AppShellCard.Title>{greeting}, Turki</AppShellCard.Title>
           </div>
           <AppShellCard.Subtitle>
             {priorityItems.length > 0

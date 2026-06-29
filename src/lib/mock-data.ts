@@ -397,14 +397,14 @@ export interface Department {
 }
 
 export const MOCK_PRODUCTS: Product[] = [
-  { id: 'p1', name: 'Core Platform',           category: 'Platform',  avgDealSize: 800000,  salesCycleDays: 120, icon: '⚙️' },
-  { id: 'p2', name: 'AI / ML Services',         category: 'AI/Data',   avgDealSize: 600000,  salesCycleDays: 90,  icon: '🤖' },
-  { id: 'p3', name: 'Data Sovereignty Module',  category: 'Security',  avgDealSize: 400000,  salesCycleDays: 60,  icon: '🛡️' },
-  { id: 'p4', name: 'Edge Computing',           category: 'Platform',  avgDealSize: 750000,  salesCycleDays: 135, icon: '📡' },
-  { id: 'p5', name: 'Managed Services',         category: 'Services',  avgDealSize: 350000,  salesCycleDays: 45,  icon: '🔧' },
-  { id: 'p6', name: 'Security & Compliance',    category: 'Security',  avgDealSize: 500000,  salesCycleDays: 75,  icon: '🔒' },
-  { id: 'p7', name: 'Analytics & BI',           category: 'AI/Data',   avgDealSize: 450000,  salesCycleDays: 60,  icon: '📊' },
-  { id: 'p8', name: 'Professional Services',    category: 'Services',  avgDealSize: 300000,  salesCycleDays: 30,  icon: '👥' },
+  { id: 'p1', name: 'HUMAIN ONE',                category: 'Platform',  avgDealSize: 800000,  salesCycleDays: 120, icon: '🧠' },
+  { id: 'p2', name: 'HUMAIN Chat (Enterprise)',  category: 'AI/Data',   avgDealSize: 600000,  salesCycleDays: 90,  icon: '💬' },
+  { id: 'p3', name: 'Sovereign AI Cloud',        category: 'Security',  avgDealSize: 400000,  salesCycleDays: 60,  icon: '🛡️' },
+  { id: 'p4', name: 'HUMAIN Compute',            category: 'Platform',  avgDealSize: 750000,  salesCycleDays: 135, icon: '🖥️' },
+  { id: 'p5', name: 'Managed AI Operations',     category: 'Services',  avgDealSize: 350000,  salesCycleDays: 45,  icon: '🔧' },
+  { id: 'p6', name: 'AI Governance & Security',  category: 'Security',  avgDealSize: 500000,  salesCycleDays: 75,  icon: '🔒' },
+  { id: 'p7', name: 'ALLAM Models & Analytics',  category: 'AI/Data',   avgDealSize: 450000,  salesCycleDays: 60,  icon: '📊' },
+  { id: 'p8', name: 'AI Advisory Services',      category: 'Services',  avgDealSize: 300000,  salesCycleDays: 30,  icon: '👥' },
 ];
 
 export const MOCK_DEPARTMENTS: Department[] = [
